@@ -33,18 +33,19 @@ onMounted(() => {
 </style>
 
 <template>
-  <main class="font-family-karla h-screen bg-white">
+  <div></div>
+  <main class="font-family-karla h-screen bg-blue-100">
     <div class="flex w-full flex-wrap">
       <!-- Login Section -->
       <div class="flex w-full flex-col md:w-1/2">
         <div class="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
-          <span class="bg-black p-4 text-xl font-bold text-white">Logo</span>
+          <span class="bg-blue-800 p-4 text-xl font-bold text-white">Logo</span>
         </div>
 
         <div
           class="my-auto flex flex-col justify-center px-8 pt-8 md:justify-start md:px-24 md:pt-0 lg:px-32"
         >
-          <p class="text-center text-3xl">Bienvenido!</p>
+          <p class="text-center text-3xl">¡Bienvenido!</p>
           <form class="flex flex-col pt-3 md:pt-8" @submit.prevent="login()">
             <div class="flex flex-col pt-4">
               <label for="text" class="text-lg">Nombre de usuario</label>
@@ -52,8 +53,8 @@ onMounted(() => {
                 v-model="username"
                 type="text"
                 id="text"
-                placeholder="usuario"
-                class="focus:shadow-outline mt-1 w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                placeholder="Usuario"
+                class="focus:shadow-outline mt-1 w-full appearance-none rounded border bg-blue-50 py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
               />
             </div>
 
@@ -63,16 +64,16 @@ onMounted(() => {
                 v-model="password"
                 type="password"
                 id="password"
-                placeholder="contraseña"
-                class="focus:shadow-outline mt-1 w-full appearance-none rounded border py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
+                placeholder="Contraseña"
+                class="focus:shadow-outline mt-1 w-full appearance-none rounded border bg-blue-50 py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
               />
             </div>
-
-            <input
+            <button
               type="submit"
-              value="Iniciar Sesión"
-              class="mt-8 bg-black p-2 text-lg font-bold text-white hover:bg-gray-700"
-            />
+              class="mt-8 bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-900"
+            >
+              Iniciar Sesión
+            </button>
           </form>
         </div>
       </div>

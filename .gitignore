@@ -15,6 +15,7 @@ coverage
 *.local
 pb_data
 pocketbase.exe
+pocketbase.cmd
 
 /cypress/videos/
 /cypress/screenshots/

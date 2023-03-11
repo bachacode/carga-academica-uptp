@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import type { Admin, Record } from 'pocketbase'
 import { defineStore } from 'pinia'
-
+import router from '@/router'
 import PocketBase from 'pocketbase'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -12,5 +12,10 @@ export const useAuthStore = defineStore('auth', () => {
     console.log(user.value)
   }
 
-  return { pb, user, getUser }
+  function logout() {
+    pb.authStore.clear()
+    router.push('/')
+  }
+
+  return { pb, user, getUser, logout }
 })
