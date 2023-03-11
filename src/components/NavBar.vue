@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { useAuthStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
 
 const auth = useAuthStore()
 
 defineProps<{
-  username: string | null
+  username?: string | null
 }>()
 
 const dropdown = ref(false)

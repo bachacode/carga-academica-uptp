@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { onMounted } from 'vue'
 import AuthLayout from './AuthLayout.vue'
 

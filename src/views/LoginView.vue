@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/user'
+import { useAuthStore } from '@/stores/auth'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 const auth = useAuthStore()
@@ -8,16 +8,7 @@ const username = ref('')
 const password = ref('')
 
 const login = async () => {
-  await auth.pb
-    .collection('users')
-    .authWithPassword(username.value, password.value)
-    .then(() => {
-      router.push('dashboard')
-      console.log('You successfully logged in!')
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+  await auth.login(username.value, password.value);
 }
 
 onMounted(() => {
@@ -50,6 +41,7 @@ onMounted(() => {
             <div class="flex flex-col pt-4">
               <label for="text" class="text-lg">Nombre de usuario</label>
               <input
+                
                 v-model="username"
                 type="text"
                 id="text"
