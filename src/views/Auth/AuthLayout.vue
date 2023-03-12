@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { onMounted } from 'vue'
 import BasicFooter from '@/components/BasicFooter.vue'
 import NavBar from '@/components/NavBar.vue'
 
 const auth = useAuthStore()
-
-onMounted(() => {
-  auth.user = auth.pb.authStore.model
-})
 </script>
 
 <template>
-  <NavBar :username="auth.user?.name" />
-  <slot></slot>
-
-  <BasicFooter></BasicFooter>
+  <div class="flex min-h-screen flex-col">
+    <NavBar :username="auth.user?.name" />
+    <main class="flex-grow pt-28">
+      <slot></slot>
+    </main>
+    <BasicFooter classes="mt-auto" />
+  </div>
 </template>

@@ -1,19 +1,14 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { onMounted } from 'vue'
 import AuthLayout from './AuthLayout.vue'
 
-const auth = useAuthStore()
-
-onMounted(() => {
-  auth.user = auth.pb.authStore.model
-})
+useAuthStore()
 </script>
 
 <template>
   <AuthLayout>
     <!--Container-->
-    <div class="container mx-auto w-full pt-20">
+    <div class="container mx-auto w-full">
       <div class="mb-16 w-full px-4 leading-normal text-gray-800 md:mt-8 md:px-0">
         <!--Console Content-->
         <div class="flex flex-wrap">
