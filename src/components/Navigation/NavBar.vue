@@ -114,43 +114,29 @@ function toggle() {
       >
         <ul class="list-reset flex-1 items-center px-4 md:px-0 lg:flex">
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="dashboard"
-              class="block border-b-2 border-orange-600 py-1 pl-1 align-middle text-pink-600 no-underline hover:border-orange-600 hover:text-gray-900 md:py-3"
-            >
-              <i class="fas fa-home fa-fw mr-3 text-pink-600"></i
-              ><span class="pb-1 text-sm md:pb-0">Dashboard</span>
-            </RouterLink>
+            <NavLink to="/dashboard" text="Dashboard">
+              <i class="fa fa-home fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="secciones"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-pink-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fas fa-tasks fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Secciones</span>
-            </RouterLink>
+            <NavLink to="/secciones" text="Secciones">
+              <i class="fa fa-wallet fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-purple-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fa fa-envelope fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Saberes</span>
-            </RouterLink>
+            <NavLink to="/saberes" text="Saberes">
+              <i class="fa fa-wallet fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-green-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fas fa-chart-area fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Profesores</span>
-            </RouterLink>
+            <NavLink to="/profesores" text="Profesores">
+              <i class="fas fa-chart-area fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <NavLink text="Pensum"></NavLink>
+            <NavLink to="/pensum" text="Pensum">
+              <i class="fa fa-wallet fa-fw mr-3"></i>
+            </NavLink>
           </li>
         </ul>
       </div>

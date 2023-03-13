@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
 import BasicFooter from '@/components/BasicFooter.vue'
-import NavBar from '@/components/NavBar.vue'
+import NavBar from '@/components/Navigation/NavBar.vue'
 
 const auth = useAuthStore()
 </script>

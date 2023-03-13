@@ -5,7 +5,7 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'login',
       component: () => import('@/views/LoginView.vue')
     },
     {
@@ -15,8 +15,23 @@ const router = createRouter({
     },
     {
       path: '/secciones',
-      name: 'secciones',
-      component: () => import('@/views/Auth/SeccionView.vue')
+      children: [
+        {
+          path: '',
+          name: 'secciones',
+          component: () => import('@/views/Auth/Secciones/index.vue'),
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: () => import('@/views/Auth/Secciones/create.vue'),
+        },
+        {
+          path: 'edit/:id',
+          name: 'edit',
+          component: () => import('@/views/Auth/Secciones/edit.vue'),
+        }
+      ]
     }
   ]
 })

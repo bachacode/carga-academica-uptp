@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { useAuthStore } from '@/stores/auth'
 import AuthLayout from './AuthLayout.vue'
-
-useAuthStore()
 </script>
 
 <template>

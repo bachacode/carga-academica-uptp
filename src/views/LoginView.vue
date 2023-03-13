@@ -3,6 +3,9 @@ import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 import InputError from '@/components/InputError.vue'
 import InputField from '@/components/InputField.vue'
+import { onBeforeMount } from 'vue'
+import router from '@/router'
+
 const auth = useAuthStore()
 const username = ref('')
 const password = ref('')
@@ -10,18 +13,17 @@ const password = ref('')
 const login = async () => {
   await auth.login(username.value, password.value)
 }
-</script>
 
-<style>
-@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-.font-family-karla {
-  font-family: karla;
-}
-</style>
+onBeforeMount(() => {
+  if (auth.pb.authStore.isValid) {
+    router.push('dashboard');
+  }
+})
+</script>
 
 <template>
   <div></div>
-  <main class="font-family-karla h-screen bg-blue-100">
+  <main class="h-screen bg-blue-100">
     <div class="flex w-full flex-wrap">
       <!-- Login Section -->
       <div class="flex w-full flex-col md:w-1/2">

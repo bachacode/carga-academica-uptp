@@ -2,7 +2,8 @@
 import { defineProps } from 'vue'
 
 export interface Props {
-  placeholder: string
+  placeholder?: string
+  name?: string
   modelValue: any
   type?: string
 }
@@ -20,12 +21,12 @@ const updateValue = (e: Event) => {
 
 <template>
   <div class="flex flex-col pt-4">
-    <label for="password" class="text-lg">{{ placeholder }}</label>
+    <label for="password" class="text-lg">{{ name }}</label>
     <input
       :value="modelValue"
       @input="updateValue"
       :type="type"
-      :id="placeholder"
+      :id="name"
       :placeholder="placeholder"
       class="focus:shadow-outline mt-1 w-full appearance-none rounded border bg-blue-50 py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
     />
