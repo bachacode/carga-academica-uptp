@@ -1,46 +1,16 @@
 # carga-academica-uptp
 
-This template should help get you started developing with Vue 3 in Vite.
+## 🏁 Para empezar
 
-## Recommended IDE Setup
+Clona este repositorio, para esto necesitaras [node.js](https://nodejs.org/es/) y [git](https://git-scm.com/) instalados en tu computadora.
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+## 🛠 Instalación
 
-## Type Support for `.vue` Imports in TS
+1. Instalación: corre `npm install` a través de la consola en el directorio del proyecto.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+2. Corre `npm run dev` a través de la consola para correr el proyecto en modo desarrollador.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+3. corre `./pocketbase.exe serve --http localhost:8000` a través de la consola para iniciar el servidor
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
+La pagina se refrescara cuando hagas cambios en el proyecto
