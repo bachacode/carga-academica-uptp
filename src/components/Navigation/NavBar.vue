@@ -4,11 +4,13 @@ import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
+import NavLink from './NavLink.vue'
 
 const auth = useAuthStore()
 
 defineProps<{
   username?: string | null
+  classes?: string
 }>()
 
 const dropdown = ref(false)
@@ -23,7 +25,7 @@ function toggle() {
 </script>
 
 <template>
-  <nav id="header" class="fixed top-0 z-10 w-full bg-white shadow">
+  <nav id="header" :class="`${classes} fixed top-0 z-10 w-full bg-white shadow`">
     <div class="container mx-auto mt-0 flex w-full flex-wrap items-center pt-3 pb-3 md:pb-0">
       <div class="w-1/2 pl-2 md:pl-0">
         <a
@@ -72,14 +74,7 @@ function toggle() {
                   <a
                     href="#"
                     class="block px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
-                    >My account</a
-                  >
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="block px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
-                    >Notifications</a
+                    >Mi cuenta</a
                   >
                 </li>
                 <li>
@@ -119,49 +114,29 @@ function toggle() {
       >
         <ul class="list-reset flex-1 items-center px-4 md:px-0 lg:flex">
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-orange-600 py-1 pl-1 align-middle text-pink-600 no-underline hover:border-orange-600 hover:text-gray-900 md:py-3"
-            >
-              <i class="fas fa-home fa-fw mr-3 text-pink-600"></i
-              ><span class="pb-1 text-sm md:pb-0">Dashboard</span>
-            </RouterLink>
+            <NavLink to="/dashboard" text="Dashboard">
+              <i class="fa fa-home fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-pink-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fas fa-tasks fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Secciones</span>
-            </RouterLink>
+            <NavLink to="/secciones" text="Secciones">
+              <i class="fa fa-wallet fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-purple-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fa fa-envelope fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Saberes</span>
-            </RouterLink>
+            <NavLink to="/saberes" text="Saberes">
+              <i class="fa fa-wallet fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-green-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fas fa-chart-area fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Profesores</span>
-            </RouterLink>
+            <NavLink to="/profesores" text="Profesores">
+              <i class="fas fa-chart-area fa-fw mr-3"></i>
+            </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <RouterLink
-              to="#"
-              class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:border-red-500 hover:text-gray-900 md:py-3"
-            >
-              <i class="fa fa-wallet fa-fw mr-3"></i
-              ><span class="pb-1 text-sm md:pb-0">Pensum</span>
-            </RouterLink>
+            <NavLink to="/pensum" text="Pensum">
+              <i class="fa fa-wallet fa-fw mr-3"></i>
+            </NavLink>
           </li>
         </ul>
       </div>

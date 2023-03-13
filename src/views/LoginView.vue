@@ -1,31 +1,29 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
-import { onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue'
+import InputError from '@/components/InputError.vue'
+import InputField from '@/components/InputField.vue'
+import { onBeforeMount } from 'vue'
+import router from '@/router'
+
 const auth = useAuthStore()
-const router = useRouter()
 const username = ref('')
 const password = ref('')
 
 const login = async () => {
-  await auth.login(username.value, password.value);
+  await auth.login(username.value, password.value)
 }
 
-onMounted(() => {
-  auth.user = auth.pb.authStore.model
+onBeforeMount(() => {
+  if (auth.pb.authStore.isValid) {
+    router.push('dashboard');
+  }
 })
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css?family=Karla:400,700&display=swap');
-.font-family-karla {
-  font-family: karla;
-}
-</style>
-
 <template>
   <div></div>
-  <main class="font-family-karla h-screen bg-blue-100">
+  <main class="h-screen bg-blue-100">
     <div class="flex w-full flex-wrap">
       <!-- Login Section -->
       <div class="flex w-full flex-col md:w-1/2">
@@ -38,28 +36,13 @@ onMounted(() => {
         >
           <p class="text-center text-3xl">¡Bienvenido!</p>
           <form class="flex flex-col pt-3 md:pt-8" @submit.prevent="login()">
-            <div class="flex flex-col pt-4">
-              <label for="text" class="text-lg">Nombre de usuario</label>
-              <input
-                
-                v-model="username"
-                type="text"
-                id="text"
-                placeholder="Usuario"
-                class="focus:shadow-outline mt-1 w-full appearance-none rounded border bg-blue-50 py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-              />
-            </div>
-
-            <div class="flex flex-col pt-4">
-              <label for="password" class="text-lg">Contraseña</label>
-              <input
-                v-model="password"
-                type="password"
-                id="password"
-                placeholder="Contraseña"
-                class="focus:shadow-outline mt-1 w-full appearance-none rounded border bg-blue-50 py-2 px-3 leading-tight text-gray-700 shadow focus:outline-none"
-              />
-            </div>
+            <InputError
+              v-if="auth.errors.isActive"
+              classes="text-center"
+              :message="auth.errors.message"
+            />
+            <InputField placeholder="Nombre de usuario" v-model="username" />
+            <InputField type="password" placeholder="Contraseña" v-model="password" />
             <button
               type="submit"
               class="mt-8 bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-900"
