@@ -9,7 +9,7 @@ defineProps<{
     <div role="status" class="flex w-full items-center justify-center">
       <svg
         aria-hidden="true"
-        class="fill-primary mr-2 inline h-52 w-52 animate-spin fill-blue-600 text-gray-400"
+        class="mr-2 inline h-52 w-52 animate-spin fill-blue-600 text-gray-400"
         viewBox="0 0 100 101"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

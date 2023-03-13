@@ -3,12 +3,14 @@ import { useSeccionStore } from '@/stores/secciones'
 import { onMounted, ref } from 'vue'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
+import SuccessAlert from '@/components/SuccessAlert.vue';
 import router from '@/router'
 import type { ISeccion } from '@/stores/secciones'
-const { fetchAll, destroy } = useSeccionStore();
+const { fetchAll, destroy, fetchOne, alertMessages, messageIsActive, getActive } = useSeccionStore();
 
-const secciones = ref<ISeccion[]>()
-
+const secciones = ref<ISeccion[]>();
+const selectedSeccion = ref<ISeccion>();
+const selectedMessage = ref();
 function create() {
   router.push({name: 'create'});
 }
@@ -17,23 +19,44 @@ function edit(id: string) {
   router.push({name: 'edit', params: {id}});
 }
 
-async function destroyItem(id: string) {
-  secciones.value = await destroy(id);
+async function destroyItem(id: string | undefined) {
+  if(id)
+  {
+    secciones.value = await destroy(id);
+  }
 }
 
 onMounted(async () => {
+  selectedMessage.value = router.currentRoute.value.query.status;
   secciones.value = await fetchAll();
 })
 </script>
 
 <template>
+  <!-- Delete Modal -->
+  <Teleport to="#modal">
+    <!-- Put this part before </body> tag -->
+    <input type="checkbox" id="my-modal" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box">
+        <h3 class="font-bold text-lg">¡Cuidado!</h3>
+        <p class="py-4">Estas a punto de borrar la sección {{ selectedSeccion?.codigo }}. ¿Esta seguro que desea hacer esto?</p>
+        <div class="modal-action items-center">
+          <label for="my-modal" class="btn-outline rounded-xl mr-2 hover:bg-white hover:text-blue-700 cursor-pointer p-2">¡No!</label>
+          <label for="my-modal" class="btn bg-red-700 rounded-xl" @click="destroyItem(selectedSeccion?.id)">Borrar</label>
+        </div>
+      </div>
+    </div>
+  </Teleport>
   <AuthLayout>
-    <div class="w-full px-16">
+    <!-- Success Alert -->
+    <div class="w-full px-16 pb-8">
+      <SuccessAlert class="bg-green-300 text-green-700 font-semibold mb-4" v-if="messageIsActive" :message="alertMessages[selectedMessage]" />
       <button
           @click="create()"
-          class="my-2 mx-1 rounded-2xl bg-blue-300 px-3 py-2 font-bold text-blue-900"
+          class="btn mb-3 bg-green-700 text-white rounded-lg"
         >
-        <i class="fas fa-plus-circle"></i> Crear Sección
+        <i class="fas fa-plus-circle pr-1"></i> Crear Sección
         </button>
       <!--Table Card-->
       <div class="rounded border bg-white shadow">
@@ -41,23 +64,25 @@ onMounted(async () => {
           <h5 class="font-bold uppercase text-gray-600">Secciones</h5>
         </div>
         <div class="p-5">
-          <table class="table w-full p-5 text-gray-700">
-            <thead class="text-center">
+          <LoadingCircle :is-loaded="!secciones" />
+          <table v-if="secciones" class="table table-normal table-zebra w-full">
+            <thead>
               <tr>
-                <th class="text-left text-blue-900">Codigo</th>
-                <th class="text-left text-blue-900">Trayecto</th>
-                <th class="text-left text-blue-900">Estudiantes</th>
-                <th class="text-left text-blue-900" colspan="2">Acciones</th>
+                <th class="text-blue-900">Codigo</th>
+                <th class="text-blue-900">Trayecto</th>
+                <th class="text-blue-900">Estudiantes</th>
+                <th class="text-blue-900">Acciones</th>
               </tr>
             </thead>
-              <LoadingCircle :is-loaded="!secciones" />
-            <tbody v-if="secciones">
+            <tbody>
               <tr v-for="seccion in secciones" :key="seccion.id">
                 <td>{{ seccion.codigo }}</td>
                 <td>{{ 'trayecto ' + seccion.trayecto }}</td>
                 <td>{{ seccion.estudiantes + ' estudiantes' }}</td>
-                <td><button class="bg-blue-700 text-white font-semibold px-4 py-1.5 rounded-xl" @click="edit(seccion.id)"><i class="fas fa-edit"></i> Editar</button></td>
-                <td><button class="bg-red-700 text-white font-semibold px-4 py-1.5 rounded-xl" @click="destroyItem(seccion.id)"><i class="fas fa-trash"></i> Eliminar</button></td>
+                <td class="space-x-3">
+                  <button class="btn bg-blue-700 rounded-xl" @click="edit(seccion.id)"><i class="fas fa-edit"></i></button>
+                  <label for="my-modal" class="btn bg-red-700 rounded-xl" @click="async () => selectedSeccion = await fetchOne(seccion.id)"><i class="fas fa-trash"></i></label>
+                </td>
               </tr>
             </tbody>
           </table>

@@ -18,18 +18,24 @@ function volver() {
 
 <template>
     <AuthLayout>
-        <button @click="volver()">Volver</button>
-        <form @submit.prevent="store({codigo, trayecto, estudiantes})" ref="formSeccion">
+        <div class="flex items-center justify-center">
+        <div class="w-2/4 px-16 pb-8">
+            <div class="rounded border bg-white shadow">
+                <button class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700" @click="volver()"><i class="fas fa-arrow-left pr-1"></i>Volver</button>
+        <form class="pb-6 px-6" @submit.prevent="store({codigo, trayecto, estudiantes})" ref="formSeccion">
                 <InputField placeholder="Codigo" name="Codigo" v-model="codigo"></InputField>
                 <InputField placeholder="2" name="Trayecto" v-model="trayecto"></InputField>
                 <InputField placeholder="17" name="Estudiantes" v-model="estudiantes"></InputField>
                 <InputField type="hidden" v-model="id"></InputField>
                 <button
                   type="submit"
-                  class="mt-8 bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-900"
+                  class="btn bg-blue-700 text-white hover:bg-blue-900"
                 >
                   Crear Sección
                 </button>
               </form>
+            </div>
+            </div>
+        </div>
     </AuthLayout>
 </template>
