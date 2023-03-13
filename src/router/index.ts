@@ -32,6 +32,66 @@ const router = createRouter({
           component: () => import('@/views/Auth/Secciones/edit.vue'),
         }
       ]
+    },
+    {
+      path: '/saberes',
+      children: [
+        {
+          path: '',
+          name: 'saberes',
+          component: () => import('@/views/Auth/Saberes/index.vue'),
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: () => import('@/views/Auth/Secciones/create.vue'),
+        },
+        {
+          path: 'edit/:id',
+          name: 'edit',
+          component: () => import('@/views/Auth/Secciones/edit.vue'),
+        }
+      ]
+    },
+    {
+      path: '/profesores',
+      children: [
+        {
+          path: '',
+          name: 'profesores',
+          component: () => import('@/views/Auth/Profesores/index.vue'),
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: () => import('@/views/Auth/Secciones/create.vue'),
+        },
+        {
+          path: 'edit/:id',
+          name: 'edit',
+          component: () => import('@/views/Auth/Secciones/edit.vue'),
+        }
+      ]
+    },
+    {
+      path: '/pensums',
+      children: [
+        {
+          path: '',
+          name: 'pensums',
+          component: () => import('@/views/Auth/Pensums/index.vue'),
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: () => import('@/views/Auth/Secciones/create.vue'),
+        },
+        {
+          path: 'edit/:id',
+          name: 'edit',
+          component: () => import('@/views/Auth/Secciones/edit.vue'),
+        }
+      ]
     }
   ]
 })

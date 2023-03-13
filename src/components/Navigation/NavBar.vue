@@ -134,7 +134,7 @@ function toggle() {
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/pensum" text="Pensum">
+            <NavLink to="/pensums" text="Pensums">
               <i class="fa fa-wallet fa-fw mr-3"></i>
             </NavLink>
           </li>
