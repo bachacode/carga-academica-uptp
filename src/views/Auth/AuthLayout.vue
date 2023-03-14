@@ -38,26 +38,3 @@ onUnmounted(() => {
     <BasicFooter classes="mt-auto" />
   </div>
 </template>
-
-<style>
-
-.slide-fade-enter-from {
-  @apply translate-x-full opacity-0 blur-sm;
-}
-
-.slide-fade-enter-active {
-  @apply transition-all duration-1000 motion-reduce:transition-none
-}
-
-.slide-fade-enter-to {
-  @apply translate-x-0 blur-0;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-leave-to {
-  @apply blur-md opacity-0;
-}
-</style>

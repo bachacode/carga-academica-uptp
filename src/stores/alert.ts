@@ -29,17 +29,14 @@ export const useAlertStore = defineStore('alert', () => {
             }, 5000)
         }, 200);
     } else
-
-    setTimeout(() => {
-            successAlert.value.isActive = true
-            if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
-                window.clearTimeout(timeoutId.value);
-                timeoutId.value = null;
-            }
-            timeoutId.value = setTimeout(() => {
-            successAlert.value.isActive = false
-            }, 5000)
-        }, 200);
+    successAlert.value.isActive = true
+    if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
+        window.clearTimeout(timeoutId.value);
+        timeoutId.value = null;
+    }
+    timeoutId.value = setTimeout(() => {
+    successAlert.value.isActive = false
+    }, 5000)
   }
 
   async function setError(message: string) {
@@ -57,17 +54,14 @@ export const useAlertStore = defineStore('alert', () => {
             }, 5000)
         }, 200);
     } else
-
-    setTimeout(() => {
-            errorAlert.value.isActive = true
-            if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
-                window.clearTimeout(timeoutId.value);
-                timeoutId.value = null;
-            }
-            timeoutId.value = setTimeout(() => {
-            errorAlert.value.isActive = false
-            }, 5000)
-        }, 200);
+    errorAlert.value.isActive = true
+    if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
+        window.clearTimeout(timeoutId.value);
+        timeoutId.value = null;
+    }
+    timeoutId.value = setTimeout(() => {
+    errorAlert.value.isActive = false
+    }, 5000)
   }
 
   function disableAlert() {

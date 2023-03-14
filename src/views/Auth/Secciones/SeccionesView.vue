@@ -25,6 +25,10 @@ async function destroyItem(id: string | undefined) {
   }
 }
 
+async function selectItem(id: string) {
+  return selectedSeccion.value = await fetchOne(id);
+}
+
 onMounted(async () => {
   selectedMessage.value = router.currentRoute.value.query.status
   secciones.value = await fetchAll()
@@ -93,9 +97,10 @@ onMounted(async () => {
                   <label
                     for="my-modal"
                     class="btn rounded-xl bg-red-700 hover:bg-rose-900"
-                    @click="async () => (selectedSeccion = await fetchOne(seccion.id))"
-                    ><i class="fas fa-trash"></i
-                  ></label>
+                    @click="selectItem(seccion.id)"
+                    >
+                    <i class="fas fa-trash"></i>
+                  </label>
                 </td>
               </tr>
             </tbody>
