@@ -35,9 +35,9 @@ export const useSeccionStore = defineStore('seccion', () => {
     await pb
       .collection('secciones')
       .create(data)
-      .then(() => {
+      .then(async () => {
+        await router.push({ path: parentRoute.value })
         alert.setSuccess('La sección se ha guardado correctamente')
-        router.push({ path: parentRoute.value, query: { status: 0 } })
       })
   }
 
@@ -46,8 +46,8 @@ export const useSeccionStore = defineStore('seccion', () => {
       .collection('secciones')
       .update(id, data)
       .then(() => {
+        router.push({ path: parentRoute.value })
         alert.setSuccess('La sección se ha editado correctamente')
-        router.push({ path: parentRoute.value, query: { status: 1 } })
       })
   }
 
@@ -56,8 +56,8 @@ export const useSeccionStore = defineStore('seccion', () => {
       .collection('secciones')
       .delete(id)
       .then(async () => {
+        router.push({ path: parentRoute.value })
         alert.setSuccess('La sección se ha borrado correctamente')
-        router.push({ path: parentRoute.value, query: { status: 2 } })
         return await fetchAll()
       })
   }
