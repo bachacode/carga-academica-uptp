@@ -8,7 +8,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="alert alert-success mb-4 bg-green-300 font-semibold text-green-700 shadow-lg">
+  <div class="alert alert-success mb-4 bg-red-300 font-semibold text-red-700 shadow-lg">
     <div class="flex">
       <svg
         xmlns="http://www.w3.org/2000/svg"

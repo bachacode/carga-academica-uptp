@@ -16,7 +16,7 @@ const login = async () => {
 
 onBeforeMount(() => {
   if (auth.pb.authStore.isValid) {
-    router.push('dashboard');
+    router.push('dashboard')
   }
 })
 </script>

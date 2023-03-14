@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .router-link-exact-active {
-    @apply text-blue-600 border-b-2 border-blue-500
+  @apply border-b-2 border-blue-500 text-blue-600;
 }
