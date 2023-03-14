@@ -45,8 +45,8 @@ export const useSeccionStore = defineStore('seccion', () => {
     await pb
       .collection('secciones')
       .update(id, data)
-      .then(() => {
-        router.push({ path: parentRoute.value })
+      .then(async () => {
+        await router.push({ path: parentRoute.value })
         alert.setSuccess('La sección se ha editado correctamente')
       })
   }
@@ -56,7 +56,6 @@ export const useSeccionStore = defineStore('seccion', () => {
       .collection('secciones')
       .delete(id)
       .then(async () => {
-        router.push({ path: parentRoute.value })
         alert.setSuccess('La sección se ha borrado correctamente')
         return await fetchAll()
       })

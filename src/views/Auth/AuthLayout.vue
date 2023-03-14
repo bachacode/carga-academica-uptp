@@ -5,8 +5,14 @@ import BasicFooter from '@/components/BasicFooter.vue'
 import NavBar from '@/components/Navigation/NavBar.vue'
 import SuccessAlert from '@/components/SuccessAlert.vue'
 import ErrorAlert from '@/components/ErrorAlert.vue'
+import { onUnmounted } from 'vue'
 const auth = useAuthStore()
 const alert = useAlertStore()
+
+onUnmounted(() => {
+  alert.successAlert.isActive = false;
+  alert.errorAlert.isActive = false;
+})
 </script>
 
 <template>
@@ -48,10 +54,10 @@ const alert = useAlertStore()
 }
 
 .slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-leave-to {
-  @apply translate-x-full opacity-0;
+  @apply blur-md opacity-0;
 }
 </style>

@@ -12,20 +12,62 @@ export const useAlertStore = defineStore('alert', () => {
     isActive: false
   })
 
+  const timeoutId = ref<number | null>(null);
+
   async function setSuccess(message: string) {
     successAlert.value.message = message
-    successAlert.value.isActive = true
+    if(successAlert.value.isActive == true){
+        successAlert.value.isActive = false;
+        setTimeout(() => {
+            successAlert.value.isActive = true
+            if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
+                window.clearTimeout(timeoutId.value);
+                timeoutId.value = null;
+            }
+            timeoutId.value = setTimeout(() => {
+            successAlert.value.isActive = false
+            }, 5000)
+        }, 200);
+    } else
+
     setTimeout(() => {
-      successAlert.value.isActive = false
-    }, 5000)
+            successAlert.value.isActive = true
+            if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
+                window.clearTimeout(timeoutId.value);
+                timeoutId.value = null;
+            }
+            timeoutId.value = setTimeout(() => {
+            successAlert.value.isActive = false
+            }, 5000)
+        }, 200);
   }
 
   async function setError(message: string) {
     errorAlert.value.message = message
-    errorAlert.value.isActive = true
+    if(errorAlert.value.isActive == true){
+        errorAlert.value.isActive = false;
+        setTimeout(() => {
+            errorAlert.value.isActive = true
+            if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
+                window.clearTimeout(timeoutId.value);
+                timeoutId.value = null;
+            }
+            timeoutId.value = setTimeout(() => {
+            errorAlert.value.isActive = false
+            }, 5000)
+        }, 200);
+    } else
+
     setTimeout(() => {
-      errorAlert.value.isActive = false
-    }, 5000)
+            errorAlert.value.isActive = true
+            if(!timeoutId.value != null && typeof timeoutId.value == 'number') {
+                window.clearTimeout(timeoutId.value);
+                timeoutId.value = null;
+            }
+            timeoutId.value = setTimeout(() => {
+            errorAlert.value.isActive = false
+            }, 5000)
+        }, 200);
   }
 
   function disableAlert() {
