@@ -9,7 +9,6 @@ const { fetchAll, destroy, fetchOne } = useSeccionStore()
 
 const secciones = ref<ISeccion[]>()
 const selectedSeccion = ref<ISeccion>()
-const selectedMessage = ref()
 
 function create() {
   router.push({ name: 'create' })
@@ -26,11 +25,10 @@ async function destroyItem(id: string | undefined) {
 }
 
 async function selectItem(id: string) {
-  return selectedSeccion.value = await fetchOne(id);
+  return (selectedSeccion.value = await fetchOne(id))
 }
 
 onMounted(async () => {
-  selectedMessage.value = router.currentRoute.value.query.status
   secciones.value = await fetchAll()
 })
 </script>
@@ -91,14 +89,17 @@ onMounted(async () => {
                 <td>{{ 'trayecto ' + seccion.trayecto }}</td>
                 <td>{{ seccion.estudiantes + ' estudiantes' }}</td>
                 <td class="space-x-3">
-                  <button class="btn rounded-xl bg-blue-700 hover:bg-blue-900" @click="edit(seccion.id)">
+                  <button
+                    class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                    @click="edit(seccion.id)"
+                  >
                     <i class="fas fa-edit"></i>
                   </button>
                   <label
                     for="my-modal"
                     class="btn rounded-xl bg-red-700 hover:bg-rose-900"
                     @click="selectItem(seccion.id)"
-                    >
+                  >
                     <i class="fas fa-trash"></i>
                   </label>
                 </td>

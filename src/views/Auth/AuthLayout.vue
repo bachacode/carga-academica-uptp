@@ -10,8 +10,8 @@ const auth = useAuthStore()
 const alert = useAlertStore()
 
 onUnmounted(() => {
-  alert.successAlert.isActive = false;
-  alert.errorAlert.isActive = false;
+  alert.successAlert.isActive = false
+  alert.errorAlert.isActive = false
 })
 </script>
 
@@ -21,18 +21,18 @@ onUnmounted(() => {
     <main class="flex-grow pt-28">
       <Transition name="slide-fade">
         <SuccessAlert
-        v-if="alert.successAlert.isActive"
-        :message="alert.successAlert.message"
-        @close="alert.disableAlert"
+          v-if="alert.successAlert.isActive"
+          :message="alert.successAlert.message"
+          @close="alert.disableAlert"
         />
       </Transition>
       <Transition name="slide-fade">
-      <ErrorAlert
-        v-if="alert.errorAlert.isActive"
-        :message="alert.errorAlert.message"
-        @close="alert.disableAlert"
-      />
-    </Transition>
+        <ErrorAlert
+          v-if="alert.errorAlert.isActive"
+          :message="alert.errorAlert.message"
+          @close="alert.disableAlert"
+        />
+      </Transition>
       <slot></slot>
     </main>
     <BasicFooter classes="mt-auto" />

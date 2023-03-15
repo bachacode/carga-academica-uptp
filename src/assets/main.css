@@ -11,7 +11,7 @@
 }
 
 .slide-fade-enter-active {
-  @apply transition-all duration-1000 motion-reduce:transition-none
+  @apply transition-all duration-1000 motion-reduce:transition-none;
 }
 
 .slide-fade-enter-to {
@@ -23,5 +23,5 @@
 }
 
 .slide-fade-leave-to {
-  @apply blur-md opacity-0;
+  @apply opacity-0 blur-md;
 }

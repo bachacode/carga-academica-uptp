@@ -1,8 +1,4 @@
-import { ref } from 'vue'
-import { defineStore } from 'pinia'
-import { useAuthStore } from './auth'
-import router from '@/router'
-import { useAlertStore } from './alert'
+import { createCrudStore } from './factory'
 
 export type seccionType = {
   codigo: string
@@ -16,50 +12,22 @@ export interface ISeccion extends seccionType {
   updated: Date
 }
 
-export const useSeccionStore = defineStore('seccion', () => {
-  const { pb } = useAuthStore()
-  const alert = useAlertStore()
-  const parentRoute = ref<string>('/secciones')
+const successMessages = {
+  create: 'La sección se ha guardado correctamente',
+  update: 'La sección se ha actualizado correctamente',
+  delete: 'La sección se ha borrado correctamente'
+}
 
-  async function fetchAll() {
-    return await pb.collection('secciones').getFullList<ISeccion>({
-      sort: '-created'
-    })
-  }
+const errorMessages = {
+  create: 'Ha ocurrido un error al crear la sección',
+  update: 'Ha ocurrido un error al actualizar la sección',
+  delete: 'Ha ocurrido un error al borrar la sección'
+}
 
-  async function fetchOne(id: string) {
-    return await pb.collection('secciones').getOne<ISeccion>(id)
-  }
-
-  async function store(data: seccionType) {
-    await pb
-      .collection('secciones')
-      .create(data)
-      .then(async () => {
-        await router.push({ path: parentRoute.value })
-        alert.setSuccess('La sección se ha guardado correctamente')
-      })
-  }
-
-  async function update(id: string, data: seccionType) {
-    await pb
-      .collection('secciones')
-      .update(id, data)
-      .then(async () => {
-        await router.push({ path: parentRoute.value })
-        alert.setSuccess('La sección se ha editado correctamente')
-      })
-  }
-
-  async function destroy(id: string) {
-    return await pb
-      .collection('secciones')
-      .delete(id)
-      .then(async () => {
-        alert.setSuccess('La sección se ha borrado correctamente')
-        return await fetchAll()
-      })
-  }
-
-  return { store, update, destroy, fetchAll, fetchOne }
-})
+export const useSeccionStore = createCrudStore<seccionType, ISeccion>(
+  'seccion',
+  '/secciones',
+  'secciones',
+  successMessages,
+  errorMessages
+)
