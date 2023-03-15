@@ -15,7 +15,7 @@ export function createCrudStore<dataType, IData>(
   route: string,
   collectionName: string,
   success: Alertmessages,
-  error: Alertmessages
+  error: Alertmessages,
 ) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
@@ -24,15 +24,17 @@ export function createCrudStore<dataType, IData>(
     const collection = ref<string>(collectionName)
     const successMessages = ref<Alertmessages>(success)
     const errorMessages = ref<Alertmessages>(error)
+    const data = ref<IData[]>()
+    const singleData = ref<IData>()
 
     async function fetchAll() {
-      return await pb.collection(collection.value).getFullList<IData>({
+      data.value = await pb.collection(collection.value).getFullList<IData>({
         sort: '-created'
       })
     }
 
     async function fetchOne(id: string) {
-      return await pb.collection(collection.value).getOne<IData>(id)
+      singleData.value = await pb.collection(collection.value).getOne<IData>(id)
     }
 
     async function store(data: any) {
@@ -62,19 +64,19 @@ export function createCrudStore<dataType, IData>(
     }
 
     async function destroy(id: string) {
-      return await pb
+        await pb
         .collection(collection.value)
         .delete(id)
         .then(async () => {
           alert.setSuccess(successMessages.value.delete)
-          return await fetchAll()
+          await fetchAll()
         })
         .catch(async () => {
           alert.setError(errorMessages.value.delete)
-          return await fetchAll()
+          await fetchAll()
         })
     }
 
-    return { store, update, destroy, fetchAll, fetchOne }
+    return { data, singleData, store, update, destroy, fetchAll, fetchOne }
   })
 }

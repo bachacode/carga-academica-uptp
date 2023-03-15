@@ -5,43 +5,34 @@ import { ref, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
-import { required, minValue, maxValue, numeric, helpers } from '@vuelidate/validators'
+import { requiredValidation, numericValidation, minValueValidation, maxValueValidation } from '@/helpers/validationHelpers';
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
-import { onMounted } from 'vue'
-const { store } = useSeccionStore()
+
+const secciones = useSeccionStore()
+const { store } = secciones
 const formData = ref<seccionType>({
   codigo: '',
   trayecto: '',
   estudiantes: 0
 })
 
-const errorMessages = ref({
-  required: 'Este campo es obligatorio',
-  numeric: 'El valor de este campo tiene que ser numerico',
-  minValue: (min: number) => `El valor de este campo es de minimo ` + min,
-  maxValue: (max: number) => `El valor de este campo es de maximo ` + max,
-  codigo: 'El codigo que ha introducido es invalido',
-  trayecto: 'El trayecto que ha introducido es invalido',
-  estudiantes: 'El numero de estudiantes que ha introducido es invalido'
-})
-
 const rules = computed(() => {
   return {
     codigo: {
-      required: helpers.withMessage(errorMessages.value.required, required)
+      required: requiredValidation()
     },
     trayecto: {
-      required: helpers.withMessage(errorMessages.value.required, required),
-      numeric: helpers.withMessage(errorMessages.value.numeric, numeric),
-      minValue: helpers.withMessage(errorMessages.value.minValue(1), minValue(1)),
-      maxValue: helpers.withMessage(errorMessages.value.maxValue(4), maxValue(4))
+      required: requiredValidation(),
+      numeric: numericValidation(),
+      minValue: minValueValidation(),
+      maxValue: maxValueValidation(4)
     },
     estudiantes: {
-      required: helpers.withMessage(errorMessages.value.required, required),
-      numeric: helpers.withMessage(errorMessages.value.numeric, numeric),
-      minValue: helpers.withMessage(errorMessages.value.minValue(1), minValue(1)),
-      maxValue: helpers.withMessage(errorMessages.value.maxValue(99), maxValue(99))
+      required: requiredValidation(),
+      numeric: numericValidation(),
+      minValue: minValueValidation(),
+      maxValue: maxValueValidation(99)
     }
   }
 })
@@ -54,10 +45,6 @@ async function submitData() {
     store(formData.value)
   }
 }
-
-function volver() {
-  router.back()
-}
 </script>
 
 <template>
@@ -65,7 +52,7 @@ function volver() {
     <div class="flex items-center justify-center">
       <div class="w-2/4 px-16 pb-8">
         <div class="rounded border bg-white shadow">
-          <button class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700" @click="volver()">
+          <button class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700" @click="router.back()">
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">

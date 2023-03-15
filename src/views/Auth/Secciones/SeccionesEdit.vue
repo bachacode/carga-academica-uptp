@@ -4,33 +4,35 @@ import InputField from '@/components/InputField.vue'
 import { ref } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import router from '@/router'
-import { watchEffect } from 'vue'
-import type { ISeccion, seccionType } from '@/stores/secciones'
-const { update, fetchOne } = useSeccionStore()
+import { onMounted } from 'vue'
+import type { seccionType } from '@/stores/secciones'
+import { storeToRefs } from 'pinia'
+
+const secciones = useSeccionStore()
+const { update, fetchOne } = secciones
+const { singleData } = storeToRefs(secciones)
 const id = ref<string>('')
-const data = ref<ISeccion>()
 const submit = ref<seccionType>({
   codigo: '',
   trayecto: '',
   estudiantes: 0
 })
 
-function volver() {
-  router.back()
-}
-
-watchEffect(async () => {
+onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    data.value = await fetchOne(id.value)
-    submit.value = data.value
+    await fetchOne(router.currentRoute.value.params.id)
+    if(singleData.value)
+    {
+      submit.value = singleData.value
+    }
   }
 })
 </script>
 
 <template>
   <AuthLayout>
-    <button @click="volver()">Volver</button>
+    <button @click="router.back()">Volver</button>
     <form @submit.prevent="update(id, submit)" ref="formSeccion">
       <InputField placeholder="Codigo" name="Codigo" v-model="submit.codigo"></InputField>
       <InputField placeholder="2" name="Trayecto" v-model="submit.trayecto"></InputField>

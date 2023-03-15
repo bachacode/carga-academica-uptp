@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useSeccionStore } from '@/stores/secciones'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import router from '@/router'
-import type { ISeccion } from '@/stores/secciones'
-const { fetchAll, destroy, fetchOne } = useSeccionStore()
 
-const secciones = ref<ISeccion[]>()
-const selectedSeccion = ref<ISeccion>()
-
+const secciones = useSeccionStore();
+const { fetchAll, destroy, fetchOne } = secciones
+const theadColumns = [
+  "Codigo", "Trayecto", "Estudiantes", "Acciones"
+]
 function create() {
   router.push({ name: 'create' })
 }
@@ -20,16 +20,16 @@ function edit(id: string) {
 
 async function destroyItem(id: string | undefined) {
   if (id) {
-    secciones.value = await destroy(id)
+    await destroy(id)
   }
 }
 
 async function selectItem(id: string) {
-  return (selectedSeccion.value = await fetchOne(id))
+  await fetchOne(id)
 }
 
 onMounted(async () => {
-  secciones.value = await fetchAll()
+  await fetchAll();
 })
 </script>
 
@@ -42,7 +42,7 @@ onMounted(async () => {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar la sección {{ selectedSeccion?.codigo }}. ¿Esta seguro que desea
+          Estas a punto de borrar la sección {{ secciones.singleData?.codigo }}. ¿Esta seguro que desea
           hacer esto?
         </p>
         <div class="modal-action items-center">
@@ -54,7 +54,7 @@ onMounted(async () => {
           <label
             for="my-modal"
             class="btn rounded-xl bg-red-700"
-            @click="destroyItem(selectedSeccion?.id)"
+            @click="destroyItem(secciones.singleData?.id)"
             >Borrar</label
           >
         </div>
@@ -72,19 +72,16 @@ onMounted(async () => {
         <div class="border-b p-3">
           <h5 class="font-bold uppercase text-gray-600">Secciones</h5>
         </div>
-        <div class="p-5">
-          <LoadingCircle :is-loaded="!secciones" />
-          <table v-if="secciones" class="table-zebra table-normal table w-full first:z-0">
+        <div class="p-5 overflow-x-auto">
+          <LoadingCircle :is-loaded="!secciones.data" />
+          <table v-if="secciones.data" class="table-zebra table-normal table w-full">
             <thead>
               <tr>
-                <th class="text-blue-900">Codigo</th>
-                <th class="text-blue-900">Trayecto</th>
-                <th class="text-blue-900">Estudiantes</th>
-                <th class="text-blue-900">Acciones</th>
+                <th v-for="column in theadColumns" class="text-blue-900">{{column}}</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="seccion in secciones" :key="seccion.id">
+              <tr v-for="seccion in secciones.data" :key="seccion.id">
                 <td>{{ seccion.codigo }}</td>
                 <td>{{ 'trayecto ' + seccion.trayecto }}</td>
                 <td>{{ seccion.estudiantes + ' estudiantes' }}</td>
