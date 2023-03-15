@@ -3,5 +3,25 @@
 @tailwind utilities;
 
 .router-link-exact-active {
-    @apply text-blue-600 border-b-2 border-blue-500
+  @apply border-b-2 border-blue-500 text-blue-600;
+}
+
+.slide-fade-enter-from {
+  @apply translate-x-full opacity-0 blur-sm;
+}
+
+.slide-fade-enter-active {
+  @apply transition-all duration-1000 motion-reduce:transition-none
+}
+
+.slide-fade-enter-to {
+  @apply translate-x-0 blur-0;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.2s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-leave-to {
+  @apply blur-md opacity-0;
 }

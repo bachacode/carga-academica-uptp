@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
 defineProps<{
-  to: string,
+  to: string
   text: string
   classes?: string
   [props: string]: any

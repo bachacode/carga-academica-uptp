@@ -19,17 +19,17 @@ const router = createRouter({
         {
           path: '',
           name: 'secciones',
-          component: () => import('@/views/Auth/Secciones/index.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesView.vue')
         },
         {
           path: 'create',
           name: 'create',
-          component: () => import('@/views/Auth/Secciones/create.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
         },
         {
           path: 'edit/:id',
           name: 'edit',
-          component: () => import('@/views/Auth/Secciones/edit.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
         }
       ]
     },
@@ -39,17 +39,17 @@ const router = createRouter({
         {
           path: '',
           name: 'saberes',
-          component: () => import('@/views/Auth/Saberes/index.vue'),
+          component: () => import('@/views/Auth/Saberes/SaberesView.vue')
         },
         {
           path: 'create',
           name: 'create',
-          component: () => import('@/views/Auth/Secciones/create.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
         },
         {
           path: 'edit/:id',
           name: 'edit',
-          component: () => import('@/views/Auth/Secciones/edit.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
         }
       ]
     },
@@ -59,17 +59,17 @@ const router = createRouter({
         {
           path: '',
           name: 'profesores',
-          component: () => import('@/views/Auth/Profesores/index.vue'),
+          component: () => import('@/views/Auth/Profesores/ProfesoresView.vue')
         },
         {
           path: 'create',
           name: 'create',
-          component: () => import('@/views/Auth/Secciones/create.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
         },
         {
           path: 'edit/:id',
           name: 'edit',
-          component: () => import('@/views/Auth/Secciones/edit.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
         }
       ]
     },
@@ -79,17 +79,17 @@ const router = createRouter({
         {
           path: '',
           name: 'pensums',
-          component: () => import('@/views/Auth/Pensums/index.vue'),
+          component: () => import('@/views/Auth/Pensums/PensumsView.vue')
         },
         {
           path: 'create',
           name: 'create',
-          component: () => import('@/views/Auth/Secciones/create.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
         },
         {
           path: 'edit/:id',
           name: 'edit',
-          component: () => import('@/views/Auth/Secciones/edit.vue'),
+          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
         }
       ]
     }
