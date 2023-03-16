@@ -5,7 +5,14 @@ import { ref, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
-import { requiredValidation, numericValidation, minValueValidation, maxValueValidation, minLengthValidation, maxLengthValidation } from '@/helpers/validationHelpers';
+import {
+  requiredValidation,
+  numericValidation,
+  minValueValidation,
+  maxValueValidation,
+  minLengthValidation,
+  maxLengthValidation
+} from '@/helpers/validationHelpers'
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
 
@@ -54,7 +61,10 @@ async function submitData() {
     <div class="flex items-center justify-center">
       <div class="w-2/4 px-16 pb-8">
         <div class="rounded border bg-white shadow">
-          <button class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700" @click="router.back()">
+          <button
+            class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
+            @click="router.back()"
+          >
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">

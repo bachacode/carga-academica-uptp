@@ -1,5 +1,13 @@
-import { ref } from "vue"
-import { helpers, required, minValue, maxValue, numeric, maxLength, minLength } from "@vuelidate/validators"
+import { ref } from 'vue'
+import {
+  helpers,
+  required,
+  minValue,
+  maxValue,
+  numeric,
+  maxLength,
+  minLength
+} from '@vuelidate/validators'
 
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
@@ -7,29 +15,29 @@ const errorMessages = ref({
   minValue: (min: number) => `El valor de este campo es de minimo ${min}`,
   maxValue: (max: number) => `El valor de este campo es de maximo ${max}`,
   minLength: (min: number) => `Este campo tiene un minimo de ${min} caracteres`,
-  maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`,
+  maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`
 })
 
 export const requiredValidation = () => {
-  return helpers.withMessage(errorMessages.value.required, required);
+  return helpers.withMessage(errorMessages.value.required, required)
 }
 
 export const numericValidation = () => {
-  return helpers.withMessage(errorMessages.value.numeric, numeric);
+  return helpers.withMessage(errorMessages.value.numeric, numeric)
 }
 
 export const minValueValidation = (min: number = 1) => {
-  return helpers.withMessage(errorMessages.value.minValue(min), minValue(min));
+  return helpers.withMessage(errorMessages.value.minValue(min), minValue(min))
 }
 
 export const maxValueValidation = (max: number) => {
-  return helpers.withMessage(errorMessages.value.maxValue(max), maxValue(max));
+  return helpers.withMessage(errorMessages.value.maxValue(max), maxValue(max))
 }
 
 export const minLengthValidation = (min: number = 1) => {
-  return helpers.withMessage(errorMessages.value.minLength(min), minLength(min));
+  return helpers.withMessage(errorMessages.value.minLength(min), minLength(min))
 }
 
 export const maxLengthValidation = (max: number) => {
-  return helpers.withMessage(errorMessages.value.maxLength(max), maxLength(max));
+  return helpers.withMessage(errorMessages.value.maxLength(max), maxLength(max))
 }

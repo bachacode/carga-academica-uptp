@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { useSeccionStore } from '@/stores/secciones'
-import { onMounted, computed, ref } from 'vue'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
 
-const secciones = useSeccionStore();
+const secciones = useSeccionStore()
 const { fetchAll, destroy, fetchOne } = secciones
 const { filteredData, searchQuery } = storeToRefs(secciones)
-const theadColumns = [
-  "Codigo", "Trayecto", "Estudiantes", "Acciones"
-]
+const theadColumns = ['Codigo', 'Trayecto', 'Estudiantes', 'Acciones']
 function create() {
   router.push({ name: 'secciones.create' })
 }
@@ -27,8 +24,8 @@ async function destroyItem(id: string | undefined) {
 }
 
 async function sortTable(column: string) {
-  console.log(column);
-  await fetchAll(column);
+  console.log(column)
+  await fetchAll(column)
 }
 
 async function selectItem(id: string) {
@@ -45,8 +42,8 @@ async function selectItem(id: string) {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar la sección {{ secciones.singleData?.codigo }}. ¿Esta seguro que desea
-          hacer esto?
+          Estas a punto de borrar la sección {{ secciones.singleData?.codigo }}. ¿Esta seguro que
+          desea hacer esto?
         </p>
         <div class="modal-action items-center">
           <label
@@ -72,21 +69,23 @@ async function selectItem(id: string) {
       </button>
       <!--Table Card-->
       <div class="rounded border bg-white shadow">
-        <div class="border-b p-3 flex justify-between">
+        <div class="flex justify-between border-b p-3">
           <h5 class="font-bold uppercase text-gray-600">Secciones</h5>
-          <input type="text" placeholder="Busca" class="border border-gray-300 px-1" v-model="searchQuery">
+          <input
+            type="text"
+            placeholder="Busca"
+            class="border border-gray-300 px-1"
+            v-model="searchQuery"
+          />
         </div>
-        <div class="p-5 overflow-x-auto">
+        <div class="overflow-x-auto p-5">
           <LoadingCircle :is-loaded="!filteredData" />
           <table v-if="filteredData" class="table-zebra table-normal table w-full">
             <thead>
               <tr>
-                <th v-for="column in theadColumns" class="text-blue-900">
-                  <span  
-                  @click="sortTable(`+${column.toLowerCase()}`)" 
-                  class="cursor-pointer"
-                  >
-                    {{column}}
+                <th v-for="column in theadColumns" class="text-blue-900" :key="column">
+                  <span @click="sortTable(`+${column.toLowerCase()}`)" class="cursor-pointer">
+                    {{ column }}
                   </span>
                 </th>
               </tr>

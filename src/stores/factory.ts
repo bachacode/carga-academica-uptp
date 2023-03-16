@@ -16,7 +16,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
   route: string,
   collectionName: string,
   success: Alertmessages,
-  error: Alertmessages,
+  error: Alertmessages
 ) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
@@ -28,9 +28,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     const data = ref<IData[]>()
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
-    const recordKeys = ref([
-      'collectionId', 'collectionName', 'id', 'expand'
-    ]);
+    const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
 
     async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collection.value).getFullList<IData>({
@@ -69,7 +67,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     }
 
     async function destroy(id: string) {
-        await pb
+      await pb
         .collection(collection.value)
         .delete(id)
         .then(async () => {
@@ -84,13 +82,13 @@ export function createCrudStore<dataType, IData extends Record & Object>(
 
     const filteredData = computed(() => {
       return data.value?.filter((record) => {
-        let keys = Object.keys(record);
-        keys = keys.filter( ( el ) => !recordKeys.value.includes( el ) );
-        let testArray = keys.map((key) => {
-          return record[key].toString();
+        let keys = Object.keys(record)
+        keys = keys.filter((el) => !recordKeys.value.includes(el))
+        const testArray = keys.map((key) => {
+          return record[key].toString()
         })
         return testArray.some((text: string) => {
-          return text.includes(searchQuery.value);
+          return text.includes(searchQuery.value)
         })
       })
     })
@@ -99,6 +97,16 @@ export function createCrudStore<dataType, IData extends Record & Object>(
       await fetchAll()
     })
 
-    return { data, singleData, store, update, destroy, fetchAll, fetchOne, filteredData, searchQuery }
+    return {
+      data,
+      singleData,
+      store,
+      update,
+      destroy,
+      fetchAll,
+      fetchOne,
+      filteredData,
+      searchQuery
+    }
   })
 }

@@ -27,5 +27,5 @@
 }
 
 .table th:first-child {
-  @apply z-0 static;
+  @apply static z-0;
 }

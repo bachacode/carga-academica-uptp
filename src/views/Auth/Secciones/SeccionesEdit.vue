@@ -22,8 +22,7 @@ onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await fetchOne(router.currentRoute.value.params.id)
-    if(singleData.value)
-    {
+    if (singleData.value) {
       submit.value = singleData.value
     }
   }
