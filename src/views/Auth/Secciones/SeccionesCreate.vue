@@ -5,7 +5,7 @@ import { ref, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
-import { requiredValidation, numericValidation, minValueValidation, maxValueValidation } from '@/helpers/validationHelpers';
+import { requiredValidation, numericValidation, minValueValidation, maxValueValidation, minLengthValidation, maxLengthValidation } from '@/helpers/validationHelpers';
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
 
@@ -13,14 +13,16 @@ const secciones = useSeccionStore()
 const { store } = secciones
 const formData = ref<seccionType>({
   codigo: '',
-  trayecto: '',
-  estudiantes: 0
+  trayecto: null,
+  estudiantes: null
 })
 
 const rules = computed(() => {
   return {
     codigo: {
-      required: requiredValidation()
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(4)
     },
     trayecto: {
       required: requiredValidation(),

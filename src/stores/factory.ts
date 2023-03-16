@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
 import { useAlertStore } from './alert'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import router from '@/router'
+import type { Record } from 'pocketbase'
 
 type Alertmessages = {
   create: string
@@ -10,7 +11,7 @@ type Alertmessages = {
   delete: string
 }
 
-export function createCrudStore<dataType, IData>(
+export function createCrudStore<dataType, IData extends Record & Object>(
   storeId: string,
   route: string,
   collectionName: string,
@@ -26,10 +27,13 @@ export function createCrudStore<dataType, IData>(
     const errorMessages = ref<Alertmessages>(error)
     const data = ref<IData[]>()
     const singleData = ref<IData>()
-
-    async function fetchAll() {
+    const searchQuery = ref<string>('')
+    const recordKeys = ref([
+      'collectionId', 'collectionName', 'expand'
+    ]);
+    async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collection.value).getFullList<IData>({
-        sort: '-created'
+        sort: sortBy
       })
     }
 
@@ -77,6 +81,20 @@ export function createCrudStore<dataType, IData>(
         })
     }
 
-    return { data, singleData, store, update, destroy, fetchAll, fetchOne }
+    const filteredData = computed(() => {
+      return data.value?.filter((record) => {
+        recordKeys.value.forEach((column) => {
+          delete record[column];
+        })
+        let testArray = Object.keys(record).map((key) => {
+          return record[key].toString();
+        })
+        return testArray.some((text: string) => {
+          return text.includes(searchQuery.value);
+        })
+      })
+    })
+
+    return { data, singleData, store, update, destroy, fetchAll, fetchOne, filteredData, searchQuery }
   })
 }

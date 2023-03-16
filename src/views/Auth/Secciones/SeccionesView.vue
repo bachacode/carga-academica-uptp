@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { useSeccionStore } from '@/stores/secciones'
-import { onMounted } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import router from '@/router'
+import { storeToRefs } from 'pinia'
 
 const secciones = useSeccionStore();
 const { fetchAll, destroy, fetchOne } = secciones
+const { filteredData, searchQuery } = storeToRefs(secciones)
 const theadColumns = [
   "Codigo", "Trayecto", "Estudiantes", "Acciones"
 ]
@@ -22,6 +24,11 @@ async function destroyItem(id: string | undefined) {
   if (id) {
     await destroy(id)
   }
+}
+
+async function sortTable(column: string) {
+  console.log(column);
+  await fetchAll(column);
 }
 
 async function selectItem(id: string) {
@@ -69,19 +76,27 @@ onMounted(async () => {
       </button>
       <!--Table Card-->
       <div class="rounded border bg-white shadow">
-        <div class="border-b p-3">
+        <div class="border-b p-3 flex justify-between">
           <h5 class="font-bold uppercase text-gray-600">Secciones</h5>
+          <input type="text" placeholder="Busca" class="border border-gray-300 px-1" v-model="searchQuery">
         </div>
         <div class="p-5 overflow-x-auto">
-          <LoadingCircle :is-loaded="!secciones.data" />
-          <table v-if="secciones.data" class="table-zebra table-normal table w-full">
+          <LoadingCircle :is-loaded="!filteredData" />
+          <table v-if="filteredData" class="table-zebra table-normal table w-full">
             <thead>
               <tr>
-                <th v-for="column in theadColumns" class="text-blue-900">{{column}}</th>
+                <th v-for="column in theadColumns" class="text-blue-900">
+                  <span  
+                  @click="sortTable(`+${column.toLowerCase()}`)" 
+                  class="cursor-pointer"
+                  >
+                    {{column}}
+                  </span>
+                </th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="seccion in secciones.data" :key="seccion.id">
+              <tr v-for="seccion in filteredData" :key="seccion.id">
                 <td>{{ seccion.codigo }}</td>
                 <td>{{ 'trayecto ' + seccion.trayecto }}</td>
                 <td>{{ seccion.estudiantes + ' estudiantes' }}</td>

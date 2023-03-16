@@ -25,3 +25,11 @@ export const minValueValidation = (min: number = 1) => {
 export const maxValueValidation = (max: number) => {
   return helpers.withMessage(errorMessages.value.maxValue(max), maxValue(max));
 }
+
+export const minLengthValidation = (min: number = 1) => {
+  return helpers.withMessage(errorMessages.value.minLength(min), minLength(min));
+}
+
+export const maxLengthValidation = (max: number) => {
+  return helpers.withMessage(errorMessages.value.maxLength(max), maxLength(max));
+}

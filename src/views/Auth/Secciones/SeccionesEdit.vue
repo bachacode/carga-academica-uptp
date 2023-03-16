@@ -14,7 +14,7 @@ const { singleData } = storeToRefs(secciones)
 const id = ref<string>('')
 const submit = ref<seccionType>({
   codigo: '',
-  trayecto: '',
+  trayecto: 0,
   estudiantes: 0
 })
 

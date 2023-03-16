@@ -1,15 +1,16 @@
+import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
 
 export type seccionType = {
   codigo: string
-  trayecto: string
-  estudiantes: number
+  trayecto: number | null
+  estudiantes: number | null
 }
 
-export interface ISeccion extends seccionType {
+export interface ISeccion extends seccionType, Record {
   id: string
-  created: Date
-  updated: Date
+  created: string
+  updated: string
 }
 
 const successMessages = {
