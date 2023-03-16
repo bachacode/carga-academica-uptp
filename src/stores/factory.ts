@@ -4,6 +4,7 @@ import { useAlertStore } from './alert'
 import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
 import type { Record } from 'pocketbase'
+import type { seccionType } from './secciones'
 
 type Alertmessages = {
   create: string
@@ -27,6 +28,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     const errorMessages = ref<Alertmessages>(error)
     const data = ref<IData[]>()
     const singleData = ref<IData>()
+    const editData = ref<seccionType>()
     const searchQuery = ref<string>('')
     const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
 
@@ -34,6 +36,10 @@ export function createCrudStore<dataType, IData extends Record & Object>(
       data.value = await pb.collection(collection.value).getFullList<IData>({
         sort: sortBy
       })
+    }
+
+    async function fetchEdit(id: string) {
+      editData.value = await pb.collection(collection.value).getOne<seccionType>(id)
     }
 
     async function fetchOne(id: string) {
@@ -45,6 +51,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .collection(collection.value)
         .create<dataType>(data)
         .then(async () => {
+          await fetchAll()
           await router.push({ path: parentRoute.value })
           alert.setSuccess(successMessages.value.create)
         })
@@ -58,6 +65,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .collection(collection.value)
         .update<dataType>(id, data)
         .then(async () => {
+          await fetchAll()
           await router.push({ path: parentRoute.value })
           alert.setSuccess(successMessages.value.update)
         })
@@ -100,11 +108,13 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     return {
       data,
       singleData,
+      editData,
       store,
       update,
       destroy,
       fetchAll,
       fetchOne,
+      fetchEdit,
       filteredData,
       searchQuery
     }

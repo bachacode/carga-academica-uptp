@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
-
 export interface Props {
   placeholder?: string
   name?: string

@@ -4,11 +4,30 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-
 const secciones = useSeccionStore()
 const { fetchAll, destroy, fetchOne } = secciones
 const { filteredData, searchQuery } = storeToRefs(secciones)
-const theadColumns = ['Codigo', 'Trayecto', 'Estudiantes', 'Acciones']
+const theadColumns = [
+  {
+    name: 'Codigo',
+    isAsc: false
+  },
+  {
+    name: 'Trayecto',
+    isAsc: false
+  },
+  {
+    name: 'Estudiantes',
+    isAsc: false
+  }
+]
+function orderBy(state: { name: string; isAsc: boolean }) {
+  if (state.isAsc == true) {
+    state.isAsc = false
+    return `+${state.name.toLowerCase()}`
+  } else state.isAsc = true
+  return `-${state.name.toLowerCase()}`
+}
 function create() {
   router.push({ name: 'secciones.create' })
 }
@@ -83,11 +102,14 @@ async function selectItem(id: string) {
           <table v-if="filteredData" class="table-zebra table-normal table w-full">
             <thead>
               <tr>
-                <th v-for="column in theadColumns" class="text-blue-900" :key="column">
-                  <span @click="sortTable(`+${column.toLowerCase()}`)" class="cursor-pointer">
-                    {{ column }}
+                <th v-for="column in theadColumns" class="text-blue-900" :key="column.name">
+                  <span @click="sortTable(orderBy(column))" class="cursor-pointer">
+                    {{ column.name }}
+                    <i v-if="column.isAsc" class="fas fa-sort-down pl-1"></i>
+                    <i v-if="!column.isAsc" class="fas fa-sort-up pl-1"></i>
                   </span>
                 </th>
+                <th class="text-blue-900">Acciones</th>
               </tr>
             </thead>
             <tbody>
