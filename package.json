@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "pocketbase": ".\\pocketbase.exe serve --http localhost:8000",
-    "dev": "pocketbase && vite",
+    "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",

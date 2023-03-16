@@ -13,11 +13,11 @@ const theadColumns = [
   "Codigo", "Trayecto", "Estudiantes", "Acciones"
 ]
 function create() {
-  router.push({ name: 'create' })
+  router.push({ name: 'secciones.create' })
 }
 
 function edit(id: string) {
-  router.push({ name: 'edit', params: { id } })
+  router.push({ name: 'secciones.edit', params: { id } })
 }
 
 async function destroyItem(id: string | undefined) {
@@ -34,10 +34,6 @@ async function sortTable(column: string) {
 async function selectItem(id: string) {
   await fetchOne(id)
 }
-
-onMounted(async () => {
-  await fetchAll();
-})
 </script>
 
 <template>

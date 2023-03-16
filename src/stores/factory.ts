@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
 import { useAlertStore } from './alert'
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
 import type { Record } from 'pocketbase'
 
@@ -29,8 +29,9 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
     const recordKeys = ref([
-      'collectionId', 'collectionName', 'expand'
+      'collectionId', 'collectionName', 'id', 'expand'
     ]);
+
     async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collection.value).getFullList<IData>({
         sort: sortBy
@@ -83,16 +84,19 @@ export function createCrudStore<dataType, IData extends Record & Object>(
 
     const filteredData = computed(() => {
       return data.value?.filter((record) => {
-        recordKeys.value.forEach((column) => {
-          delete record[column];
-        })
-        let testArray = Object.keys(record).map((key) => {
+        let keys = Object.keys(record);
+        keys = keys.filter( ( el ) => !recordKeys.value.includes( el ) );
+        let testArray = keys.map((key) => {
           return record[key].toString();
         })
         return testArray.some((text: string) => {
           return text.includes(searchQuery.value);
         })
       })
+    })
+
+    onMounted(async () => {
+      await fetchAll()
     })
 
     return { data, singleData, store, update, destroy, fetchAll, fetchOne, filteredData, searchQuery }

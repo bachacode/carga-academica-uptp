@@ -23,12 +23,12 @@ const router = createRouter({
         },
         {
           path: 'create',
-          name: 'create',
+          name: 'secciones.create',
           component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
         },
         {
           path: 'edit/:id',
-          name: 'edit',
+          name: 'secciones.edit',
           component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
         }
       ]
