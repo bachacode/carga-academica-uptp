@@ -43,13 +43,13 @@ const router = createRouter({
         },
         {
           path: 'create',
-          name: 'create',
-          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
+          name: 'saberes.create',
+          component: () => import('@/views/Auth/Saberes/SaberesCreate.vue')
         },
         {
           path: 'edit/:id',
-          name: 'edit',
-          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
+          name: 'saberes.edit',
+          component: () => import('@/views/Auth/Saberes/SaberesEdit.vue')
         }
       ]
     },
@@ -63,13 +63,13 @@ const router = createRouter({
         },
         {
           path: 'create',
-          name: 'create',
-          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
+          name: 'profesores.create',
+          component: () => import('@/views/Auth/Profesores/ProfesoresCreate.vue')
         },
         {
           path: 'edit/:id',
-          name: 'edit',
-          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
+          name: 'profesores.edit',
+          component: () => import('@/views/Auth/Profesores/ProfesoresEdit.vue')
         }
       ]
     },

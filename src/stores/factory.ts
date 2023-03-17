@@ -4,7 +4,6 @@ import { useAlertStore } from './alert'
 import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
 import type { Record } from 'pocketbase'
-import type { seccionType } from './secciones'
 
 type Alertmessages = {
   create: string
@@ -28,7 +27,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     const errorMessages = ref<Alertmessages>(error)
     const data = ref<IData[]>()
     const singleData = ref<IData>()
-    const editData = ref<seccionType>()
+    const editData = ref<dataType>()
     const searchQuery = ref<string>('')
     const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
 
@@ -39,7 +38,7 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     }
 
     async function fetchEdit(id: string) {
-      editData.value = await pb.collection(collection.value).getOne<seccionType>(id)
+      editData.value = await pb.collection(collection.value).getOne<dataType>(id)
     }
 
     async function fetchOne(id: string) {

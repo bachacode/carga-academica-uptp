@@ -6,12 +6,14 @@ import {
   maxValue,
   numeric,
   maxLength,
-  minLength
+  minLength,
+  email
 } from '@vuelidate/validators'
 
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
   numeric: 'El valor de este campo tiene que ser numerico',
+  email: 'El valor de este campo tiene que ser un correo',
   minValue: (min: number) => `El valor de este campo es de minimo ${min}`,
   maxValue: (max: number) => `El valor de este campo es de maximo ${max}`,
   minLength: (min: number) => `Este campo tiene un minimo de ${min} caracteres`,
@@ -24,6 +26,10 @@ export const requiredValidation = () => {
 
 export const numericValidation = () => {
   return helpers.withMessage(errorMessages.value.numeric, numeric)
+}
+
+export const emailValidation = () => {
+  return helpers.withMessage(errorMessages.value.email, email)
 }
 
 export const minValueValidation = (min: number = 1) => {
