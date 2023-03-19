@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
@@ -11,14 +11,15 @@ import {
   minValueValidation,
   maxValueValidation,
   minLengthValidation,
-  maxLengthValidation
+  maxLengthValidation,
+  uniqueValidation
 } from '@/helpers/validationHelpers'
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
-
-const secciones = useSeccionStore()
-const { store } = secciones
-const formData = ref<seccionType>({
+import { onMounted } from 'vue'
+const store = useSeccionStore()
+const { save } = store
+const formData = reactive<seccionType>({
   codigo: '',
   trayecto: null,
   estudiantes: null
@@ -29,7 +30,8 @@ const rules = computed(() => {
     codigo: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(4)
+      maxLength: maxLengthValidation(4),
+      unique: uniqueValidation('codigo', 'secciones', store.dataIds)
     },
     trayecto: {
       required: requiredValidation(),
@@ -46,14 +48,21 @@ const rules = computed(() => {
   }
 })
 
-const v$ = useVuelidate(rules, formData.value)
+const v$ = useVuelidate(rules, formData)
 
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
-    store(formData.value)
+    save(formData)
   }
 }
+
+onMounted(() => {
+  setTimeout(() => {
+    console.log(store.dataIds)
+  }, 1000)
+})
+
 </script>
 
 <template>
@@ -67,35 +76,33 @@ async function submitData() {
           >
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
-            <InputField placeholder="Codigo" name="Codigo" v-model="formData.codigo"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.codigo.$error"
-              :message="v$.codigo.$errors[0].$message"
-            ></InputError>
+          <form class="px-6 pb-6" @submit.prevent="submitData()">
+            <InputField 
+            label="Codigo" 
+            placeholder=""
+            name="codigo"
+            v-model="formData.codigo"
+            >
+            <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="2"
-              name="Trayecto"
-              v-model="formData.trayecto"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.trayecto.$error"
-              :message="v$.trayecto.$errors[0].$message"
-            ></InputError>
+            type="number"
+            label="Trayecto"
+            placeholder=""
+            name="trayecto"
+            v-model="formData.trayecto"
+            >
+            <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="17"
-              name="Estudiantes"
-              v-model="formData.estudiantes"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.estudiantes.$error"
-              :message="v$.estudiantes.$errors[0].$message"
-            ></InputError>
+            type="number"
+            label="Estudiantes"
+            placeholder=""
+            name="estudiantes"
+            v-model="formData.estudiantes"
+            >
+            <InputError v-if="v$.estudiantes.$error" :message="v$.estudiantes.$errors[0].$message" />
+            </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Crear Sección
             </button>

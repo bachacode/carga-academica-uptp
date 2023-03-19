@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import { useSaberStore } from '@/stores/saberes'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
@@ -17,7 +17,7 @@ import type { saberType } from '@/stores/saberes'
 import InputError from '@/components/InputError.vue'
 
 const saberes = useSaberStore()
-const { store } = saberes
+const { save } = saberes
 const formData = ref<saberType>({
   codigo: '',
   materia: '',
@@ -64,7 +64,7 @@ const v$ = useVuelidate(rules, formData.value)
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
-    store(formData.value)
+    save(formData.value)
   }
 }
 </script>
@@ -80,52 +80,50 @@ async function submitData() {
           >
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
-            <InputField placeholder="Codigo" name="Codigo" v-model="formData.codigo"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.codigo.$error"
-              :message="v$.codigo.$errors[0].$message"
-            ></InputError>
-            <InputField placeholder="Materia" name="Materia" v-model="formData.materia"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.materia.$error"
-              :message="v$.materia.$errors[0].$message"
-            ></InputError>
+          <form class="px-6 pb-6" @submit.prevent="submitData()">
+            <InputField 
+            label="Codigo" 
+            placeholder=""
+            name="codigo"
+            v-model="formData.codigo"
+            >
+            <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="2"
-              name="Trayecto"
-              v-model="formData.trayecto"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.trayecto.$error"
-              :message="v$.trayecto.$errors[0].$message"
-            ></InputError>
+            label="Materia"
+            placeholder=""
+            name="materia"
+            v-model="formData.materia"
+            >
+            <InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="17"
-              name="Periodos"
-              v-model="formData.periodos"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.periodos.$error"
-              :message="v$.periodos.$errors[0].$message"
-            ></InputError>
+            type="number"
+            label="Trayecto"
+            placeholder=""
+            name="trayecto"
+            v-model="formData.trayecto"
+            >
+            <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="17"
-              name="Creditos"
-              v-model="formData.creditos"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.creditos.$error"
-              :message="v$.creditos.$errors[0].$message"
-            ></InputError>
+            type="number"
+            label="Periodos"
+            placeholder=""
+            name="periodos"
+            v-model="formData.periodos"
+            >
+            <InputError v-if="v$.periodos.$error" :message="v$.periodos.$errors[0].$message" />
+            </InputField>
+            <InputField
+            type="number"
+            label="Creditos"
+            placeholder=""
+            name="creditos"
+            v-model="formData.creditos"
+            >
+            <InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0].$message" />
+            </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Crear Saber
             </button>

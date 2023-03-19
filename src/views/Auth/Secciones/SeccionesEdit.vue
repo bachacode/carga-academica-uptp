@@ -16,9 +16,9 @@ import {
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
 import { storeToRefs } from 'pinia'
-const secciones = useSeccionStore()
-const { update, fetchEdit } = secciones
-const { editData } = storeToRefs(secciones)
+const store = useSeccionStore()
+const { update, fetchEdit } = store
+const { editData } = storeToRefs(store)
 const id = ref<string>('')
 const formData = reactive<seccionType>({
   codigo: '',
@@ -85,34 +85,32 @@ onMounted(async () => {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
-            <InputField placeholder="Codigo" name="Codigo" v-model="formData.codigo"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.codigo.$error"
-              :message="v$.codigo.$errors[0].$message"
-            ></InputError>
+            <InputField 
+            label="Codigo" 
+            placeholder=""
+            name="codigo"
+            v-model="formData.codigo"
+            >
+            <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="2"
-              name="Trayecto"
-              v-model="formData.trayecto"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.trayecto.$error"
-              :message="v$.trayecto.$errors[0].$message"
-            ></InputError>
+            type="number"
+            label="Trayecto"
+            placeholder=""
+            name="trayecto"
+            v-model="formData.trayecto"
+            >
+            <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="17"
-              name="Estudiantes"
-              v-model="formData.estudiantes"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.estudiantes.$error"
-              :message="v$.estudiantes.$errors[0].$message"
-            ></InputError>
+            type="number"
+            label="Estudiantes"
+            placeholder=""
+            name="estudiantes"
+            v-model="formData.estudiantes"
+            >
+            <InputError v-if="v$.estudiantes.$error" :message="v$.estudiantes.$errors[0].$message" />
+            </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Actualizar Sección
             </button>

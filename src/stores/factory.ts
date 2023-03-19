@@ -45,7 +45,13 @@ export function createCrudStore<dataType, IData extends Record & Object>(
       singleData.value = await pb.collection(collection.value).getOne<IData>(id)
     }
 
-    async function store(data: any) {
+    const dataIds = computed(() => {
+      return data.value?.map((value: any) => {
+        return value?.codigo;
+      })
+    })
+
+    async function save(data: any) {
       await pb
         .collection(collection.value)
         .create<dataType>(data)
@@ -108,14 +114,15 @@ export function createCrudStore<dataType, IData extends Record & Object>(
       data,
       singleData,
       editData,
-      store,
+      save,
       update,
       destroy,
       fetchAll,
       fetchOne,
       fetchEdit,
       filteredData,
-      searchQuery
+      searchQuery,
+      dataIds
     }
   })
 }

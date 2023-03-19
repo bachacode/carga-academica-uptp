@@ -2,60 +2,63 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { ref, computed, onMounted, reactive } from 'vue'
-import { useSaberStore } from '@/stores/saberes'
+import { useProfesorStore } from '@/stores/profesores'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import {
   requiredValidation,
-  numericValidation,
-  minValueValidation,
-  maxValueValidation,
+  emailValidation,
   minLengthValidation,
   maxLengthValidation
 } from '@/helpers/validationHelpers'
-import type { saberType } from '@/stores/saberes'
+import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
 import { storeToRefs } from 'pinia'
-const saberes = useSaberStore()
-const { update, fetchEdit } = saberes
-const { editData } = storeToRefs(saberes)
+const store = useProfesorStore()
+const { update, fetchEdit } = store
+const { editData } = storeToRefs(store)
 const id = ref<string>('')
-  const formData = reactive<saberType>({
-  codigo: '',
-  materia: '',
-  trayecto: null,
-  periodos: null,
-  creditos: null
+const formData = reactive<profesorType>({
+  nombre: '',
+  apellido: '',
+  cedula: '',
+  titulo: '',
+  telefono: '',
+  correo: ''
 })
+
 const rules = computed(() => {
   return {
-    codigo: {
+    nombre: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40)
     },
-    materia: {
+    apellido: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40)
     },
-    trayecto: {
+    cedula: {
       required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(4)
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
     },
-    periodos: {
+    titulo: {
       required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(3)
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
     },
-    creditos: {
+    telefono: {
       required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(99)
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    correo: {
+      required: requiredValidation(),
+      email: emailValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
     },
   }
 })
@@ -74,12 +77,13 @@ onMounted(async () => {
     id.value = router.currentRoute.value.params.id
     await fetchEdit(router.currentRoute.value.params.id)
     if (editData.value) {
-      const { codigo, materia, trayecto, periodos, creditos }: saberType = editData.value
-      formData.codigo = codigo
-      formData.materia = materia
-      formData.trayecto = trayecto
-      formData.periodos = periodos
-      formData.creditos = creditos
+      const { nombre, apellido, cedula, titulo, telefono, correo }: profesorType = editData.value
+      formData.nombre = nombre
+      formData.apellido = apellido
+      formData.cedula = cedula
+      formData.titulo = titulo
+      formData.telefono = telefono
+      formData.correo = correo
     }
   }
 })
@@ -96,54 +100,58 @@ onMounted(async () => {
           >
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
-            <InputField placeholder="Codigo" name="Codigo" v-model="formData.codigo"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.codigo.$error"
-              :message="v$.codigo.$errors[0].$message"
-            ></InputError>
-            <InputField placeholder="Materia" name="Materia" v-model="formData.materia"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.materia.$error"
-              :message="v$.materia.$errors[0].$message"
-            ></InputError>
+          <form class="px-6 pb-6" @submit.prevent="submitData()">
+            <InputField 
+            label="Nombre" 
+            placeholder=""
+            name="nombre"
+            v-model="formData.nombre"
+            >
+            <InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Apellido" 
+            placeholder=""
+            name="apellido"
+            v-model="formData.apellido"
+            >
+            <InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Cedula" 
+            placeholder="V-11.111.111"
+            name="cedula"
+            v-model="formData.cedula"
+            >
+            <InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Titulo" 
+            placeholder="Ingeniero en Sistemas"
+            name="titulo"
+            v-model="formData.titulo"
+            >
+            <InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Telefono" 
+            placeholder="0424-9585136"
+            name="telefono"
+            v-model="formData.telefono"
+            >
+            <InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0].$message" />
+            </InputField>
             <InputField
-              type="number"
-              placeholder="2"
-              name="Trayecto"
-              v-model="formData.trayecto"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.trayecto.$error"
-              :message="v$.trayecto.$errors[0].$message"
-            ></InputError>
-            <InputField
-              type="number"
-              placeholder="17"
-              name="Periodos"
-              v-model="formData.periodos"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.periodos.$error"
-              :message="v$.periodos.$errors[0].$message"
-            ></InputError>
-            <InputField
-              type="number"
-              placeholder="17"
-              name="Creditos"
-              v-model="formData.creditos"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.creditos.$error"
-              :message="v$.creditos.$errors[0].$message"
-            ></InputError>
+            type="email"
+            label="Correo" 
+            placeholder="nombre@ejemplo.com"
+            name="correo"
+            v-model="formData.correo"
+            >
+            <InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0].$message" />
+            </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
-              Crear Saber
+              Editar Profesor
             </button>
           </form>
         </div>

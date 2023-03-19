@@ -4,9 +4,9 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-const profesores = useProfesorStore()
-const { fetchAll, destroy, fetchOne } = profesores
-const { filteredData, searchQuery } = storeToRefs(profesores)
+const store = useProfesorStore()
+const { fetchAll, destroy, fetchOne } = store
+const { filteredData, searchQuery } = storeToRefs(store)
 const theadColumns = [
   {
     name: 'Nombre',
@@ -73,7 +73,7 @@ async function selectItem(id: string) {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar el saber {{ profesores.singleData?.codigo }}. ¿Esta seguro que
+          Estas a punto de borrar al profesor {{ store.singleData?.nombre }}. ¿Esta seguro que
           desea hacer esto?
         </p>
         <div class="modal-action items-center">
@@ -85,7 +85,7 @@ async function selectItem(id: string) {
           <label
             for="my-modal"
             class="btn rounded-xl bg-red-700"
-            @click="destroyItem(profesores.singleData?.id)"
+            @click="destroyItem(store.singleData?.id)"
             >Borrar</label
           >
         </div>

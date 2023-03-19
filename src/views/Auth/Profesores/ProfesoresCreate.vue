@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
@@ -13,10 +13,9 @@ import {
 } from '@/helpers/validationHelpers'
 import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
-
-const profesores = useProfesorStore()
-const { store } = profesores
-const formData = ref<profesorType>({
+const store = useProfesorStore()
+const { save } = store
+const formData = reactive<profesorType>({
   nombre: '',
   apellido: '',
   cedula: '',
@@ -61,12 +60,12 @@ const rules = computed(() => {
   }
 })
 
-const v$ = useVuelidate(rules, formData.value)
+const v$ = useVuelidate(rules, formData)
 
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
-    store(formData.value)
+    save(formData)
   }
 }
 </script>
@@ -82,60 +81,56 @@ async function submitData() {
           >
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
-            <InputField placeholder="Nombre" name="Nombre" v-model="formData.nombre"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.nombre.$error"
-              :message="v$.nombre.$errors[0].$message"
-            ></InputError>
-            <InputField placeholder="apellido" name="Apellido" v-model="formData.apellido"></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.apellido.$error"
-              :message="v$.apellido.$errors[0].$message"
-            ></InputError>
+          <form class="px-6 pb-6" @submit.prevent="submitData()">
+            <InputField 
+            label="Nombre" 
+            placeholder=""
+            name="nombre"
+            v-model="formData.nombre"
+            >
+            <InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Apellido" 
+            placeholder=""
+            name="apellido"
+            v-model="formData.apellido"
+            >
+            <InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Cedula" 
+            placeholder="V-11.111.111"
+            name="cedula"
+            v-model="formData.cedula"
+            >
+            <InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Titulo" 
+            placeholder="Ingeniero en Sistemas"
+            name="titulo"
+            v-model="formData.titulo"
+            >
+            <InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0].$message" />
+            </InputField>
+            <InputField 
+            label="Telefono" 
+            placeholder="0424-9585136"
+            name="telefono"
+            v-model="formData.telefono"
+            >
+            <InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0].$message" />
+            </InputField>
             <InputField
-              placeholder="V-11.111.111"
-              name="cedula"
-              v-model="formData.cedula"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.cedula.$error"
-              :message="v$.cedula.$errors[0].$message"
-            ></InputError>
-            <InputField
-              placeholder="Ingeniero en Sistemas"
-              name="Titulo"
-              v-model="formData.titulo"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.titulo.$error"
-              :message="v$.titulo.$errors[0].$message"
-            ></InputError>
-            <InputField
-              placeholder="0424-1234567"
-              name="Telefono"
-              v-model="formData.telefono"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.telefono.$error"
-              :message="v$.telefono.$errors[0].$message"
-            ></InputError>
-            <InputField
-              type="email"
-              placeholder="nombre@Correo.com"
-              name="Correo"
-              v-model="formData.correo"
-            ></InputField>
-            <InputError
-              class="pl-1 pt-1"
-              v-if="v$.correo.$error"
-              :message="v$.correo.$errors[0].$message"
-            ></InputError>
+            type="email"
+            label="Correo" 
+            placeholder="nombre@ejemplo.com"
+            name="correo"
+            v-model="formData.correo"
+            >
+            <InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0].$message" />
+            </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Registrar Profesor
             </button>

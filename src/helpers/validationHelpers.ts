@@ -10,6 +10,10 @@ import {
   email
 } from '@vuelidate/validators'
 
+const isUnique = (values: string[]) => (param: string) => {
+  return !values.includes(param)
+}
+
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
   numeric: 'El valor de este campo tiene que ser numerico',
@@ -17,7 +21,8 @@ const errorMessages = ref({
   minValue: (min: number) => `El valor de este campo es de minimo ${min}`,
   maxValue: (max: number) => `El valor de este campo es de maximo ${max}`,
   minLength: (min: number) => `Este campo tiene un minimo de ${min} caracteres`,
-  maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`
+  maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`,
+  unique: (value: string, table: string) => `Este ${value} ya existe en la tabla ${table}`
 })
 
 export const requiredValidation = () => {
@@ -46,4 +51,8 @@ export const minLengthValidation = (min: number = 1) => {
 
 export const maxLengthValidation = (max: number) => {
   return helpers.withMessage(errorMessages.value.maxLength(max), maxLength(max))
+}
+
+export const uniqueValidation = (value: string, table: string, values: any) => {
+  return helpers.withMessage(errorMessages.value.unique(value, table), isUnique(values))
 }
