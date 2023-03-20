@@ -30,7 +30,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
     const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
-    const uniqueKeys = ref(uniqueKeysParam);
+    const uniqueKeys = ref(uniqueKeysParam)
 
     async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collection.value).getFullList<IData>({
@@ -86,7 +86,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
 
     const filteredData = computed(() => {
       return data.value?.filter((record) => {
-        let keys = Object.keys(record).filter((el) => !recordKeys.value.includes(el))
+        const keys = Object.keys(record).filter((el) => !recordKeys.value.includes(el))
         const testArray = keys.map((key) => {
           return record[key].toString()
         })
@@ -97,20 +97,19 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
     })
 
     const uniqueKeysList = computed<uniqueKeys[] | string>(() => {
-      if(!data.value) return ''
+      if (!data.value) return ''
       if (Array.isArray(uniqueKeys.value)) {
         return uniqueKeys.value.map((key) => {
-          if(!data.value) return
+          if (!data.value) return
           return data.value.map((record) => {
-            return record[key];
+            return record[key]
           })
         })
       } else
-      return data.value.map((record) => {
-        if(!uniqueKeys.value) return
-        if (typeof uniqueKeys.value === 'string')
-        return record[uniqueKeys.value]
-      }) 
+        return data.value.map((record) => {
+          if (!uniqueKeys.value) return
+          if (typeof uniqueKeys.value === 'string') return record[uniqueKeys.value]
+        })
     })
 
     onMounted(async () => {

@@ -15,7 +15,6 @@ import {
 } from '@/helpers/validationHelpers'
 import type { saberType } from '@/stores/saberes'
 import InputError from '@/components/InputError.vue'
-import { storeToRefs } from 'pinia'
 const store = useSaberStore()
 const { update, fetchOne } = store
 const id = ref<string>('')

@@ -73,9 +73,9 @@ async function selectItem(id: string) {
             for="my-modal"
             class="btn rounded-xl bg-red-700"
             @click="destroyItem(store.singleData?.id)"
-            >
+          >
             Borrar
-            </label>
+          </label>
         </div>
       </div>
     </div>

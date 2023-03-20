@@ -4,7 +4,7 @@ import InputField from '@/components/InputField.vue'
 import { reactive, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import router from '@/router'
-import { useVuelidate} from '@vuelidate/core'
+import { useVuelidate } from '@vuelidate/core'
 import {
   requiredValidation,
   numericValidation,
@@ -20,7 +20,7 @@ import { onMounted, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 const store = useSeccionStore()
 const { save } = store
-const { uniqueKeysList } = storeToRefs(store);
+const { uniqueKeysList } = storeToRefs(store)
 const formData = reactive<seccionType>({
   codigo: '',
   trayecto: null,
