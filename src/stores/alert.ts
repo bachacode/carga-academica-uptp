@@ -2,8 +2,8 @@ import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 
 export interface alertType {
-  message: string,
-  type?: 'success' | 'error' | 'warning' | 'info',
+  message: string
+  type?: 'success' | 'error' | 'warning' | 'info'
   isActive?: boolean
 }
 
@@ -11,10 +11,10 @@ export const useAlertStore = defineStore('alert', () => {
   const data = reactive<alertType>({
     message: '',
     type: 'info',
-    isActive: false,
+    isActive: false
   })
-  const alertTimer = ref(5000);
-  const delayBetweenAlerts = ref(200);
+  const alertTimer = ref(5000)
+  const delayBetweenAlerts = ref(200)
   const successAlert = ref({
     message: '',
     isActive: false
@@ -27,13 +27,13 @@ export const useAlertStore = defineStore('alert', () => {
 
   const timeoutId = ref<number | null>(null)
 
-  async function setSuccess({message, type = 'success'}: alertType) {
+  async function setSuccess({ message, type = 'success' }: alertType) {
     data.message = message
     data.type = type
     await setAlertTimer()
   }
 
-  async function setError({message, type = 'error'}: alertType) {
+  async function setError({ message, type = 'error' }: alertType) {
     data.message = message
     data.type = type
     await setAlertTimer()
@@ -45,8 +45,7 @@ export const useAlertStore = defineStore('alert', () => {
       setTimeout(() => {
         setAlertTimer()
       }, delayBetweenAlerts.value)
-    } else 
-    data.isActive = true
+    } else data.isActive = true
     if (!timeoutId.value != null && typeof timeoutId.value == 'number') {
       window.clearTimeout(timeoutId.value)
       timeoutId.value = null

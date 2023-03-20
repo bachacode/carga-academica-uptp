@@ -42,16 +42,18 @@ onBeforeMount(() => {
               :message="auth.errors.message"
             />
             <InputField
-            label="Nombre de usuario"
-            name="username"
-            placeholder="Nombre de usuario" 
-            v-model="username" />
+              label="Nombre de usuario"
+              name="username"
+              placeholder="Nombre de usuario"
+              v-model="username"
+            />
             <InputField
-            label="Contraseña"
-            name="password"
-            type="password" 
-            placeholder="Contraseña" 
-            v-model="password" />
+              label="Contraseña"
+              name="password"
+              type="password"
+              placeholder="Contraseña"
+              v-model="password"
+            />
             <button
               type="submit"
               class="mt-8 bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-900"

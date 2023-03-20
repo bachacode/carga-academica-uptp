@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import MetricCard from '@/components/MetricCard.vue';
+import MetricCard from '@/components/MetricCard.vue'
 import AuthLayout from './AuthLayout.vue'
 </script>
 
@@ -12,9 +12,14 @@ import AuthLayout from './AuthLayout.vue'
         <div class="flex flex-wrap">
           <div class="w-full p-3 md:w-1/2 xl:w-1/3">
             <!--Metric Card-->
-            <MetricCard title="Total Revenue" amount="$3249" main-icon-color="green" secondary-icon-color="green">
+            <MetricCard
+              title="Total Revenue"
+              amount="$3249"
+              main-icon-color="green"
+              secondary-icon-color="green"
+            >
               <template #main-icon>
-                <font-awesome-icon icon="wallet" class="fa-2x fa-fw fa-inverse"/>
+                <font-awesome-icon icon="wallet" class="fa-2x fa-fw fa-inverse" />
               </template>
               <template #secondary-icon>
                 <font-awesome-icon icon="caret-up" />

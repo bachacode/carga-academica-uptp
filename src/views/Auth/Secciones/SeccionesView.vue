@@ -55,14 +55,13 @@ async function selectItem(id: string) {
 <template>
   <!-- Delete Modal -->
   <Teleport to="#modal">
-    <!-- Put this part before </body> tag -->
     <input type="checkbox" id="my-modal" class="modal-toggle" />
     <div class="modal">
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar la sección {{ store.singleData?.codigo }}. ¿Esta seguro que
-          desea hacer esto?
+          Estas a punto de borrar la sección {{ store.singleData?.codigo }}. ¿Esta seguro que desea
+          hacer esto?
         </p>
         <div class="modal-action items-center">
           <label
@@ -74,14 +73,14 @@ async function selectItem(id: string) {
             for="my-modal"
             class="btn rounded-xl bg-red-700"
             @click="destroyItem(store.singleData?.id)"
-            >Borrar</label
-          >
+            >
+            Borrar
+            </label>
         </div>
       </div>
     </div>
   </Teleport>
   <AuthLayout>
-    <!-- Success Alert -->
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
         <i class="fas fa-plus-circle pr-1"></i> Crear Sección

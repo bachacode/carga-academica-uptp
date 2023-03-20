@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import { useSaberStore } from '@/stores/saberes'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
@@ -55,7 +55,7 @@ const rules = computed(() => {
       numeric: numericValidation(),
       minValue: minValueValidation(),
       maxValue: maxValueValidation(99)
-    },
+    }
   }
 })
 
@@ -81,48 +81,38 @@ async function submitData() {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()">
-            <InputField 
-            label="Codigo" 
-            placeholder=""
-            name="codigo"
-            v-model="formData.codigo"
-            >
-            <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            <InputField label="Codigo" placeholder="" name="codigo" v-model="formData.codigo">
+              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            </InputField>
+            <InputField label="Materia" placeholder="" name="materia" v-model="formData.materia">
+              <InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0].$message" />
             </InputField>
             <InputField
-            label="Materia"
-            placeholder=""
-            name="materia"
-            v-model="formData.materia"
+              type="number"
+              label="Trayecto"
+              placeholder=""
+              name="trayecto"
+              v-model="formData.trayecto"
             >
-            <InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0].$message" />
+              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
             </InputField>
             <InputField
-            type="number"
-            label="Trayecto"
-            placeholder=""
-            name="trayecto"
-            v-model="formData.trayecto"
+              type="number"
+              label="Periodos"
+              placeholder=""
+              name="periodos"
+              v-model="formData.periodos"
             >
-            <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+              <InputError v-if="v$.periodos.$error" :message="v$.periodos.$errors[0].$message" />
             </InputField>
             <InputField
-            type="number"
-            label="Periodos"
-            placeholder=""
-            name="periodos"
-            v-model="formData.periodos"
+              type="number"
+              label="Creditos"
+              placeholder=""
+              name="creditos"
+              v-model="formData.creditos"
             >
-            <InputError v-if="v$.periodos.$error" :message="v$.periodos.$errors[0].$message" />
-            </InputField>
-            <InputField
-            type="number"
-            label="Creditos"
-            placeholder=""
-            name="creditos"
-            v-model="formData.creditos"
-            >
-            <InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0].$message" />
+              <InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0].$message" />
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Crear Saber

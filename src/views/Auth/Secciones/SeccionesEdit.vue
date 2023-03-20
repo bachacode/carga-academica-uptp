@@ -15,10 +15,8 @@ import {
 } from '@/helpers/validationHelpers'
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
-import { storeToRefs } from 'pinia'
 const store = useSeccionStore()
-const { update, fetchEdit } = store
-const { editData } = storeToRefs(store)
+const { update, fetchOne } = store
 const id = ref<string>('')
 const formData = reactive<seccionType>({
   codigo: '',
@@ -62,12 +60,9 @@ async function submitData() {
 onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await fetchEdit(router.currentRoute.value.params.id)
-    if (editData.value) {
-      const { codigo, trayecto, estudiantes }: seccionType = editData.value
-      formData.codigo = codigo
-      formData.trayecto = trayecto
-      formData.estudiantes = estudiantes
+    await fetchOne(router.currentRoute.value.params.id)
+    if (store.singleData) {
+      Object.assign(formData, store.singleData)
     }
   }
 })
@@ -85,31 +80,29 @@ onMounted(async () => {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
-            <InputField 
-            label="Codigo" 
-            placeholder=""
-            name="codigo"
-            v-model="formData.codigo"
-            >
-            <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            <InputField label="Codigo" placeholder="" name="codigo" v-model="formData.codigo">
+              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
             </InputField>
             <InputField
-            type="number"
-            label="Trayecto"
-            placeholder=""
-            name="trayecto"
-            v-model="formData.trayecto"
+              type="number"
+              label="Trayecto"
+              placeholder=""
+              name="trayecto"
+              v-model="formData.trayecto"
             >
-            <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
             </InputField>
             <InputField
-            type="number"
-            label="Estudiantes"
-            placeholder=""
-            name="estudiantes"
-            v-model="formData.estudiantes"
+              type="number"
+              label="Estudiantes"
+              placeholder=""
+              name="estudiantes"
+              v-model="formData.estudiantes"
             >
-            <InputError v-if="v$.estudiantes.$error" :message="v$.estudiantes.$errors[0].$message" />
+              <InputError
+                v-if="v$.estudiantes.$error"
+                :message="v$.estudiantes.$errors[0].$message"
+              />
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Actualizar Sección

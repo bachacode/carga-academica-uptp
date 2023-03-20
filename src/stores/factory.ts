@@ -11,12 +11,13 @@ type Alertmessages = {
   delete: string
 }
 
-export function createCrudStore<dataType, IData extends Record & Object>(
+export function createCrudStore<dataType, IData extends Record & Object, uniqueKeys = void>(
   storeId: string,
   route: string,
   collectionName: string,
   success: Alertmessages,
-  error: Alertmessages
+  error: Alertmessages,
+  uniqueKeysParam: Array<string> | string = ''
 ) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
@@ -27,9 +28,9 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     const errorMessages = ref<Alertmessages>(error)
     const data = ref<IData[]>()
     const singleData = ref<IData>()
-    const editData = ref<dataType>()
     const searchQuery = ref<string>('')
     const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
+    const uniqueKeys = ref(uniqueKeysParam);
 
     async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collection.value).getFullList<IData>({
@@ -37,19 +38,9 @@ export function createCrudStore<dataType, IData extends Record & Object>(
       })
     }
 
-    async function fetchEdit(id: string) {
-      editData.value = await pb.collection(collection.value).getOne<dataType>(id)
-    }
-
     async function fetchOne(id: string) {
       singleData.value = await pb.collection(collection.value).getOne<IData>(id)
     }
-
-    const dataIds = computed(() => {
-      return data.value?.map((value: any) => {
-        return value?.codigo;
-      })
-    })
 
     async function save(data: any) {
       await pb
@@ -58,10 +49,10 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .then(async () => {
           await fetchAll()
           await router.push({ path: parentRoute.value })
-          alert.setSuccess({message: successMessages.value.create})
+          alert.setSuccess({ message: successMessages.value.create })
         })
         .catch(async () => {
-          alert.setError({message: errorMessages.value.create})
+          alert.setError({ message: errorMessages.value.create })
         })
     }
 
@@ -72,10 +63,10 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .then(async () => {
           await fetchAll()
           await router.push({ path: parentRoute.value })
-          alert.setSuccess({message: successMessages.value.update})
+          alert.setSuccess({ message: successMessages.value.update })
         })
         .catch(async () => {
-          alert.setError({message: errorMessages.value.update})
+          alert.setError({ message: errorMessages.value.update })
         })
     }
 
@@ -84,19 +75,18 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .collection(collection.value)
         .delete(id)
         .then(async () => {
-          alert.setSuccess({message: successMessages.value.delete})
+          alert.setSuccess({ message: successMessages.value.delete })
           await fetchAll()
         })
         .catch(async () => {
-          alert.setError({message: errorMessages.value.delete})
+          alert.setError({ message: errorMessages.value.delete })
           await fetchAll()
         })
     }
 
     const filteredData = computed(() => {
       return data.value?.filter((record) => {
-        let keys = Object.keys(record)
-        keys = keys.filter((el) => !recordKeys.value.includes(el))
+        let keys = Object.keys(record).filter((el) => !recordKeys.value.includes(el))
         const testArray = keys.map((key) => {
           return record[key].toString()
         })
@@ -106,6 +96,23 @@ export function createCrudStore<dataType, IData extends Record & Object>(
       })
     })
 
+    const uniqueKeysList = computed<uniqueKeys[] | string>(() => {
+      if(!data.value) return ''
+      if (Array.isArray(uniqueKeys.value)) {
+        return uniqueKeys.value.map((key) => {
+          if(!data.value) return
+          return data.value.map((record) => {
+            return record[key];
+          })
+        })
+      } else
+      return data.value.map((record) => {
+        if(!uniqueKeys.value) return
+        if (typeof uniqueKeys.value === 'string')
+        return record[uniqueKeys.value]
+      }) 
+    })
+
     onMounted(async () => {
       await fetchAll()
     })
@@ -113,16 +120,14 @@ export function createCrudStore<dataType, IData extends Record & Object>(
     return {
       data,
       singleData,
-      editData,
       save,
       update,
       destroy,
       fetchAll,
       fetchOne,
-      fetchEdit,
       filteredData,
       searchQuery,
-      dataIds
+      uniqueKeysList
     }
   })
 }

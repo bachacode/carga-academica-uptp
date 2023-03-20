@@ -13,6 +13,10 @@ export interface ISeccion extends seccionType, Record {
   updated: string
 }
 
+export type uniqueKeysType = {
+  codigo: string
+}
+
 const successMessages = {
   create: 'La sección se ha guardado correctamente',
   update: 'La sección se ha actualizado correctamente',
@@ -25,10 +29,11 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar la sección'
 }
 
-export const useSeccionStore = createCrudStore<seccionType, ISeccion>(
+export const useSeccionStore = createCrudStore<seccionType, ISeccion, uniqueKeysType>(
   'seccion',
   '/secciones',
   'secciones',
   successMessages,
-  errorMessages
+  errorMessages,
+  'codigo'
 )

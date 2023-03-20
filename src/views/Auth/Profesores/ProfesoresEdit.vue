@@ -13,10 +13,9 @@ import {
 } from '@/helpers/validationHelpers'
 import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
-import { storeToRefs } from 'pinia'
+
 const store = useProfesorStore()
-const { update, fetchEdit } = store
-const { editData } = storeToRefs(store)
+const { update, fetchOne } = store
 const id = ref<string>('')
 const formData = reactive<profesorType>({
   nombre: '',
@@ -59,7 +58,7 @@ const rules = computed(() => {
       email: emailValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40)
-    },
+    }
   }
 })
 
@@ -75,15 +74,9 @@ async function submitData() {
 onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await fetchEdit(router.currentRoute.value.params.id)
-    if (editData.value) {
-      const { nombre, apellido, cedula, titulo, telefono, correo }: profesorType = editData.value
-      formData.nombre = nombre
-      formData.apellido = apellido
-      formData.cedula = cedula
-      formData.titulo = titulo
-      formData.telefono = telefono
-      formData.correo = correo
+    await fetchOne(router.currentRoute.value.params.id)
+    if (store.singleData) {
+      Object.assign(formData, store.singleData)
     }
   }
 })
@@ -101,54 +94,44 @@ onMounted(async () => {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()">
-            <InputField 
-            label="Nombre" 
-            placeholder=""
-            name="nombre"
-            v-model="formData.nombre"
-            >
-            <InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0].$message" />
+            <InputField label="Nombre" placeholder="" name="nombre" v-model="formData.nombre">
+              <InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0].$message" />
             </InputField>
-            <InputField 
-            label="Apellido" 
-            placeholder=""
-            name="apellido"
-            v-model="formData.apellido"
-            >
-            <InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0].$message" />
-            </InputField>
-            <InputField 
-            label="Cedula" 
-            placeholder="V-11.111.111"
-            name="cedula"
-            v-model="formData.cedula"
-            >
-            <InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0].$message" />
-            </InputField>
-            <InputField 
-            label="Titulo" 
-            placeholder="Ingeniero en Sistemas"
-            name="titulo"
-            v-model="formData.titulo"
-            >
-            <InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0].$message" />
-            </InputField>
-            <InputField 
-            label="Telefono" 
-            placeholder="0424-9585136"
-            name="telefono"
-            v-model="formData.telefono"
-            >
-            <InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0].$message" />
+            <InputField label="Apellido" placeholder="" name="apellido" v-model="formData.apellido">
+              <InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0].$message" />
             </InputField>
             <InputField
-            type="email"
-            label="Correo" 
-            placeholder="nombre@ejemplo.com"
-            name="correo"
-            v-model="formData.correo"
+              label="Cedula"
+              placeholder="V-11.111.111"
+              name="cedula"
+              v-model="formData.cedula"
             >
-            <InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0].$message" />
+              <InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0].$message" />
+            </InputField>
+            <InputField
+              label="Titulo"
+              placeholder="Ingeniero en Sistemas"
+              name="titulo"
+              v-model="formData.titulo"
+            >
+              <InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0].$message" />
+            </InputField>
+            <InputField
+              label="Telefono"
+              placeholder="0424-9585136"
+              name="telefono"
+              v-model="formData.telefono"
+            >
+              <InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0].$message" />
+            </InputField>
+            <InputField
+              type="email"
+              label="Correo"
+              placeholder="nombre@ejemplo.com"
+              name="correo"
+              v-model="formData.correo"
+            >
+              <InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0].$message" />
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Editar Profesor

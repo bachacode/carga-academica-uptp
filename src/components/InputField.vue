@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
-import type { Ref } from 'vue'
-import InputError from './InputError.vue'
 export interface Props {
   placeholder?: string
   type?: string

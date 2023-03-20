@@ -69,8 +69,8 @@ async function selectItem(id: string) {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar el saber {{ store.singleData?.codigo }}. ¿Esta seguro que
-          desea hacer esto?
+          Estas a punto de borrar el saber {{ store.singleData?.codigo }}. ¿Esta seguro que desea
+          hacer esto?
         </p>
         <div class="modal-action items-center">
           <label

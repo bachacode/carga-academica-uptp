@@ -11,7 +11,7 @@ import {
 } from '@vuelidate/validators'
 
 const isUnique = (values: string[]) => (param: string) => {
-  return !values.includes(param)
+  return !values.indexOf(param)
 }
 
 const errorMessages = ref({

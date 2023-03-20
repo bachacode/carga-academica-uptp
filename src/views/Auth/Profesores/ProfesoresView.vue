@@ -31,7 +31,7 @@ const theadColumns = [
   {
     name: 'Correo',
     isAsc: false
-  },
+  }
 ]
 function orderBy(state: { name: string; isAsc: boolean }) {
   if (state.isAsc == true) {
@@ -73,8 +73,8 @@ async function selectItem(id: string) {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar al profesor {{ store.singleData?.nombre }}. ¿Esta seguro que
-          desea hacer esto?
+          Estas a punto de borrar al profesor {{ store.singleData?.nombre }}. ¿Esta seguro que desea
+          hacer esto?
         </p>
         <div class="modal-action items-center">
           <label
@@ -131,7 +131,7 @@ async function selectItem(id: string) {
                 <td>{{ data.cedula }}</td>
                 <td>{{ data.titulo }}</td>
                 <td>{{ data.telefono }}</td>
-                <td>{{ data.correo }}</td>  
+                <td>{{ data.correo }}</td>
                 <td class="space-x-3">
                   <button
                     class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
