@@ -29,6 +29,7 @@ const isUnique = helpers.withAsync(isSeccionTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
     codigo: {
+      lazy: true,
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(4),
