@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 defineProps<{
-  message: string | Ref<string>
+  message?: string | Ref<string>
 }>()
 </script>
 

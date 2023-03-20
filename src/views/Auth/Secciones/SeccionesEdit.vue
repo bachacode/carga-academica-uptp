@@ -15,6 +15,7 @@ import {
 } from '@/helpers/validationHelpers'
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
+import { helpers } from '@vuelidate/validators'
 const store = useSeccionStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
@@ -23,13 +24,16 @@ const formData = reactive<seccionType>({
   trayecto: null,
   estudiantes: null
 })
+const isSeccionTaken = (value: any) => store.pb.collection('secciones_id').getFirstListItem(`codigo = "${value}" && id != "${id.value}"`).then(() => false).catch(() => true)
+const isUnique = helpers.withAsync(isSeccionTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
     codigo: {
+      $autoDirty: true,
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(4),
-      $autoDirty: true
+      unique: helpers.withMessage('Ya existe una sección con ese codigo', isUnique),
     },
     trayecto: {
       required: requiredValidation(),
@@ -81,7 +85,7 @@ onMounted(async () => {
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()" ref="formSeccion">
             <InputField label="Codigo" placeholder="" name="codigo" v-model="formData.codigo">
-              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message" />
             </InputField>
             <InputField
               type="number"
@@ -90,7 +94,7 @@ onMounted(async () => {
               name="trayecto"
               v-model="formData.trayecto"
             >
-              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message" />
             </InputField>
             <InputField
               type="number"
@@ -101,7 +105,7 @@ onMounted(async () => {
             >
               <InputError
                 v-if="v$.estudiantes.$error"
-                :message="v$.estudiantes.$errors[0].$message"
+                :message="v$.estudiantes.$errors[0]?.$message"
               />
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">

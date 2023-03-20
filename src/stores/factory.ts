@@ -51,7 +51,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
           await router.push({ path: parentRoute.value })
           alert.setSuccess({ message: successMessages.value.create })
         })
-        .catch(async () => {
+        .catch(async (error) => {
           alert.setError({ message: errorMessages.value.create })
         })
     }
@@ -118,6 +118,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
 
     return {
       data,
+      pb,
       singleData,
       save,
       update,

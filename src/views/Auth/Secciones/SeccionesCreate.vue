@@ -12,27 +12,27 @@ import {
   maxValueValidation,
   minLengthValidation,
   maxLengthValidation,
-  uniqueValidation
 } from '@/helpers/validationHelpers'
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
-import { onMounted, watch } from 'vue'
-import { storeToRefs } from 'pinia'
+import { helpers } from '@vuelidate/validators'
 const store = useSeccionStore()
 const { save } = store
-const { uniqueKeysList } = storeToRefs(store)
 const formData = reactive<seccionType>({
   codigo: '',
   trayecto: null,
   estudiantes: null
 })
+
+const isSeccionTaken = (value: any) => store.pb.collection('secciones_id').getFirstListItem(`codigo="${value}"`).then(() => false).catch(() => true)
+const isUnique = helpers.withAsync(isSeccionTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
     codigo: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(4),
-      unique: uniqueValidation('codigo', 'secciones', uniqueKeysList.value[0])
+      unique: helpers.withMessage('Ya existe una sección con ese codigo', isUnique)
     },
     trayecto: {
       required: requiredValidation(),
@@ -48,11 +48,10 @@ const rules = computed(() => {
     }
   }
 })
-
-let v$ = useVuelidate(rules, formData)
-watch(uniqueKeysList, () => {
-  v$ = useVuelidate(rules, formData)
-})
+const v$ = useVuelidate(rules, formData)
+// watch(uniqueKeysList, () => {
+//   v$ = useVuelidate(rules, formData)
+// })
 
 async function submitData() {
   await v$.value.$validate()
@@ -60,12 +59,6 @@ async function submitData() {
     save(formData)
   }
 }
-
-onMounted(() => {
-  setTimeout(() => {
-    console.log(store.uniqueKeysList)
-  }, 1000)
-})
 </script>
 
 <template>
@@ -80,29 +73,27 @@ onMounted(() => {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()">
-            <InputField label="Codigo" placeholder="" name="codigo" v-model="formData.codigo">
-              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            <InputField 
+            label="Codigo" 
+            name="codigo" 
+            v-model="formData.codigo">
+              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message" />
             </InputField>
             <InputField
               type="number"
               label="Trayecto"
-              placeholder=""
               name="trayecto"
               v-model="formData.trayecto"
             >
-              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message" />
             </InputField>
             <InputField
               type="number"
               label="Estudiantes"
-              placeholder=""
               name="estudiantes"
               v-model="formData.estudiantes"
             >
-              <InputError
-                v-if="v$.estudiantes.$error"
-                :message="v$.estudiantes.$errors[0].$message"
-              />
+              <InputError v-if="v$.estudiantes.$error" :message="v$.estudiantes.$errors[0]?.$message" />
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Crear Sección
