@@ -58,10 +58,10 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .then(async () => {
           await fetchAll()
           await router.push({ path: parentRoute.value })
-          alert.setSuccess(successMessages.value.create)
+          alert.setSuccess({message: successMessages.value.create})
         })
         .catch(async () => {
-          alert.setError(errorMessages.value.create)
+          alert.setError({message: errorMessages.value.create})
         })
     }
 
@@ -72,10 +72,10 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .then(async () => {
           await fetchAll()
           await router.push({ path: parentRoute.value })
-          alert.setSuccess(successMessages.value.update)
+          alert.setSuccess({message: successMessages.value.update})
         })
         .catch(async () => {
-          alert.setError(errorMessages.value.update)
+          alert.setError({message: errorMessages.value.update})
         })
     }
 
@@ -84,11 +84,11 @@ export function createCrudStore<dataType, IData extends Record & Object>(
         .collection(collection.value)
         .delete(id)
         .then(async () => {
-          alert.setSuccess(successMessages.value.delete)
+          alert.setSuccess({message: successMessages.value.delete})
           await fetchAll()
         })
         .catch(async () => {
-          alert.setError(errorMessages.value.delete)
+          alert.setError({message: errorMessages.value.delete})
           await fetchAll()
         })
     }

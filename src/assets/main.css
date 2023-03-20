@@ -29,3 +29,11 @@
 .table th:first-child {
   @apply static z-0;
 }
+
+.alert-success {
+  @apply bg-green-300 text-green-700
+}
+
+.alert-error {
+  @apply bg-red-300 text-red-700
+}

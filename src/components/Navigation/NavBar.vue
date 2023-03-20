@@ -4,7 +4,6 @@ import { useAuthStore } from '@/stores/auth'
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
 import NavLink from './NavLink.vue'
-
 const auth = useAuthStore()
 
 defineProps<{
@@ -114,27 +113,27 @@ function toggle() {
         <ul class="list-reset flex-1 items-center px-4 md:px-0 lg:flex">
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/dashboard" text="Dashboard">
-              <i class="fa fa-home fa-fw mr-3"></i>
+              <font-awesome-icon icon="home" />
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/secciones" text="Secciones">
-              <i class="fa fa-wallet fa-fw mr-3"></i>
+              <font-awesome-icon icon="user-group" />
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/saberes" text="Saberes">
-              <i class="fa fa-wallet fa-fw mr-3"></i>
+              <font-awesome-icon icon="chalkboard" />
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/profesores" text="Profesores">
-              <i class="fas fa-chart-area fa-fw mr-3"></i>
+              <font-awesome-icon icon="chalkboard-teacher" />
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/pensums" text="Pensums">
-              <i class="fa fa-wallet fa-fw mr-3"></i>
+              <font-awesome-icon icon="chalkboard-teacher" />
             </NavLink>
           </li>
         </ul>

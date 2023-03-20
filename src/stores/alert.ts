@@ -1,7 +1,20 @@
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 
+export interface alertType {
+  message: string,
+  type?: 'success' | 'error' | 'warning' | 'info',
+  isActive?: boolean
+}
+
 export const useAlertStore = defineStore('alert', () => {
+  const data = reactive<alertType>({
+    message: '',
+    type: 'info',
+    isActive: false,
+  })
+  const alertTimer = ref(5000);
+  const delayBetweenAlerts = ref(200);
   const successAlert = ref({
     message: '',
     isActive: false
@@ -14,38 +27,33 @@ export const useAlertStore = defineStore('alert', () => {
 
   const timeoutId = ref<number | null>(null)
 
-  async function setSuccess(message: string) {
-    successAlert.value.message = message
-    if (successAlert.value.isActive == true) {
-      successAlert.value.isActive = false
-      setTimeout(() => {
-        setSuccess(message)
-      }, 200)
-    } else successAlert.value.isActive = true
-    if (!timeoutId.value != null && typeof timeoutId.value == 'number') {
-      window.clearTimeout(timeoutId.value)
-      timeoutId.value = null
-    }
-    timeoutId.value = setTimeout(() => {
-      successAlert.value.isActive = false
-    }, 5000)
+  async function setSuccess({message, type = 'success'}: alertType) {
+    data.message = message
+    data.type = type
+    await setAlertTimer()
   }
 
-  async function setError(message: string) {
-    errorAlert.value.message = message
-    if (errorAlert.value.isActive == true) {
-      errorAlert.value.isActive = false
+  async function setError({message, type = 'error'}: alertType) {
+    data.message = message
+    data.type = type
+    await setAlertTimer()
+  }
+
+  async function setAlertTimer() {
+    if (data.isActive == true) {
+      data.isActive = false
       setTimeout(() => {
-        setError(message)
-      }, 200)
-    } else errorAlert.value.isActive = true
+        setAlertTimer()
+      }, delayBetweenAlerts.value)
+    } else 
+    data.isActive = true
     if (!timeoutId.value != null && typeof timeoutId.value == 'number') {
       window.clearTimeout(timeoutId.value)
       timeoutId.value = null
     }
     timeoutId.value = setTimeout(() => {
-      errorAlert.value.isActive = false
-    }, 5000)
+      data.isActive = false
+    }, alertTimer.value)
   }
 
   function disableAlert() {
@@ -54,5 +62,5 @@ export const useAlertStore = defineStore('alert', () => {
     } else errorAlert.value.isActive = false
   }
 
-  return { successAlert, errorAlert, setSuccess, setError, disableAlert }
+  return { data, setSuccess, setError, disableAlert }
 })

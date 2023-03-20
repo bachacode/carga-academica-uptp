@@ -14,11 +14,15 @@
     "check-all": "npm run type-check && npm run lint && npm run format"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-brands-svg-icons": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@vuelidate/core": "^2.0.0",
     "@vuelidate/validators": "^2.0.0",
     "@vueuse/components": "^9.13.0",
     "@vueuse/core": "^9.13.0",
-    "axios": "^1.3.4",
     "daisyui": "^2.51.3",
     "pinia": "^2.0.32",
     "pocketbase": "^0.12.1",

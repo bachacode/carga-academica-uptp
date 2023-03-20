@@ -8,10 +8,6 @@ export const useAuthStore = defineStore('auth', () => {
   const pb = new PocketBase('http://localhost:8000')
   const user = ref<Record | Admin | null>(pb.authStore.model)
 
-  const getUser = () => {
-    console.log(user.value)
-  }
-
   const errors = ref({
     isActive: false,
     message: 'El nombre de usuario o la contraseña son incorrectos'
@@ -42,5 +38,5 @@ export const useAuthStore = defineStore('auth', () => {
     router.push('/')
   }
 
-  return { pb, user, getUser, logout, login, errors }
+  return { pb, user, logout, login, errors }
 })
