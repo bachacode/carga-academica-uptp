@@ -23,8 +23,7 @@ const formData = reactive<seccionType>({
   trayecto: null,
   estudiantes: null
 })
-
-const isSeccionTaken = (value: any) => store.pb.collection('secciones_id').getFirstListItem(`codigo="${value}"`).then(() => false).catch(() => true)
+const isSeccionTaken = (value: any) => !store.uniqueKeysList.includes(value)
 const isUnique = helpers.withAsync(isSeccionTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
