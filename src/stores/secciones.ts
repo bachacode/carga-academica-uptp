@@ -3,8 +3,8 @@ import { createCrudStore } from './factory'
 
 export type seccionType = {
   codigo: string
-  trayecto: number | null
-  estudiantes: number | null
+  trayecto: string
+  estudiantes: string
 }
 
 export interface ISeccion extends seccionType, Record {

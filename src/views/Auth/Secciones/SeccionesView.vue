@@ -4,9 +4,10 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
+import { computed } from 'vue'
 const store = useSeccionStore()
 const { fetchAll, destroy, fetchOne } = store
-const { filteredData, searchQuery } = storeToRefs(store)
+const { searchQuery } = storeToRefs(store)
 const theadColumns = [
   {
     name: 'Codigo',
@@ -21,6 +22,21 @@ const theadColumns = [
     isAsc: false
   }
 ]
+
+const filtered = computed(() => {
+  return store.data?.filter((record) => {
+    const keys = Object.keys(record).filter((el) => !store.recordKeys.includes(el))
+    const testArray = keys.map((key) => {
+      if(key == 'trayecto') return `trayecto ${record[key].toString()}`
+      if(key == 'estudiantes') return `${record[key].toString()} estudiantes`
+      return record[key].toString()
+    })
+    return testArray.some((text: string) => {
+      return text.includes(searchQuery.value)
+    })
+  })
+})
+
 function orderBy(state: { name: string; isAsc: boolean }) {
   if (state.isAsc == true) {
     state.isAsc = false
@@ -43,7 +59,6 @@ async function destroyItem(id: string | undefined) {
 }
 
 async function sortTable(column: string) {
-  console.log(column)
   await fetchAll(column)
 }
 
@@ -97,8 +112,8 @@ async function selectItem(id: string) {
           />
         </div>
         <div class="overflow-x-auto p-5">
-          <LoadingCircle :is-loaded="!filteredData" />
-          <table v-if="filteredData" class="table-zebra table-normal table w-full">
+          <LoadingCircle :is-loaded="!filtered" />
+          <table v-if="filtered" class="table-zebra table-normal table w-full">
             <thead>
               <tr>
                 <th v-for="column in theadColumns" class="text-blue-900" :key="column.name">
@@ -112,7 +127,7 @@ async function selectItem(id: string) {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="seccion in filteredData" :key="seccion.id">
+              <tr v-for="seccion in filtered" :key="seccion.id">
                 <td>{{ seccion.codigo }}</td>
                 <td>{{ 'trayecto ' + seccion.trayecto }}</td>
                 <td>{{ seccion.estudiantes + ' estudiantes' }}</td>

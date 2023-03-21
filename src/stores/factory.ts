@@ -127,7 +127,8 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
       fetchOne,
       filteredData,
       searchQuery,
-      uniqueKeysList
+      uniqueKeysList,
+      recordKeys
     }
   })
 }

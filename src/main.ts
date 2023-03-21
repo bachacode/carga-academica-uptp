@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from '@/router'
+import { vMaska } from 'maska'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
@@ -28,8 +29,9 @@ library.add(
   faCircleXmark
 )
 import './assets/main.css'
-createApp(App)
+const app = createApp(App)
   .use(router)
   .use(createPinia())
   .component('font-awesome-icon', FontAwesomeIcon)
-  .mount('#app')
+app.directive("maska", vMaska)
+app.mount('#app')
