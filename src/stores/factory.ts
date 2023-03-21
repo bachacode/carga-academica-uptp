@@ -17,7 +17,10 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
   collectionName: string,
   success: Alertmessages,
   error: Alertmessages,
-  uniqueKeysParam: Array<string> | string = ''
+  uniqueKeysParam: Array<string> | string = '',
+  callback: any = (record: any) => {
+    return record
+  }
 ) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
@@ -51,7 +54,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
           await router.push({ path: parentRoute.value })
           alert.setSuccess({ message: successMessages.value.create })
         })
-        .catch(async (error) => {
+        .catch(async () => {
           alert.setError({ message: errorMessages.value.create })
         })
     }
@@ -85,15 +88,17 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
     }
 
     const filteredData = computed(() => {
-      return data.value?.filter((record) => {
-        const keys = Object.keys(record).filter((el) => !recordKeys.value.includes(el))
-        const testArray = keys.map((key) => {
-          return record[key].toString()
+      return data.value
+        ?.filter((record) => {
+          const keys = Object.keys(record).filter((el) => !recordKeys.value.includes(el))
+          const testArray = keys.map((key) => {
+            return record[key].toString()
+          })
+          return testArray.some((text: string) => {
+            return text.includes(searchQuery.value)
+          })
         })
-        return testArray.some((text: string) => {
-          return text.includes(searchQuery.value)
-        })
-      })
+        .map(callback)
     })
 
     const uniqueKeysList = computed<uniqueKeys[] | string>(() => {

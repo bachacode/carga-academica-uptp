@@ -15,6 +15,7 @@ import {
 } from '@/helpers/validationHelpers'
 import type { saberType } from '@/stores/saberes'
 import InputError from '@/components/InputError.vue'
+import InputComponent from '@/components/InputComponent.vue'
 const store = useSaberStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
@@ -90,38 +91,45 @@ onMounted(async () => {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()">
-            <InputField label="Codigo" placeholder="" name="codigo" v-model="formData.codigo">
-              <InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0].$message" />
+            <InputField label="Codigo" name="codigo">
+              <template #InputField
+                ><InputComponent name="codigo" v-model.trim="formData.codigo"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField label="Materia" placeholder="" name="materia" v-model="formData.materia">
-              <InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0].$message" />
+            <InputField label="Materia" name="materia">
+              <template #InputField
+                ><InputComponent name="materia" v-model.trim="formData.materia"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField
-              type="number"
-              label="Trayecto"
-              placeholder=""
-              name="trayecto"
-              v-model="formData.trayecto"
-            >
-              <InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0].$message" />
+            <InputField type="number" label="Trayecto" name="trayecto">
+              <template #InputField
+                ><InputComponent name="trayecto" v-model.number="formData.trayecto"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField
-              type="number"
-              label="Periodos"
-              placeholder=""
-              name="periodos"
-              v-model="formData.periodos"
-            >
-              <InputError v-if="v$.periodos.$error" :message="v$.periodos.$errors[0].$message" />
+            <InputField type="number" label="Periodos" name="periodos">
+              <template #InputField
+                ><InputComponent name="periodos" v-model.number="formData.periodos"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.periodos.$error" :message="v$.periodos.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField
-              type="number"
-              label="Creditos"
-              placeholder=""
-              name="creditos"
-              v-model="formData.creditos"
-            >
-              <InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0].$message" />
+            <InputField type="number" label="Creditos" name="creditos">
+              <template #InputField
+                ><InputComponent name="creditos" v-model.number="formData.creditos"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0]?.$message"
+              /></template>
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Editar Saber

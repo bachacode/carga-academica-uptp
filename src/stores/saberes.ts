@@ -27,10 +27,22 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar el saber'
 }
 
+const appendShit = (record: any) => {
+  if (!record.trayecto.toString().startsWith('trayecto'))
+    record.trayecto = `trayecto ${record.trayecto}`
+  if (!record.periodos.toString().endsWith('periodos'))
+    record.periodos = `${record.periodos} periodos`
+  if (!record.creditos.toString().endsWith('creditos'))
+    record.creditos = `${record.creditos} creditos`
+  return record
+}
+
 export const useSaberStore = createCrudStore<saberType, ISaber>(
   'saber',
   '/saberes',
   'saberes',
   successMessages,
-  errorMessages
+  errorMessages,
+  'codigo',
+  appendShit
 )

@@ -15,15 +15,6 @@ export const useAlertStore = defineStore('alert', () => {
   })
   const alertTimer = ref(5000)
   const delayBetweenAlerts = ref(200)
-  const successAlert = ref({
-    message: '',
-    isActive: false
-  })
-
-  const errorAlert = ref({
-    message: '',
-    isActive: false
-  })
 
   const timeoutId = ref<number | null>(null)
 
@@ -56,9 +47,7 @@ export const useAlertStore = defineStore('alert', () => {
   }
 
   function disableAlert() {
-    if (successAlert.value.isActive == true) {
-      successAlert.value.isActive = false
-    } else errorAlert.value.isActive = false
+    data.isActive = false
   }
 
   return { data, setSuccess, setError, disableAlert }

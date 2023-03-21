@@ -11,7 +11,7 @@ import {
   minValueValidation,
   maxValueValidation,
   minLengthValidation,
-  maxLengthValidation,
+  maxLengthValidation
 } from '@/helpers/validationHelpers'
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
@@ -72,16 +72,30 @@ async function submitData() {
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()">
             <InputField label="Codigo" name="codigo">
-              <template #InputField><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo"/></template>
-              <template #InputError><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message" /></template>
+              <template #InputField
+                ><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+              /></template>
             </InputField>
             <InputField type="number" label="Trayecto" name="trayecto">
-              <template #InputField><InputComponent name="trayecto" v-model="formData.trayecto"/></template>
-              <template #InputError><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message" /></template>
+              <template #InputField
+                ><InputComponent name="trayecto" v-model.number="formData.trayecto"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+              /></template>
             </InputField>
             <InputField type="number" label="Estudiantes" name="estudiantes">
-              <template #InputField><InputComponent name="estudiantes" v-model="formData.estudiantes"/></template>
-              <template #InputError><InputError v-if="v$.estudiantes.$error" :message="v$.estudiantes.$errors[0]?.$message" /></template>
+              <template #InputField
+                ><InputComponent name="estudiantes" v-model.number="formData.estudiantes"
+              /></template>
+              <template #InputError
+                ><InputError
+                  v-if="v$.estudiantes.$error"
+                  :message="v$.estudiantes.$errors[0]?.$message"
+              /></template>
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Crear Sección

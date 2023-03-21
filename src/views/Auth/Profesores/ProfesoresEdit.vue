@@ -13,7 +13,7 @@ import {
 } from '@/helpers/validationHelpers'
 import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
-
+import InputComponent from '@/components/InputComponent.vue'
 const store = useProfesorStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
@@ -94,44 +94,66 @@ onMounted(async () => {
             <i class="fas fa-arrow-left pr-1"></i>Volver
           </button>
           <form class="px-6 pb-6" @submit.prevent="submitData()">
-            <InputField label="Nombre" placeholder="" name="nombre" v-model="formData.nombre">
-              <InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0].$message" />
+            <div class="flex space-x-2">
+              <InputField label="Nombre" name="nombre">
+                <template #InputField
+                  ><InputComponent name="nombre" v-model.trim="formData.nombre"
+                /></template>
+                <template #InputError
+                  ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
+                /></template>
+              </InputField>
+              <InputField label="Apellido" name="apellido">
+                <template #InputField
+                  ><InputComponent name="apellido" v-model="formData.apellido"
+                /></template>
+                <template #InputError
+                  ><InputError
+                    v-if="v$.apellido.$error"
+                    :message="v$.apellido.$errors[0]?.$message"
+                /></template>
+              </InputField>
+            </div>
+            <InputField label="Cedula" name="cedula">
+              <template #InputField
+                ><InputComponent
+                  v-maska
+                  data-maska="V-##.###.###"
+                  data-maska-tokens="'0':/[0-9]/:M"
+                  name="cedula"
+                  v-model="formData.cedula"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField label="Apellido" placeholder="" name="apellido" v-model="formData.apellido">
-              <InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0].$message" />
+            <InputField label="Titulo" name="titulo">
+              <template #InputField
+                ><InputComponent name="titulo" v-model="formData.titulo"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField
-              label="Cedula"
-              placeholder="V-11.111.111"
-              name="cedula"
-              v-model="formData.cedula"
-            >
-              <InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0].$message" />
+            <InputField label="Telefono" name="telefono">
+              <template #InputField
+                ><InputComponent
+                  v-maska
+                  data-maska="### ###-##-##"
+                  name="telefono"
+                  v-model="formData.telefono"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0]?.$message"
+              /></template>
             </InputField>
-            <InputField
-              label="Titulo"
-              placeholder="Ingeniero en Sistemas"
-              name="titulo"
-              v-model="formData.titulo"
-            >
-              <InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0].$message" />
-            </InputField>
-            <InputField
-              label="Telefono"
-              placeholder="0424-9585136"
-              name="telefono"
-              v-model="formData.telefono"
-            >
-              <InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0].$message" />
-            </InputField>
-            <InputField
-              type="email"
-              label="Correo"
-              placeholder="nombre@ejemplo.com"
-              name="correo"
-              v-model="formData.correo"
-            >
-              <InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0].$message" />
+            <InputField type="email" label="Correo" name="correo">
+              <template #InputField
+                ><InputComponent name="correo" v-model="formData.correo"
+              /></template>
+              <template #InputError
+                ><InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0]?.$message"
+              /></template>
             </InputField>
             <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
               Editar Profesor

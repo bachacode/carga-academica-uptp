@@ -29,11 +29,20 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar la sección'
 }
 
+const appendShit = (record: any) => {
+  if (!record.trayecto.toString().startsWith('trayecto'))
+    record.trayecto = `trayecto ${record.trayecto}`
+  if (!record.estudiantes.toString().endsWith('estudiantes'))
+    record.estudiantes = `${record.estudiantes} estudiantes`
+  return record
+}
+
 export const useSeccionStore = createCrudStore<seccionType, ISeccion, uniqueKeysType>(
   'seccion',
   '/secciones',
   'secciones',
   successMessages,
   errorMessages,
-  'codigo'
+  'codigo',
+  appendShit
 )

@@ -11,12 +11,6 @@ withDefaults(defineProps<Props>(), {
   col: true,
   readonly: false
 })
-
-const emit = defineEmits(['update:modelValue'])
-
-const updateValue = (e: Event) => {
-  emit('update:modelValue', (e.target as HTMLInputElement).value)
-}
 </script>
 
 <template>
