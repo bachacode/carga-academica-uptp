@@ -25,6 +25,10 @@ const theadColumns = [
     isAsc: false
   },
   {
+    name: 'Saberes',
+    isAsc: false
+  },
+  {
     name: 'Telefono',
     isAsc: false
   },
@@ -44,6 +48,7 @@ const edit = (id: string) => {
 
 const sortTable = async (column: string) => {
   console.log(column)
+  console.log(store.data)
   await fetchAll(column)
 }
 

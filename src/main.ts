@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import { createApp, watch } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from '@/router'
@@ -29,9 +29,10 @@ library.add(
   faCircleXmark
 )
 import './assets/main.css'
+const pinia = createPinia()
 const app = createApp(App)
   .use(router)
-  .use(createPinia())
+  .use(pinia)
   .component('font-awesome-icon', FontAwesomeIcon)
 app.directive('maska', vMaska)
 app.mount('#app')

@@ -61,7 +61,15 @@ const updateValue = (e: Event) => {
         <tbody>
           <tr v-for="record in filteredData" :key="record.id">
             <template v-for="column in columns" :key="column.name">
-              <td>{{ record[column.name.toLowerCase()] }}</td>
+              <template v-if="Array.isArray(record[column.name.toLowerCase()])">
+                  <td><button 
+                    class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                    @click="$emit('relation', record.id)"
+                    >{{ `Ver ${column.name}` }}</button></td>
+              </template>
+              <template v-else>
+                <td>{{ record[column.name.toLowerCase()] }}</td>
+              </template>
             </template>
             <td class="space-x-3">
               <button

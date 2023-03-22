@@ -34,10 +34,11 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
     const searchQuery = ref<string>('')
     const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
     const uniqueKeys = ref(uniqueKeysParam)
-
-    async function fetchAll(sortBy: string = '-created') {
+    const relationships = ref('saberes')
+    async function fetchAll(sortBy: string = '-created', ) {
       data.value = await pb.collection(collection.value).getFullList<IData>({
-        sort: sortBy
+        sort: sortBy,
+        expand: relationships.value
       })
     }
 

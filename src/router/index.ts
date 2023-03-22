@@ -74,6 +74,26 @@ const router = createRouter({
       ]
     },
     {
+      path: '/clases',
+      children: [
+        {
+          path: '',
+          name: 'clases',
+          component: () => import('@/views/Auth/Pensums/PensumsView.vue')
+        },
+        {
+          path: 'create',
+          name: 'create',
+          component: () => import('@/views/Auth/Secciones/SeccionesCreate.vue')
+        },
+        {
+          path: 'edit/:id',
+          name: 'edit',
+          component: () => import('@/views/Auth/Secciones/SeccionesEdit.vue')
+        }
+      ]
+    },
+    {
       path: '/pensums',
       children: [
         {
