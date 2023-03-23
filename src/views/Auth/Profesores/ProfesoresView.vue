@@ -96,6 +96,7 @@ async function destroyItem(id: string | undefined) {
       </button>
       <!--Table Card-->
       <TableComponent
+        title="Profesores"
         v-model="searchQuery"
         :columns="theadColumns"
         :filtered-data="store.filteredData"

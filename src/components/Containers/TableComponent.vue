@@ -2,6 +2,7 @@
 import { defineProps } from 'vue'
 import LoadingCircle from '../LoadingCircle.vue'
 export interface Props {
+  title: string
   placeholder?: string
   modelValue: any
   filteredData: any
@@ -34,7 +35,7 @@ const updateValue = (e: Event) => {
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
     <div class="flex justify-between border-b p-3">
-      <h5 class="font-bold uppercase text-gray-600">Secciones</h5>
+      <h5 class="font-bold uppercase text-gray-600">{{ title }}</h5>
       <input
         type="text"
         :placeholder="placeholder"
