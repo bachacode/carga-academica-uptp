@@ -23,7 +23,7 @@ withDefaults(defineProps<Props>(), {
   placeholder: 'Buscar'
 })
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'sorting', 'deleteModal', 'relation', 'editButton'])
 
 const updateValue = (e: Event) => {
   emit('update:modelValue', (e.target as HTMLInputElement).value)

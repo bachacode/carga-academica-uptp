@@ -50,13 +50,14 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
       await pb
         .collection(collection.value)
         .create<IData>(data)
-        .then(async (data) => {
+        .then(async () => {
           await fetchAll()
-          await sync(data.id)
+          // await sync(data.id)
           await router.push({ path: parentRoute.value })
           alert.setSuccess({ message: successMessages.value.create })
         })
-        .catch(async () => {
+        .catch(async (err) => {
+          console.log(err)
           alert.setError({ message: errorMessages.value.create })
         })
     }

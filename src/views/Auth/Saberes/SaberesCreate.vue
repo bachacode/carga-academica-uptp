@@ -11,13 +11,15 @@ import {
   minValueValidation,
   maxValueValidation,
   minLengthValidation,
-  maxLengthValidation
+  maxLengthValidation,
+  isUnique
 } from '@/helpers/validationHelpers'
 import type { saberType } from '@/stores/saberes'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
-const saberes = useSaberStore()
-const { save } = saberes
+import { helpers } from '@vuelidate/validators'
+const store = useSaberStore()
+const { save } = store
 const formData = ref<saberType>({
   codigo: '',
   materia: '',
@@ -25,18 +27,20 @@ const formData = ref<saberType>({
   periodos: null,
   creditos: null
 })
-
+const isTaken = (value: never) => !store.uniqueKeysList.includes(value)
+const isUnique = helpers.withAsync(isTaken, () => formData.value.codigo)
 const rules = computed(() => {
   return {
     codigo: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(40),
+      unique: helpers.withMessage('Ya existe una sección con ese codigo', isUnique)
     },
     materia: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(80)
     },
     trayecto: {
       required: requiredValidation(),
@@ -64,6 +68,7 @@ const v$ = useVuelidate(rules, formData.value)
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
+    console.log(formData.value)
     save(formData.value)
   }
 }
@@ -91,7 +96,7 @@ async function submitData() {
             </InputField>
             <InputField label="Materia" name="materia">
               <template #InputField
-                ><InputComponent name="materia" v-model.trim="formData.materia"
+                ><InputComponent name="materia" v-model="formData.materia"
               /></template>
               <template #InputError
                 ><InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0]?.$message"

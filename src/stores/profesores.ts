@@ -33,5 +33,5 @@ export const useProfesorStore = createCrudStore<profesorType, IProfesor>(
   '/profesores',
   'profesores',
   successMessages,
-  errorMessages
+  errorMessages,
 )
