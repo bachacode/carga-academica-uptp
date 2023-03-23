@@ -15,7 +15,7 @@ import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 const store = useProfesorStore()
-const { update, fetchOne } = store
+const { update, fetchOne, sync } = store
 const id = ref<string>('')
 const formData = reactive<profesorType>({
   nombre: '',
@@ -68,6 +68,7 @@ async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
     await update(id.value, formData)
+    await sync(id.value)
   }
 }
 

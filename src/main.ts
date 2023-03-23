@@ -1,4 +1,4 @@
-import { createApp, watch } from 'vue'
+import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from '@/router'
@@ -30,9 +30,6 @@ library.add(
 )
 import './assets/main.css'
 const pinia = createPinia()
-const app = createApp(App)
-  .use(router)
-  .use(pinia)
-  .component('font-awesome-icon', FontAwesomeIcon)
+const app = createApp(App).use(router).use(pinia).component('font-awesome-icon', FontAwesomeIcon)
 app.directive('maska', vMaska)
 app.mount('#app')

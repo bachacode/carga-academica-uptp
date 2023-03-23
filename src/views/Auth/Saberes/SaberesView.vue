@@ -89,13 +89,13 @@ async function destroyItem(id: string | undefined) {
         <i class="fas fa-plus-circle pr-1"></i> Crear Saber
       </button>
       <!--Table Card-->
-      <TableComponent 
-      v-model="searchQuery"
-      :columns="theadColumns"
-      :filtered-data="store.filteredData"
-      @editButton="edit"
-      @deleteModal="selectItem"
-      @sorting="sortTable"
+      <TableComponent
+        v-model="searchQuery"
+        :columns="theadColumns"
+        :filtered-data="store.filteredData"
+        @editButton="edit"
+        @deleteModal="selectItem"
+        @sorting="sortTable"
       />
       <!--/table Card-->
     </div>

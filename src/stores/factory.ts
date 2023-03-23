@@ -35,7 +35,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
     const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
     const uniqueKeys = ref(uniqueKeysParam)
     const relationships = ref('saberes')
-    async function fetchAll(sortBy: string = '-created', ) {
+    async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collection.value).getFullList<IData>({
         sort: sortBy,
         expand: relationships.value
@@ -49,9 +49,10 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
     async function save(data: any) {
       await pb
         .collection(collection.value)
-        .create<dataType>(data)
-        .then(async () => {
+        .create<IData>(data)
+        .then(async (data) => {
           await fetchAll()
+          await sync(data.id)
           await router.push({ path: parentRoute.value })
           alert.setSuccess({ message: successMessages.value.create })
         })
@@ -60,12 +61,30 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
         })
     }
 
+    async function sync(fatherId: string) {
+      const father = await pb.collection(collection.value).getOne(fatherId, { $autoCancel: false })
+      father[relationships.value].forEach(async (childId: string) => {
+        const relation = await pb
+          .collection(relationships.value)
+          .getOne(childId, { $autoCancel: false })
+
+        if (!relation[collection.value].includes(father.id)) {
+          relation[collection.value].push(father.id)
+          await pb
+            .collection(relationships.value)
+            .update(childId, relation, { $autoCancel: false })
+            .catch((err) => console.log(err.data))
+        }
+      })
+    }
+
     async function update(id: string, data: any) {
       await pb
         .collection(collection.value)
         .update<dataType>(id, data)
         .then(async () => {
           await fetchAll()
+          await sync(id)
           await router.push({ path: parentRoute.value })
           alert.setSuccess({ message: successMessages.value.update })
         })
@@ -134,7 +153,8 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
       filteredData,
       searchQuery,
       uniqueKeysList,
-      recordKeys
+      recordKeys,
+      sync
     }
   })
 }

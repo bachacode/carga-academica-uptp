@@ -7,11 +7,11 @@ export interface Props {
   filteredData: any
   columns: Array<{
     name: string
-    isAsc: boolean
+    isAsc?: boolean
   }>
 }
 
-function orderBy(state: { name: string; isAsc: boolean }) {
+function orderBy(state: { name: string; isAsc?: boolean }) {
   if (state.isAsc == true) {
     state.isAsc = false
     return `+${state.name.toLowerCase()}`
@@ -49,11 +49,18 @@ const updateValue = (e: Event) => {
         <thead>
           <tr>
             <th v-for="column in columns" class="text-blue-900" :key="column.name">
-              <span @click="$emit('sorting', orderBy(column))" class="cursor-pointer">
-                {{ column.name }}
-                <i v-if="column.isAsc" class="fas fa-sort-down pl-1"></i>
-                <i v-if="!column.isAsc" class="fas fa-sort-up pl-1"></i>
-              </span>
+              <template v-if="column.isAsc != undefined">
+                <span @click="$emit('sorting', orderBy(column))" class="cursor-pointer">
+                  {{ column.name }}
+                  <i v-if="column.isAsc" class="fas fa-sort-down pl-1"></i>
+                  <i v-if="!column.isAsc" class="fas fa-sort-up pl-1"></i>
+                </span>
+              </template>
+              <template v-else>
+                <span>
+                  {{ column.name }}
+                </span>
+              </template>
             </th>
             <th class="text-blue-900">Acciones</th>
           </tr>
@@ -62,10 +69,14 @@ const updateValue = (e: Event) => {
           <tr v-for="record in filteredData" :key="record.id">
             <template v-for="column in columns" :key="column.name">
               <template v-if="Array.isArray(record[column.name.toLowerCase()])">
-                  <td><button 
+                <td>
+                  <button
                     class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
                     @click="$emit('relation', record.id)"
-                    >{{ `Ver ${column.name}` }}</button></td>
+                  >
+                    {{ `Ver ${column.name}` }}
+                  </button>
+                </td>
               </template>
               <template v-else>
                 <td>{{ record[column.name.toLowerCase()] }}</td>
