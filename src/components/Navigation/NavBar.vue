@@ -112,7 +112,7 @@ function toggle() {
       >
         <ul class="list-reset flex-1 items-center px-4 md:px-0 lg:flex">
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/dashboard" text="Dashboard">
+            <NavLink to="/dashboard" text="Inicio">
               <font-awesome-icon icon="home" />
             </NavLink>
           </li>
@@ -134,6 +134,11 @@ function toggle() {
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/pensums" text="Pensums">
               <font-awesome-icon icon="chalkboard-teacher" />
+            </NavLink>
+          </li>
+          <li class="my-2 mr-6 md:my-0">
+            <NavLink to="/usuarios" text="Operadores">
+              <font-awesome-icon icon="user" />
             </NavLink>
           </li>
         </ul>

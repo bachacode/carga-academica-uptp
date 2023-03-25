@@ -2,7 +2,7 @@
 import { useSaberStore } from '@/stores/saberes'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import html2pdf from 'html2pdf.js'
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 const store = useSaberStore()
 const theadColumns = [
   {
@@ -54,6 +54,10 @@ function pdf() {
   html2pdf().from(table.value).set(options.value).save();
 }
 
+onMounted(async () => {
+  await store.fetchAll()
+})
+
 </script>
 
 <template>
@@ -73,18 +77,11 @@ function pdf() {
               <th colspan="5" class="text-left bg-blue-700 pl-2 py-2 text-white">{{ `TRAYECTO ${trayecto} - PERIODO ${periodo}` }}</th>
             </tr>
             <tr>
-              <template v-for="column in theadColumns">
-                <template v-if="column.isCentered == false">
-                  <th class="text-left pl-2 py-2 bg-blue-300" >
-                    {{ column.name }}
-                  </th>
-                </template>
-              <template v-else-if="column.isCentered == true">
-                <th class="text-center pl-2 py-2 bg-blue-300" >
-                    {{ column.name }}
-                  </th>
-              </template>
-            </template>
+              <th class="text-left pl-2 py-2 bg-blue-300 w-2/12">CodMateria</th>
+              <th class="text-left pl-2 py-2 bg-blue-300 w-7/12">Materia</th>
+              <th class="text-left pl-2 py-2 bg-blue-300 w-1/12">Trayecto</th>
+              <th class="text-center pl-2 py-2 bg-blue-300 w-1/12">Periodos</th>
+              <th class="text-center pl-2 py-2 bg-blue-300 w-1/12">Creditos</th>
             </tr>
           </thead>
           <tbody>

@@ -4,6 +4,7 @@ export interface Props {
   label: string
   name: string
   col?: boolean
+  helperText?: string
 }
 
 withDefaults(defineProps<Props>(), {
@@ -14,10 +15,11 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div :class="`flex ${col ? 'flex-col' : ''} pt-4`">
-    <label :for="name" class="text-lg">{{ label }}</label>
+  <div :class="`flex ${col ? 'flex-col' : ''} mb-6`">
+    <label :for="name" class="block mb-2 text-sm font-medium text-gray-900">{{ label }}</label>
     <div>
       <slot name="InputField"></slot>
+      <p v-if="helperText" class="mt-2 text-sm text-gray-500 dark:text-gray-400">{{ helperText }}</p>
       <slot name="InputError"></slot>
     </div>
   </div>

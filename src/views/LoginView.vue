@@ -3,6 +3,7 @@ import { useAuthStore } from '@/stores/auth'
 import { ref } from 'vue'
 import InputError from '@/components/InputError.vue'
 import InputField from '@/components/InputField.vue'
+import InputComponent from '@/components/InputComponent.vue'
 import { onBeforeMount } from 'vue'
 import router from '@/router'
 
@@ -41,19 +42,16 @@ onBeforeMount(() => {
               classes="text-center"
               :message="auth.errors.message"
             />
-            <InputField
-              label="Nombre de usuario"
-              name="username"
-              placeholder="Nombre de usuario"
-              v-model="username"
-            />
-            <InputField
-              label="Contraseña"
-              name="password"
-              type="password"
-              placeholder="Contraseña"
-              v-model="password"
-            />
+            <InputField label="Nombre de usuario" name="username">
+              <template #InputField
+                ><InputComponent class="bg-slate-100" name="username" v-model="username"
+              /></template>
+            </InputField>
+            <InputField label="Contraseña" name="password">
+              <template #InputField
+                ><InputComponent type="password" class="bg-slate-100" name="password" v-model="password"
+              /></template>
+            </InputField>
             <button
               type="submit"
               class="mt-8 bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-900"

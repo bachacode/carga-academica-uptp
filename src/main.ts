@@ -14,7 +14,8 @@ import {
   faCaretUp,
   faFontAwesome,
   faCircleCheck,
-  faCircleXmark
+  faCircleXmark,
+  faUser
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faChalkboard,
@@ -26,7 +27,8 @@ library.add(
   faCaretUp,
   faFontAwesome,
   faCircleCheck,
-  faCircleXmark
+  faCircleXmark,
+  faUser
 )
 import './assets/main.css'
 const pinia = createPinia()

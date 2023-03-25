@@ -3,7 +3,6 @@ import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { reactive, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
-import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import {
   requiredValidation,
@@ -16,7 +15,9 @@ import {
 import type { seccionType } from '@/stores/secciones'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
+import InputSelect from '@/components/InputSelect.vue'
 import { helpers } from '@vuelidate/validators'
+import FormComponent from '@/components/Containers/FormComponent.vue'
 const store = useSeccionStore()
 const { save } = store
 const formData = reactive<seccionType>({
@@ -51,7 +52,7 @@ const rules = computed(() => {
 })
 const v$ = useVuelidate(rules, formData)
 
-async function submitData() {
+const submitData = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
     save(formData)
@@ -61,19 +62,11 @@ async function submitData() {
 
 <template>
   <AuthLayout>
-    <div class="flex items-center justify-center">
-      <div class="w-2/4 px-16 pb-8">
-        <div class="rounded border bg-white shadow">
-          <button
-            class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
-            @click="router.back()"
-          >
-            <i class="fas fa-arrow-left pr-1"></i>Volver
-          </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()">
+        <FormComponent submit-text="Crear Sección" @form-submit="submitData">
+          <template #inputs>
             <InputField label="Codigo" name="codigo">
               <template #InputField
-                ><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo"
+                ><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo" placeholder="i11"
               /></template>
               <template #InputError
                 ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
@@ -81,7 +74,7 @@ async function submitData() {
             </InputField>
             <InputField type="number" label="Trayecto" name="trayecto">
               <template #InputField
-                ><InputComponent name="trayecto" v-model.number="formData.trayecto"
+                ><InputSelect name="trayecto" v-model="formData.trayecto"
               /></template>
               <template #InputError
                 ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
@@ -89,7 +82,7 @@ async function submitData() {
             </InputField>
             <InputField type="number" label="Estudiantes" name="estudiantes">
               <template #InputField
-                ><InputComponent name="estudiantes" v-model.number="formData.estudiantes"
+                ><InputComponent v-maska data-maska="###" name="estudiantes" v-model.number="formData.estudiantes"
               /></template>
               <template #InputError
                 ><InputError
@@ -97,12 +90,7 @@ async function submitData() {
                   :message="v$.estudiantes.$errors[0]?.$message"
               /></template>
             </InputField>
-            <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
-              Crear Sección
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+          </template>
+        </FormComponent>
   </AuthLayout>
 </template>

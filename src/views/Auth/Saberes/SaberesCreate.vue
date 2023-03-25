@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed } from 'vue'
+import { reactive, computed } from 'vue'
 import { useSaberStore } from '@/stores/saberes'
-import router from '@/router'
+import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
 import {
   requiredValidation,
@@ -12,7 +12,6 @@ import {
   maxValueValidation,
   minLengthValidation,
   maxLengthValidation,
-  isUnique
 } from '@/helpers/validationHelpers'
 import type { saberType } from '@/stores/saberes'
 import InputError from '@/components/InputError.vue'
@@ -20,7 +19,7 @@ import InputComponent from '@/components/InputComponent.vue'
 import { helpers } from '@vuelidate/validators'
 const store = useSaberStore()
 const { save } = store
-const formData = ref<saberType>({
+const formData = reactive<saberType>({
   codigo: '',
   materia: '',
   trayecto: null,
@@ -28,14 +27,14 @@ const formData = ref<saberType>({
   creditos: null
 })
 const isTaken = (value: never) => !store.uniqueKeysList.includes(value)
-const isUnique = helpers.withAsync(isTaken, () => formData.value.codigo)
+const isUnique = helpers.withAsync(isTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
     codigo: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40),
-      unique: helpers.withMessage('Ya existe una sección con ese codigo', isUnique)
+      unique: helpers.withMessage('Ya existe un saber con ese codigo', isUnique)
     },
     materia: {
       required: requiredValidation(),
@@ -63,29 +62,20 @@ const rules = computed(() => {
   }
 })
 
-const v$ = useVuelidate(rules, formData.value)
+const v$ = useVuelidate(rules, formData)
 
-async function submitData() {
+const submitData = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
-    console.log(formData.value)
-    save(formData.value)
+    save(formData)
   }
 }
 </script>
 
 <template>
   <AuthLayout>
-    <div class="flex items-center justify-center">
-      <div class="w-2/4 px-16 pb-8">
-        <div class="rounded border bg-white shadow">
-          <button
-            class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
-            @click="router.back()"
-          >
-            <i class="fas fa-arrow-left pr-1"></i>Volver
-          </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()">
+    <FormComponent submit-text="Crear Saber" @form-submit="submitData">
+          <template #inputs>
             <InputField label="Codigo" name="codigo">
               <template #InputField
                 ><InputComponent name="codigo" v-model.trim="formData.codigo"
@@ -126,12 +116,7 @@ async function submitData() {
                 ><InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0]?.$message"
               /></template>
             </InputField>
-            <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
-              Crear Saber
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+          </template>
+    </FormComponent>
   </AuthLayout>
 </template>

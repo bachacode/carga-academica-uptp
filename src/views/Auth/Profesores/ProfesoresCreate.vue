@@ -3,7 +3,7 @@ import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { reactive, computed } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
-import router from '@/router'
+import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
 import {
   requiredValidation,
@@ -63,9 +63,8 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData)
 
-async function submitData() {
+const submitData = async () => {
   await v$.value.$validate()
-  console.log(v$.value.$error)
   if (!v$.value.$error) {
     save(formData)
   }
@@ -74,16 +73,8 @@ async function submitData() {
 
 <template>
   <AuthLayout>
-    <div class="flex items-center justify-center">
-      <div class="w-2/4 px-16 pb-8">
-        <div class="rounded border bg-white shadow">
-          <button
-            class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
-            @click="router.back()"
-          >
-            <i class="fas fa-arrow-left pr-1"></i>Volver
-          </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()">
+    <FormComponent submit-text="Agregar Profesor" @form-submit="submitData">
+          <template #inputs>
             <div class="flex space-x-2">
               <InputField label="Nombre" name="nombre">
                 <template #InputField
@@ -145,12 +136,7 @@ async function submitData() {
                 ><InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0]?.$message"
               /></template>
             </InputField>
-            <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
-              Registrar Profesor
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+          </template>
+    </FormComponent>
   </AuthLayout>
 </template>

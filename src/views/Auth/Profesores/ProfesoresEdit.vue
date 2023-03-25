@@ -14,6 +14,7 @@ import {
 import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
+import FormComponent from '@/components/Containers/FormComponent.vue'
 const store = useProfesorStore()
 const { update, fetchOne, sync } = store
 const id = ref<string>('')
@@ -85,16 +86,8 @@ onMounted(async () => {
 
 <template>
   <AuthLayout>
-    <div class="flex items-center justify-center">
-      <div class="w-2/4 px-16 pb-8">
-        <div class="rounded border bg-white shadow">
-          <button
-            class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
-            @click="router.back()"
-          >
-            <i class="fas fa-arrow-left pr-1"></i>Volver
-          </button>
-          <form class="px-6 pb-6" @submit.prevent="submitData()">
+    <FormComponent submit-text="Editar Profesor" @form-submit="submitData">
+          <template #inputs>
             <div class="flex space-x-2">
               <InputField label="Nombre" name="nombre">
                 <template #InputField
@@ -156,12 +149,7 @@ onMounted(async () => {
                 ><InputError v-if="v$.correo.$error" :message="v$.correo.$errors[0]?.$message"
               /></template>
             </InputField>
-            <button type="submit" class="btn mt-3 bg-blue-700 text-white hover:bg-blue-900">
-              Editar Profesor
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+          </template>
+    </FormComponent>
   </AuthLayout>
 </template>
