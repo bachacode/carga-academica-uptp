@@ -14,7 +14,7 @@ export interface ISeccion extends seccionType, Record {
 }
 
 export type uniqueKeysType = {
-  codigo: string
+  codigo: Array<string>
 }
 
 const successMessages = {
@@ -38,11 +38,13 @@ const appendShit = (record: any) => {
 }
 
 export const useSeccionStore = createCrudStore<seccionType, ISeccion, uniqueKeysType>(
-  'seccion',
-  '/secciones',
-  'secciones',
-  successMessages,
-  errorMessages,
-  'codigo',
-  appendShit
+  {
+    storeId: 'seccion',
+    route: '/secciones',
+    collectionName: 'secciones',
+    success: successMessages,
+    error: errorMessages,
+    uniqueKeys: ['codigo'],
+    mapData: appendShit
+  }
 )

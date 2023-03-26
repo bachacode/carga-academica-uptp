@@ -1,76 +1,89 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
 import { useAlertStore } from './alert'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import router from '@/router'
 import type { Record } from 'pocketbase'
 
-type Alertmessages = {
+export type alertMessages = {
   create: string
   update: string
   delete: string
 }
 
-export function createCrudStore<dataType, IData extends Record & Object, uniqueKeys = void>(
-  storeId: string,
-  route: string,
-  collectionName: string,
-  success: Alertmessages,
-  error: Alertmessages,
-  uniqueKeysParam: Array<string> | string = '',
-  callback: any = (record: any) => {
-    return record
-  }
+export interface IStoreOptions<IData> {
+  storeId: string
+  route: string
+  collectionName: string
+  success: alertMessages
+  error: alertMessages
+  uniqueKeys?: Array<string>,
+  mapData?: (value: IData, index: number, array: IData[]) => unknown,
+  relations?: Array<string>
+}
+export function createCrudStore<
+dataType extends {} | undefined,
+IData extends Record & Object,
+uniqueKeysType = void
+>(
+  {
+    storeId,
+    route,
+    collectionName,
+    success,
+    error,
+    uniqueKeys = [],
+    mapData = (record: any) => {
+      return record
+    },
+    relations
+  }: IStoreOptions<IData>
 ) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
     const alert = useAlertStore()
-    const parentRoute = ref<string>(route)
-    const collection = ref<string>(collectionName)
-    const successMessages = ref<Alertmessages>(success)
-    const errorMessages = ref<Alertmessages>(error)
     const data = ref<IData[]>()
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
-    const recordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
-    const uniqueKeys = ref(uniqueKeysParam)
+    const defaultRecordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
     const relationships = ref('saberes')
+
     async function fetchAll(sortBy: string = '-created') {
-      data.value = await pb.collection(collection.value).getFullList<IData>({
+      data.value = await pb.collection(collectionName).getFullList<IData>({
         sort: sortBy,
         expand: relationships.value
       })
     }
 
     async function fetchOne(id: string) {
-      singleData.value = await pb.collection(collection.value).getOne<IData>(id)
+      singleData.value = await pb.collection(collectionName).getOne<IData>(id)
     }
 
-    async function save(data: any) {
+    async function save(data: dataType) {
       await pb
-        .collection(collection.value)
+        .collection(collectionName)
         .create<IData>(data)
-        .then(async () => {
-          
-          // await sync(data.id)
-          await router.push({ path: parentRoute.value })
-          alert.setSuccess({ message: successMessages.value.create })
+        .then(async (data: IData) => {
+          if(relations) {
+            await sync(data)
+          }
+          await fetchAll()
+          await router.push({ path: route })
+          alert.setSuccess({ message: success.create })
         })
-        .catch(async (err) => {
-          console.log(err)
-          alert.setError({ message: errorMessages.value.create })
+        .catch(async () => {
+          alert.setError({ message: error.create })
         })
     }
 
-    async function sync(fatherId: string) {
-      const father = await pb.collection(collection.value).getOne(fatherId, { $autoCancel: false })
+    async function sync(father: IData) {
       father[relationships.value].forEach(async (childId: string) => {
         const relation = await pb
           .collection(relationships.value)
           .getOne(childId, { $autoCancel: false })
 
-        if (!relation[collection.value].includes(father.id)) {
-          relation[collection.value].push(father.id)
+        if (!relation[collectionName].includes(father.id)) {
+          relation[collectionName].push(father.id)
           await pb
             .collection(relationships.value)
             .update(childId, relation, { $autoCancel: false })
@@ -79,39 +92,41 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
       })
     }
 
-    async function update(id: string, data: any) {
+    async function update(id: string, data: dataType) {
       await pb
-        .collection(collection.value)
-        .update<dataType>(id, data)
-        .then(async () => {
-          
-          await sync(id)
-          await router.push({ path: parentRoute.value })
-          alert.setSuccess({ message: successMessages.value.update })
+        .collection(collectionName)
+        .update<IData>(id, data)
+        .then(async (data) => {
+          if(relations) {
+            await sync(data)
+          }
+          await fetchAll()
+          await router.push({ path: route })
+          alert.setSuccess({ message: success.update })
         })
         .catch(async () => {
-          alert.setError({ message: errorMessages.value.update })
+          alert.setError({ message: error.update })
         })
     }
 
     async function destroy(id: string) {
       await pb
-        .collection(collection.value)
+        .collection(collectionName)
         .delete(id)
         .then(async () => {
-          alert.setSuccess({ message: successMessages.value.delete })
-          
+          await fetchAll()
+          alert.setSuccess({ message: success.delete })
         })
+        await fetchAll()
         .catch(async () => {
-          alert.setError({ message: errorMessages.value.delete })
-          
+          alert.setError({ message: error.delete })
         })
     }
 
     const filteredData = computed(() => {
       return data.value
         ?.filter((record) => {
-          const keys = Object.keys(record).filter((el) => !recordKeys.value.includes(el))
+          const keys = Object.keys(record).filter((el) => !defaultRecordKeys.value.includes(el))
           const testArray = keys.map((key) => {
             return record[key].toString()
           })
@@ -119,30 +134,23 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
             return text.includes(searchQuery.value)
           })
         })
-        .map(callback)
+        .map(mapData)
     })
 
-    const uniqueKeysList = computed<uniqueKeys[] | string>(() => {
-      if (!data.value) return ''
-      if (Array.isArray(uniqueKeys.value)) {
-        return uniqueKeys.value.map((key) => {
-          if (!data.value) return
-          return data.value.map((record) => {
-            return record[key]
-          })
-        })
-      } else
-        return data.value.map((record) => {
-          if (!uniqueKeys.value) return
-          if (typeof uniqueKeys.value === 'string') return record[uniqueKeys.value]
-        })
+    const uniqueKeysList = computed<uniqueKeysType>(() => {
+      if (!data.value) return
+      if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
+        for (let index = 0; index < uniqueKeys.length; index++) {
+          return { [uniqueKeys[index]] : data.value.map((record) => {
+            return record[uniqueKeys[index]]
+          })} as any
+        }
+      }
+      console.log('dependencies changed')
     })
 
     onMounted(async () => {
       await fetchAll()
-      pb.collection(collection.value).subscribe("*", async () => {
-        await fetchAll()
-      })
     })
 
     return {
@@ -157,7 +165,7 @@ export function createCrudStore<dataType, IData extends Record & Object, uniqueK
       filteredData,
       searchQuery,
       uniqueKeysList,
-      recordKeys,
+      defaultRecordKeys,
       sync
     }
   })

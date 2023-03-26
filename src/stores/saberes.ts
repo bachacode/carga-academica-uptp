@@ -1,5 +1,6 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
+import type { alertMessages } from './factory'
 
 export type saberType = {
   codigo: string
@@ -15,13 +16,17 @@ export interface ISaber extends saberType, Record {
   updated: string
 }
 
-const successMessages = {
+export type uniqueKeysType = {
+  codigo: Array<string>
+}
+
+const successMessages: alertMessages = {
   create: 'El saber se ha guardado correctamente',
   update: 'El saber se ha actualizado correctamente',
   delete: 'El saber se ha borrado correctamente'
 }
 
-const errorMessages = {
+const errorMessages: alertMessages = {
   create: 'Ha ocurrido un error al crear el saber',
   update: 'Ha ocurrido un error al actualizar el saber',
   delete: 'Ha ocurrido un error al borrar el saber'
@@ -37,12 +42,14 @@ const appendShit = (record: any) => {
   return record
 }
 
-export const useSaberStore = createCrudStore<saberType, ISaber>(
-  'saber',
-  '/saberes',
-  'saberes',
-  successMessages,
-  errorMessages,
-  'codigo',
-  appendShit
+export const useSaberStore = createCrudStore<saberType, ISaber, uniqueKeysType>(
+  {
+    storeId: 'saber',
+    route: '/saberes',
+    collectionName: 'saberes',
+    success: successMessages,
+    error: errorMessages,
+    uniqueKeys: ['codigo'],
+    mapData: appendShit
+  }
 )

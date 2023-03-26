@@ -29,9 +29,11 @@ const errorMessages = {
 }
 
 export const useProfesorStore = createCrudStore<profesorType, IProfesor>(
-  'profesor',
-  '/profesores',
-  'profesores',
-  successMessages,
-  errorMessages,
+  {
+    storeId: 'profesor',
+    route: '/profesores',
+    collectionName: 'profesores',
+    success: successMessages,
+    error: errorMessages,
+  }
 )

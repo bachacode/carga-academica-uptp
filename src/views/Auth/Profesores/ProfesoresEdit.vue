@@ -69,7 +69,6 @@ async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
     await update(id.value, formData)
-    await sync(id.value)
   }
 }
 

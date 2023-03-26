@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive, computed } from 'vue'
+import { reactive, computed, onMounted } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import { useVuelidate } from '@vuelidate/core'
 import {
@@ -25,8 +25,8 @@ const formData = reactive<seccionType>({
   trayecto: '',
   estudiantes: ''
 })
-const isSeccionTaken = (value: any) => !store.uniqueKeysList.includes(value)
-const isUnique = helpers.withAsync(isSeccionTaken, () => formData.codigo)
+const isSeccionTaken = computed(() => ((value: string) => !store.uniqueKeysList?.codigo.includes(value)))
+const isUnique = helpers.withAsync(isSeccionTaken.value, () => formData.codigo)
 const rules = computed(() => {
   return {
     codigo: {

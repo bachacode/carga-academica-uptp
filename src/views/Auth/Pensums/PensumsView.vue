@@ -1,6 +1,7 @@
-<script setup>
+<script setup lang="ts">
 import { useSaberStore } from '@/stores/saberes'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
+//@ts-ignore
 import html2pdf from 'html2pdf.js'
 import { ref, onMounted } from 'vue';
 const store = useSaberStore()
@@ -37,7 +38,7 @@ const options = ref({
         mode: ['avoid-all', 'css', 'legacy']
   },
 })
-function check (trayecto, periodo) {
+function check (trayecto: any, periodo: any) {
   const count = store.data?.filter((record) => {
     if(record.trayecto == trayecto && record.periodos == periodo) {
       return true

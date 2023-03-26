@@ -27,7 +27,7 @@ const formData = reactive<seccionType>({
   estudiantes: ''
 })
 const isSeccionTaken = (value: any) =>
-  !store.uniqueKeysList.includes(value) || store.singleData?.codigo == value
+  !store.uniqueKeysList?.codigo.includes(value) || store.singleData?.codigo == value
 const isUnique = helpers.withAsync(isSeccionTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
