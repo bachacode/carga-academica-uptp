@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { useAuthStore } from './auth'
 import { useAlertStore } from './alert'
-import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
 import type { Record } from 'pocketbase'
 
@@ -46,12 +46,11 @@ uniqueKeysType = void
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
     const defaultRecordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
-    const relationships = ref('saberes')
 
     async function fetchAll(sortBy: string = '-created') {
       data.value = await pb.collection(collectionName).getFullList<IData>({
         sort: sortBy,
-        expand: relationships.value
+        expand: relations?.toString()
       })
     }
 
@@ -77,18 +76,21 @@ uniqueKeysType = void
     }
 
     async function sync(father: IData) {
-      father[relationships.value].forEach(async (childId: string) => {
-        const relation = await pb
-          .collection(relationships.value)
-          .getOne(childId, { $autoCancel: false })
+      relations?.forEach((relation: string) => {
+        father[relation].forEach(async (childId: string) => {
+          const relatedRecord = await pb
+            .collection(relation)
+            .getOne(childId, { $autoCancel: false })
+            if (!relatedRecord[collectionName].includes(father.id)) {
+              relatedRecord[collectionName].push(father.id)
+              await pb
+                .collection(relation)
+                .update(childId, relatedRecord, { $autoCancel: false })
+                .catch((err) => console.log(err.data))
+          }
+      })
+      
 
-        if (!relation[collectionName].includes(father.id)) {
-          relation[collectionName].push(father.id)
-          await pb
-            .collection(relationships.value)
-            .update(childId, relation, { $autoCancel: false })
-            .catch((err) => console.log(err.data))
-        }
       })
     }
 
@@ -146,7 +148,6 @@ uniqueKeysType = void
           })} as any
         }
       }
-      console.log('dependencies changed')
     })
 
     onMounted(async () => {

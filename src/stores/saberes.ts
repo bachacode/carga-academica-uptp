@@ -50,6 +50,7 @@ export const useSaberStore = createCrudStore<saberType, ISaber, uniqueKeysType>(
     success: successMessages,
     error: errorMessages,
     uniqueKeys: ['codigo'],
-    mapData: appendShit
+    mapData: appendShit,
+    relations: ['profesores']
   }
 )

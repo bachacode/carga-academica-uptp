@@ -35,5 +35,6 @@ export const useProfesorStore = createCrudStore<profesorType, IProfesor>(
     collectionName: 'profesores',
     success: successMessages,
     error: errorMessages,
+    relations: ['saberes'],
   }
 )
