@@ -75,7 +75,7 @@ onMounted(async () => {
                     <td class="p-2">{{ record.codigo }}</td>
                     <td class="p-2">{{ record.materia }}</td>
                     <td class="p-2 text-center">{{ record.trayecto }}</td>
-                    <td class="p-2 text-center">{{ record.periodos }}</td>
+                    <td class="p-2 text-center">{{ record.periodo }}</td>
                     <td class="p-2 text-center">{{ record.creditos }}</td>
                   </tr>
                 </template>

@@ -103,7 +103,7 @@ const updateValue = (e: Event) => {
                 </td>
               </template>
               <template v-else>
-                <td>{{ record[column.name.toLowerCase()] }}</td>
+                <td class="min-w-[140px] max-w-[220px] break-words whitespace-normal">{{ record[column.name.toLowerCase()] }}</td>
               </template>
             </template>
             <td class="space-x-3">
