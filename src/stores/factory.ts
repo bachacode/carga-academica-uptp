@@ -17,28 +17,26 @@ export interface IStoreOptions<IData> {
   collectionName: string
   success: alertMessages
   error: alertMessages
-  uniqueKeys?: Array<string>,
-  mapData?: (value: IData, index: number, array: IData[]) => unknown,
+  uniqueKeys?: Array<string>
+  mapData?: (value: IData, index: number, array: IData[]) => unknown
   relations?: Array<string>
 }
 export function createCrudStore<
-dataType extends {} | undefined,
-IData extends Record & Object,
-uniqueKeysType = void
->(
-  {
-    storeId,
-    route,
-    collectionName,
-    success,
-    error,
-    uniqueKeys = [],
-    mapData = (record: any) => {
-      return record
-    },
-    relations
-  }: IStoreOptions<IData>
-) {
+  dataType extends {} | undefined,
+  IData extends Record & Object,
+  uniqueKeysType = void
+>({
+  storeId,
+  route,
+  collectionName,
+  success,
+  error,
+  uniqueKeys = [],
+  mapData = (record: any) => {
+    return record
+  },
+  relations
+}: IStoreOptions<IData>) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
     const alert = useAlertStore()
@@ -63,7 +61,7 @@ uniqueKeysType = void
         .collection(collectionName)
         .create<IData>(data)
         .then(async (data: IData) => {
-          if(relations) {
+          if (relations) {
             await sync(data)
           }
           await fetchAll()
@@ -81,16 +79,14 @@ uniqueKeysType = void
           const relatedRecord = await pb
             .collection(relation)
             .getOne(childId, { $autoCancel: false })
-            if (!relatedRecord[collectionName].includes(father.id)) {
-              relatedRecord[collectionName].push(father.id)
-              await pb
-                .collection(relation)
-                .update(childId, relatedRecord, { $autoCancel: false })
-                .catch((err) => console.log(err.data))
+          if (!relatedRecord[collectionName].includes(father.id)) {
+            relatedRecord[collectionName].push(father.id)
+            await pb
+              .collection(relation)
+              .update(childId, relatedRecord, { $autoCancel: false })
+              .catch((err) => console.log(err.data))
           }
-      })
-      
-
+        })
       })
     }
 
@@ -99,7 +95,7 @@ uniqueKeysType = void
         .collection(collectionName)
         .update<IData>(id, data)
         .then(async (data) => {
-          if(relations) {
+          if (relations) {
             await sync(data)
           }
           await fetchAll()
@@ -119,10 +115,9 @@ uniqueKeysType = void
           await fetchAll()
           alert.setSuccess({ message: success.delete })
         })
-        await fetchAll()
-        .catch(async () => {
-          alert.setError({ message: error.delete })
-        })
+      await fetchAll().catch(async () => {
+        alert.setError({ message: error.delete })
+      })
     }
 
     const filteredData = computed(() => {
@@ -143,9 +138,11 @@ uniqueKeysType = void
       if (!data.value) return
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
-          return { [uniqueKeys[index]] : data.value.map((record) => {
-            return record[uniqueKeys[index]]
-          })} as any
+          return {
+            [uniqueKeys[index]]: data.value.map((record) => {
+              return record[uniqueKeys[index]]
+            })
+          } as any
         }
       }
     })

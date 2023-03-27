@@ -49,7 +49,11 @@ onBeforeMount(() => {
             </InputField>
             <InputField label="Contraseña" name="password">
               <template #InputField
-                ><InputComponent type="password" class="bg-slate-100" name="password" v-model="password"
+                ><InputComponent
+                  type="password"
+                  class="bg-slate-100"
+                  name="password"
+                  v-model="password"
               /></template>
             </InputField>
             <button

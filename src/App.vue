@@ -13,6 +13,6 @@ router.beforeEach(async (to) => {
 
 <template>
   <Suspense>
-    <RouterView />
+    <RouterView :key="$route.fullPath" />
   </Suspense>
 </template>

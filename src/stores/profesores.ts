@@ -6,6 +6,7 @@ export type profesorType = {
   apellido: string
   cedula: string
   titulo: string
+  saberes: Array<string>
   telefono: string
   correo: string
 }
@@ -28,13 +29,11 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar el profesor'
 }
 
-export const useProfesorStore = createCrudStore<profesorType, IProfesor>(
-  {
-    storeId: 'profesor',
-    route: '/profesores',
-    collectionName: 'profesores',
-    success: successMessages,
-    error: errorMessages,
-    relations: ['saberes'],
-  }
-)
+export const useProfesorStore = createCrudStore<profesorType, IProfesor>({
+  storeId: 'profesor',
+  route: '/profesores',
+  collectionName: 'profesores',
+  success: successMessages,
+  error: errorMessages,
+  relations: ['saberes']
+})

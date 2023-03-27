@@ -6,7 +6,7 @@ export type saberType = {
   codigo: string
   materia: string
   trayecto: number | null
-  periodos: number | null
+  periodo: number | null
   creditos: number | null
 }
 
@@ -35,22 +35,19 @@ const errorMessages: alertMessages = {
 const appendShit = (record: any) => {
   if (!record.trayecto.toString().startsWith('trayecto'))
     record.trayecto = `trayecto ${record.trayecto}`
-  if (!record.periodos.toString().endsWith('periodos'))
-    record.periodos = `${record.periodos} periodos`
+  if (!record.periodo.toString().startsWith('periodo')) record.periodo = `Periodo ${record.periodo}`
   if (!record.creditos.toString().endsWith('creditos'))
     record.creditos = `${record.creditos} creditos`
   return record
 }
 
-export const useSaberStore = createCrudStore<saberType, ISaber, uniqueKeysType>(
-  {
-    storeId: 'saber',
-    route: '/saberes',
-    collectionName: 'saberes',
-    success: successMessages,
-    error: errorMessages,
-    uniqueKeys: ['codigo'],
-    mapData: appendShit,
-    relations: ['profesores']
-  }
-)
+export const useSaberStore = createCrudStore<saberType, ISaber, uniqueKeysType>({
+  storeId: 'saber',
+  route: '/saberes',
+  collectionName: 'saberes',
+  success: successMessages,
+  error: errorMessages,
+  uniqueKeys: ['codigo'],
+  mapData: appendShit,
+  relations: ['profesores']
+})

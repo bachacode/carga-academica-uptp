@@ -80,7 +80,7 @@ const router = createRouter({
           path: '',
           name: 'pensums',
           component: () => import('@/views/Auth/Pensums/PensumsView.vue')
-        },
+        }
       ]
     }
   ]

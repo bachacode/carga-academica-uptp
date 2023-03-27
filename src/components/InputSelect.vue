@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 export interface Props {
-  placeholder?: string
+  placeholder: string
   name: string
   modelValue: any
   inputClasses?: string
+  options: {
+    value: any
+    name: any
+  }[]
 }
 
-withDefaults(defineProps<Props>(), {
-})
+withDefaults(defineProps<Props>(), {})
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -18,16 +21,15 @@ const updateValue = (e: Event) => {
 </script>
 
 <template>
-  <select 
-  :value="modelValue"
-  @input="updateValue"
-  :name="name"
-  class="bg-blue-50 border border-blue-300 text-blue-900 text-sm rounded-lg focus:ring-gray-500 focus:border-gray-500 block w-full p-2.5"
+  <select
+    :value="modelValue"
+    @input="updateValue"
+    :name="name"
+    class="block w-full rounded-lg border border-blue-300 bg-blue-50 p-2.5 text-sm text-blue-900 focus:border-gray-500 focus:ring-gray-500"
   >
-  <option disabled hidden value="">Seleccione un trayecto</option>
-  <option value="1">Trayecto 1</option>
-  <option value="2">Trayecto 2</option>
-  <option value="3">Trayecto 3</option>
-  <option value="4">Trayecto 4</option>
+    <option disabled hidden value="">{{ placeholder }}</option>
+    <template v-for="option in options" :key="option.value">
+      <option :value="option.value">{{ option.name }}</option>
+    </template>
   </select>
 </template>

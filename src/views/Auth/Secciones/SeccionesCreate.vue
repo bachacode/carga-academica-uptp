@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive, computed, onMounted } from 'vue'
+import { reactive, computed } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import { useVuelidate } from '@vuelidate/core'
 import {
@@ -25,7 +25,9 @@ const formData = reactive<seccionType>({
   trayecto: '',
   estudiantes: ''
 })
-const isSeccionTaken = computed(() => ((value: string) => !store.uniqueKeysList?.codigo.includes(value)))
+const isSeccionTaken = computed(
+  () => (value: string) => !store.uniqueKeysList?.codigo.includes(value)
+)
 const isUnique = helpers.withAsync(isSeccionTaken.value, () => formData.codigo)
 const rules = computed(() => {
   return {
@@ -50,6 +52,14 @@ const rules = computed(() => {
     }
   }
 })
+
+const trayectoOptions = reactive([
+  { value: 1, name: 'Trayecto 1' },
+  { value: 2, name: 'Trayecto 2' },
+  { value: 3, name: 'Trayecto 3' },
+  { value: 4, name: 'Trayecto 4' }
+])
+
 const v$ = useVuelidate(rules, formData)
 
 const submitData = async () => {
@@ -62,35 +72,48 @@ const submitData = async () => {
 
 <template>
   <AuthLayout>
-        <FormComponent submit-text="Crear Sección" @form-submit="submitData">
-          <template #inputs>
-            <InputField label="Codigo" name="codigo">
-              <template #InputField
-                ><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo" placeholder="i11"
-              /></template>
-              <template #InputError
-                ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
-              /></template>
-            </InputField>
-            <InputField type="number" label="Trayecto" name="trayecto">
-              <template #InputField
-                ><InputSelect name="trayecto" v-model="formData.trayecto"
-              /></template>
-              <template #InputError
-                ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
-              /></template>
-            </InputField>
-            <InputField type="number" label="Estudiantes" name="estudiantes">
-              <template #InputField
-                ><InputComponent v-maska data-maska="###" name="estudiantes" v-model.number="formData.estudiantes"
-              /></template>
-              <template #InputError
-                ><InputError
-                  v-if="v$.estudiantes.$error"
-                  :message="v$.estudiantes.$errors[0]?.$message"
-              /></template>
-            </InputField>
-          </template>
-        </FormComponent>
+    <FormComponent submit-text="Crear Sección" @form-submit="submitData">
+      <template #inputs>
+        <InputField label="Codigo" name="codigo">
+          <template #InputField
+            ><InputComponent
+              v-maska
+              data-maska="i##"
+              name="codigo"
+              v-model="formData.codigo"
+              placeholder="i11"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+          /></template>
+        </InputField>
+        <InputField type="number" label="Trayecto" name="trayecto">
+          <template #InputField
+            ><InputSelect
+              :options="trayectoOptions"
+              placeholder="Seleccione un trayecto"
+              name="trayecto"
+              v-model="formData.trayecto"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+          /></template>
+        </InputField>
+        <InputField type="number" label="Estudiantes" name="estudiantes">
+          <template #InputField
+            ><InputComponent
+              v-maska
+              data-maska="###"
+              name="estudiantes"
+              v-model.number="formData.estudiantes"
+          /></template>
+          <template #InputError
+            ><InputError
+              v-if="v$.estudiantes.$error"
+              :message="v$.estudiantes.$errors[0]?.$message"
+          /></template>
+        </InputField>
+      </template>
+    </FormComponent>
   </AuthLayout>
 </template>

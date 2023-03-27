@@ -21,7 +21,7 @@ const theadColumns = [
     isAsc: false
   },
   {
-    name: 'Periodos',
+    name: 'Periodo',
     isAsc: false
   },
   {

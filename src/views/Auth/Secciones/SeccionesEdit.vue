@@ -18,6 +18,7 @@ import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import { helpers } from '@vuelidate/validators'
 import FormComponent from '@/components/Containers/FormComponent.vue'
+import InputSelect from '@/components/InputSelect.vue'
 const store = useSeccionStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
@@ -57,6 +58,13 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, formData)
 
+const trayectoOptions = reactive([
+  { value: 1, name: 'Trayecto 1' },
+  { value: 2, name: 'Trayecto 2' },
+  { value: 3, name: 'Trayecto 3' },
+  { value: 4, name: 'Trayecto 4' }
+])
+
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
@@ -78,34 +86,38 @@ onMounted(async () => {
 <template>
   <AuthLayout>
     <FormComponent submit-text="Editar Sección" @form-submit="submitData">
-          <template #inputs>
-            <InputField label="Codigo" name="codigo">
-              <template #InputField
-                ><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo"
-              /></template>
-              <template #InputError
-                ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
-              /></template>
-            </InputField>
-            <InputField type="number" label="Trayecto" name="trayecto">
-              <template #InputField
-                ><InputComponent name="trayecto" v-model.number="formData.trayecto"
-              /></template>
-              <template #InputError
-                ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
-              /></template>
-            </InputField>
-            <InputField type="number" label="Estudiantes" name="estudiantes">
-              <template #InputField
-                ><InputComponent name="estudiantes" v-model.number="formData.estudiantes"
-              /></template>
-              <template #InputError
-                ><InputError
-                  v-if="v$.estudiantes.$error"
-                  :message="v$.estudiantes.$errors[0]?.$message"
-              /></template>
-            </InputField>
-          </template>
+      <template #inputs>
+        <InputField label="Codigo" name="codigo">
+          <template #InputField
+            ><InputComponent v-maska data-maska="i##" name="codigo" v-model="formData.codigo"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+          /></template>
+        </InputField>
+        <InputField label="Trayecto" name="trayecto">
+          <template #InputField
+            ><InputSelect
+              :options="trayectoOptions"
+              placeholder="Seleccione un trayecto"
+              name="trayecto"
+              v-model="formData.trayecto"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+          /></template>
+        </InputField>
+        <InputField label="Estudiantes" name="estudiantes">
+          <template #InputField
+            ><InputComponent name="estudiantes" v-model.number="formData.estudiantes"
+          /></template>
+          <template #InputError
+            ><InputError
+              v-if="v$.estudiantes.$error"
+              :message="v$.estudiantes.$errors[0]?.$message"
+          /></template>
+        </InputField>
+      </template>
     </FormComponent>
   </AuthLayout>
 </template>
