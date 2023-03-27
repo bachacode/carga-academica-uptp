@@ -67,9 +67,9 @@ const rules = computed(() => {
 })
 
 const tags = computed<optionType[] | undefined>(() => {
-  return saberes.data?.map((record) => {
+  return saberes.filteredData?.map((record: any) => {
     return {
-      name: record.codigo + ' - ' + record.materia + ' - Periodo ' + record.periodo,
+      name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo,
       value: record.id,
       isActive: false
     }

@@ -4,6 +4,7 @@ import { useAlertStore } from './alert'
 import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
 import type { Record } from 'pocketbase'
+import type { relationsType } from '@/components/MultiSelect.vue'
 
 export type alertMessages = {
   create: string
@@ -74,7 +75,7 @@ export function createCrudStore<
     }
 
     async function sync(father: IData) {
-      relations?.forEach((relation: string) => {
+      relations?.forEach(async (relation: string) => {
         father[relation].forEach(async (childId: string) => {
           const relatedRecord = await pb
             .collection(relation)
@@ -87,6 +88,19 @@ export function createCrudStore<
               .catch((err) => console.log(err.data))
           }
         })
+      })
+    }
+
+    async function deSync(fatherId: string, relations: relationsType) {
+      relations.removed.forEach( async (relation) => {
+        const relatedRecord = await pb
+            .collection(relations.table)
+            .getOne(relation, { $autoCancel: false })
+            relatedRecord[collectionName].splice(relatedRecord[collectionName].indexOf(fatherId), 1)
+            await pb
+            .collection(relations.table)
+            .update(relation, relatedRecord, { $autoCancel: false })
+            .catch((err) => console.log(err.data))
       })
     }
 
@@ -164,7 +178,8 @@ export function createCrudStore<
       searchQuery,
       uniqueKeysList,
       defaultRecordKeys,
-      sync
+      sync,
+      deSync
     }
   })
 }

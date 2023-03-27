@@ -16,7 +16,7 @@ import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import MultiSelect from '@/components/MultiSelect.vue'
-import type { optionType } from '@/components/MultiSelect.vue'
+import type { optionType, relationsType } from '@/components/MultiSelect.vue'
 import { useSaberStore } from '@/stores/saberes'
 const store = useProfesorStore()
 const saberes = useSaberStore()
@@ -30,6 +30,12 @@ const formData = reactive<profesorType>({
   saberes: [],
   telefono: '',
   correo: ''
+})
+
+const relations = reactive<relationsType>({
+  table: 'saberes',
+  stored: [],
+  removed: []
 })
 
 const rules = computed(() => {
@@ -77,16 +83,19 @@ const removeTag = (tag: optionType) => {
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error) {
+    await store.deSync(id.value, relations)
     await update(id.value, formData)
   }
 }
 
 const tags = computed<optionType[] | undefined>(() => {
-  return saberes.data?.map((record) => {
-    return {
-      name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo,
-      value: record.id,
-      isActive: false
+  return saberes.filteredData?.map((record: any) => {
+    {
+      return {
+        name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo,
+        value: record.id,
+        isActive: formData.saberes.includes(record.id) ? true : false
+      }
     }
   })
 })
@@ -97,6 +106,9 @@ onMounted(async () => {
     await fetchOne(router.currentRoute.value.params.id)
     if (store.singleData) {
       Object.assign(formData, store.singleData)
+      formData.saberes?.forEach((saber) => {
+        relations.stored.push(saber)
+      })
     }
   }
 })
@@ -160,6 +172,7 @@ onMounted(async () => {
             ><MultiSelect
               @remove-tag="removeTag"
               :tags="tags"
+              :model-relations="relations"
               name="saberes"
               :selected-options="formData.saberes"
           /></template>

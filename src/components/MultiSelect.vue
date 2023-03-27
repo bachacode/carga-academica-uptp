@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
-import { vOnClickOutside } from '@vueuse/components'
+import { UseTimeAgo, vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
 
 export type optionType = {
@@ -9,13 +9,18 @@ export type optionType = {
   isActive: boolean
 }
 
+export type relationsType = {
+  table: string, stored: Array<string>, removed: Array<string>
+}
+
 interface Props {
   name: string
   selectedOptions: Array<string> | undefined | null
+  modelRelations?: relationsType
   tags?: optionType[]
 }
-
 defineProps<Props>()
+
 defineEmits(['removeTag'])
 const dropdown = ref(false)
 
@@ -31,14 +36,22 @@ const open = () => {
   dropdown.value = true
 }
 
-const toggleTag = (tag: optionType, selectedOptions: any) => {
+const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relationsType) => {
   tag.isActive = !tag.isActive
   if (tag.isActive) {
     selectedOptions.push(tag.value)
   } else if (!tag.isActive) {
     selectedOptions.splice(selectedOptions.indexOf(tag.value), 1)
   }
+  if(modelRelations) {
+    if (modelRelations.stored.includes(tag.value) && !modelRelations.removed.includes(tag.value) )
+    {
+      modelRelations.removed.push(tag.value)
+    } else
+    modelRelations.removed.splice(selectedOptions.indexOf(tag.value), 1)
+  }
 }
+
 </script>
 
 <template>
@@ -82,10 +95,10 @@ const toggleTag = (tag: optionType, selectedOptions: any) => {
           :class="`${
             !tag.isActive ? 'hover:bg-green-300' : 'hover:bg-red-300'
           } cursor-pointer rounded-md py-1 px-2`"
-          @click.stop="toggleTag(tag, selectedOptions)"
+          @click.stop="toggleTag(tag, selectedOptions, modelRelations)"
         >
           <span>{{ tag.name }}</span>
-          <font-awesome-icon icon="check" v-if="tag.isActive" class="absolute right-0 pr-1" />
+          <font-awesome-icon icon="check" v-if="tag.isActive" class="absolute right-0 inset-y-2 pr-1" />
         </li>
       </ul>
     </div>
