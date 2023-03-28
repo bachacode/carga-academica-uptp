@@ -30,12 +30,12 @@ const theadColumns = [
   }
 ]
 
-function create() {
+async function create() {
   router.push({ name: 'saberes.create' })
 }
 
-const edit = (id: string) => {
-  router.push({ name: 'saberes.edit', params: { id } })
+const edit = async (id: string) => {
+  await router.push({ name: 'saberes.edit', params: { id } })
 }
 
 const sortTable = async (column: string) => {

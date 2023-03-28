@@ -32,6 +32,38 @@ const updateValue = (e: Event) => {
 </script>
 
 <template>
+  <!-- Saberes Modal -->
+  <template v-for="record in filteredData">
+  <Teleport to="#modal">
+    <input type="checkbox" :id="record.id" class="modal-toggle" />
+    <div class="modal">
+      <div class="modal-box">
+        <div class="flex justify-between">
+          <h3 class="text-lg font-bold">Saberes del profesor {{ `${record.nombre} ${record.apellido}` }}</h3>
+          <label 
+          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+          :for="record.id"
+          >X</label>
+        </div>
+        <div v-if="!record.expand.saberes">
+        ¡Este profesor no tiene saberes asignados!
+        </div>
+        <table v-if="record && record.expand.saberes" class="mb-6 w-full border border-blue-700">
+          <thead>
+            <th class="bg-blue-300 py-2 pl-2">Codigo</th>
+            <th class="bg-blue-300 py-2 pl-2">Materia</th>
+          </thead>
+          <tbody class="text-center">
+            <tr class="bg-white odd:bg-gray-200" v-for="saber in record.expand.saberes">
+              <td>{{ saber.codigo }}</td>
+              <td>{{ saber.materia }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </Teleport>
+</template>
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
     <div class="flex justify-between border-b p-3">
@@ -94,12 +126,13 @@ const updateValue = (e: Event) => {
             <template v-for="column in columns" :key="column.name">
               <template v-if="Array.isArray(record[column.name.toLowerCase()])">
                 <td>
-                  <button
+                  <label
+                    :for="record.id"
                     class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
                     @click="$emit('relation', record.id)"
                   >
                     {{ `Ver ${column.name}` }}
-                  </button>
+                  </label>
                 </td>
               </template>
               <template v-else>

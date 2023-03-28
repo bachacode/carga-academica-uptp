@@ -26,8 +26,8 @@ const sortTable = async (column: string) => {
   await fetchAll(column)
 }
 
-function create() {
-  router.push({ name: 'secciones.create' })
+async function create() {
+  await router.push({ name: 'secciones.create' })
 }
 
 const edit = async (id: string) => {

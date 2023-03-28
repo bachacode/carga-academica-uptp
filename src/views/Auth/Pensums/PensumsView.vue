@@ -4,6 +4,7 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 //@ts-ignore
 import html2pdf from 'html2pdf.js'
 import { ref, onMounted } from 'vue'
+import LoadingCircle from '@/components/LoadingCircle.vue'
 const store = useSaberStore()
 const table = ref()
 const options = ref({
@@ -45,6 +46,8 @@ onMounted(async () => {
       </button>
       <div ref="table" class="rounded-xl bg-white px-8 pb-6 pt-3 shadow">
         <h5 class="m-3 border-b border-gray-300 font-bold uppercase text-gray-600">PENSUM</h5>
+        <LoadingCircle :is-loaded="!store.data" />
+        <template v-if="store.data">
         <template v-for="trayecto in 4" :key="trayecto">
           <table v-for="periodo in 3" :key="periodo" class="mb-6 w-full border border-blue-700">
             <thead>
@@ -83,6 +86,7 @@ onMounted(async () => {
             </tbody>
           </table>
         </template>
+      </template>
       </div>
       <!-- <TableComponent
         v-model="searchQuery"

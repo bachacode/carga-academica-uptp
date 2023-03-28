@@ -54,7 +54,10 @@ export function createCrudStore<
     }
 
     async function fetchOne(id: string) {
-      singleData.value = await pb.collection(collectionName).getOne<IData>(id)
+      singleData.value = await pb.collection(collectionName).getOne<IData>(id, {
+        sort: '-created',
+        expand: relations?.toString()
+      })
     }
 
     async function save(data: dataType) {
