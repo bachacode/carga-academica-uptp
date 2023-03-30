@@ -30,7 +30,7 @@ const formData = reactive<registerUserType>({
   cedula: '',
   telefono: '',
   cargo: '',
-  rol: '',
+  rol: 'Operador',
   status: true,
 })
 const isUsernameTaken = computed(
@@ -102,10 +102,6 @@ const cargoOptions = reactive([
   { value: 'Profesor', name: 'Profesor' },
   { value: 'Administracion', name: 'Administracion' },
 ])
-const rolOptions = reactive([
-  { value: 'Administrador', name: 'Administrador' },
-  { value: 'Operador', name: 'Operador' },
-])
 
 const v$ = useVuelidate(rules, formData)
 
@@ -121,6 +117,7 @@ const submitData = async () => {
   <AuthLayout>
     <FormComponent submit-text="Registrar Usuario" @form-submit="submitData">
       <template #inputs>
+        <!-- Nombre de usuario -->
         <InputField label="Nombre de usuario" name="username">
             <template #InputField
               ><InputComponent name="username" v-model.trim="formData.username"
@@ -129,6 +126,8 @@ const submitData = async () => {
               ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
             /></template>
           </InputField>
+
+          <!-- Contraseña -->
           <InputField label="Contraseña" name="password">
             <template #InputField
               ><InputComponent type="password" name="password" v-model.trim="formData.password"
@@ -137,6 +136,8 @@ const submitData = async () => {
               ><InputError v-if="v$.password.$error" :message="v$.password.$errors[0]?.$message"
             /></template>
           </InputField>
+
+          <!-- Confirmar contraseña -->
           <InputField label="Confirmar Contraseña" name="passwordConfirm">
             <template #InputField
               ><InputComponent type="password" name="passwordConfirm" v-model.trim="formData.passwordConfirm"
@@ -145,6 +146,7 @@ const submitData = async () => {
               ><InputError v-if="v$.passwordConfirm.$error" :message="v$.passwordConfirm.$errors[0]?.$message"
             /></template>
           </InputField>
+          
         <!-- Nombre + Apellido -->
         <div class="flex w-full space-x-2">
           <!-- Nombre -->
@@ -194,20 +196,6 @@ const submitData = async () => {
           /></template>
           <template #InputError
             ><InputError v-if="v$.cargo.$error" :message="v$.cargo.$errors[0]?.$message"
-          /></template>
-        </InputField>
-
-        <!-- Rol -->
-        <InputField label="Rol" name="rol">
-          <template #InputField
-            ><InputSelect
-              :options="rolOptions"
-              placeholder="Seleccione un rol"
-              name="rol"
-              v-model="formData.rol"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.rol.$error" :message="v$.rol.$errors[0]?.$message"
           /></template>
         </InputField>
 
