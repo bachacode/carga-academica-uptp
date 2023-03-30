@@ -7,7 +7,8 @@ import {
   numeric,
   maxLength,
   minLength,
-  email
+  email,
+  sameAs
 } from '@vuelidate/validators'
 
 export const isUnique = (values: string[]) => (param: string) => {
@@ -22,7 +23,8 @@ const errorMessages = ref({
   maxValue: (max: number) => `El valor de este campo es de maximo ${max}`,
   minLength: (min: number) => `Este campo tiene un minimo de ${min} caracteres`,
   maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`,
-  unique: (value: string, table: string) => `Este ${value} ya existe en la tabla ${table}`
+  unique: (value: string, table: string) => `Este ${value} ya existe en la tabla ${table}`,
+  password: () => `Las contraseña no coinciden`
 })
 
 export const requiredValidation = () => {
@@ -55,4 +57,8 @@ export const maxLengthValidation = (max: number) => {
 
 export const uniqueValidation = (value: string, table: string, values: any) => {
   return helpers.withMessage(errorMessages.value.unique(value, table), isUnique(values))
+}
+
+export const passwordValidation = (value: string) => {
+  return helpers.withMessage(errorMessages.value.password, sameAs(value))
 }

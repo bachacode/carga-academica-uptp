@@ -8,9 +8,10 @@ import {
   requiredValidation,
   minLengthValidation,
   maxLengthValidation,
-  emailValidation
+  emailValidation,
+  passwordValidation
 } from '@/helpers/validationHelpers'
-import type { usuarioType } from '@/stores/usuarios'
+import type { registerUserType } from '@/stores/usuarios'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
@@ -18,9 +19,12 @@ import { helpers } from '@vuelidate/validators'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 const store = useUsuarioStore()
 const { save } = store
-const formData = reactive<usuarioType>({
+const formData = reactive<registerUserType>({
   username: '',
   email: '',
+  emailVisibility: true,
+  password: '',
+  passwordConfirm: '',
   name: '',
   apellido: '',
   cedula: '',
@@ -44,10 +48,18 @@ const cedulaIsUnique = helpers.withAsync(isCedulaTaken.value, () => formData.ced
 const rules = computed(() => {
   return {
     username: {
-      lazy: true,
       required: requiredValidation(),
       minLength: minLengthValidation(),
       unique: helpers.withMessage('¡Ya existe un usuario con ese nombre registrado!', usernameIsUnique)
+    },
+    password: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+    },
+    passwordConfirm: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      password: passwordValidation(formData.password)
     },
     email: {
       required: requiredValidation(),
@@ -115,6 +127,22 @@ const submitData = async () => {
             /></template>
             <template #InputError
               ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
+            /></template>
+          </InputField>
+          <InputField label="Contraseña" name="password">
+            <template #InputField
+              ><InputComponent type="password" name="password" v-model.trim="formData.password"
+            /></template>
+            <template #InputError
+              ><InputError v-if="v$.password.$error" :message="v$.password.$errors[0]?.$message"
+            /></template>
+          </InputField>
+          <InputField label="Confirmar Contraseña" name="passwordConfirm">
+            <template #InputField
+              ><InputComponent type="password" name="passwordConfirm" v-model.trim="formData.passwordConfirm"
+            /></template>
+            <template #InputError
+              ><InputError v-if="v$.passwordConfirm.$error" :message="v$.passwordConfirm.$errors[0]?.$message"
             /></template>
           </InputField>
         <!-- Nombre + Apellido -->

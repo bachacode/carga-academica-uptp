@@ -152,14 +152,15 @@ export function createCrudStore<
     })
 
     const uniqueKeysList = computed<uniqueKeysType>(() => {
+      let things = {}
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
-          return {
-            [uniqueKeys[index]]: data.value?.map((record) => {
+          //@ts-ignore
+          things[uniqueKeys[index]] = data.value?.map((record) => {
               return record[uniqueKeys[index]]
             })
-          } as any
         }
+        return things as any
       }
     })
 

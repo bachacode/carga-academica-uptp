@@ -4,6 +4,7 @@ import { createCrudStore } from './factory'
 export type usuarioType = {
   username: string
   email: string
+  emailVisibility: boolean
   name: string
   apellido: string
   cedula: string
@@ -11,6 +12,11 @@ export type usuarioType = {
   cargo: string
   rol: 'Administrador' | 'Operador' | '' 
   status: boolean
+}
+
+export type registerUserType = usuarioType & {
+  password: string
+  passwordConfirm: string
 }
 
 export interface IUsuario extends usuarioType, Record {
