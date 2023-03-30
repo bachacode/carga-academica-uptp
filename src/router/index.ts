@@ -74,6 +74,26 @@ const router = createRouter({
       ]
     },
     {
+      path: '/usuarios',
+      children: [
+        {
+          path: '',
+          name: 'usuarios',
+          component: () => import('@/views/Auth/Usuarios/UsuariosView.vue')
+        },
+        {
+          path: 'create',
+          name: 'usuarios.create',
+          component: () => import('@/views/Auth/Usuarios/UsuariosCreate.vue')
+        },
+        {
+          path: 'edit/:id',
+          name: 'usuarios.edit',
+          component: () => import('@/views/Auth/Usuarios/UsuariosEdit.vue')
+        }
+      ]
+    },
+    {
       path: '/pensums',
       children: [
         {
