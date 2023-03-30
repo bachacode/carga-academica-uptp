@@ -1,25 +1,33 @@
 <script setup lang="ts">
-import { useSeccionStore } from '@/stores/secciones'
+import { useUsuarioStore } from '@/stores/usuarios'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-const store = useSeccionStore()
+const store = useUsuarioStore()
 const { fetchAll, destroy, fetchOne } = store
 const { searchQuery } = storeToRefs(store)
 const theadColumns = [
   {
-    name: 'Codigo',
+    name: 'username',
     isAsc: false
   },
   {
-    name: 'Trayecto',
+    name: 'email',
     isAsc: false
   },
   {
-    name: 'Estudiantes',
+    name: 'name',
     isAsc: false
-  }
+  },
+  {
+    name: 'apellido',
+    isAsc: false
+  },
+  {
+    name: 'cedula',
+    isAsc: false
+  },
 ]
 
 const sortTable = async (column: string) => {
@@ -27,11 +35,11 @@ const sortTable = async (column: string) => {
 }
 
 async function create() {
-  await router.push({ name: 'secciones.create' })
+  await router.push({ name: 'usuarios.create' })
 }
 
 const edit = async (id: string) => {
-  await router.push({ name: 'secciones.edit', params: { id } })
+  await router.push({ name: 'usuarios.edit', params: { id } })
 }
 
 const selectItem = async (id: string) => {
@@ -53,7 +61,7 @@ async function destroyItem(id: string | undefined) {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar la sección {{ store.singleData?.codigo }}. ¿Esta seguro que desea
+          Estas a punto de borrar al usuario {{ store.singleData?.username }}. ¿Esta seguro que desea
           hacer esto?
         </p>
         <div class="modal-action items-center">
@@ -76,11 +84,11 @@ async function destroyItem(id: string | undefined) {
   <AuthLayout>
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
-        <i class="fas fa-plus-circle pr-1"></i> Crear Sección
+        <i class="fas fa-plus-circle pr-1"></i> Registrar Usuario
       </button>
       <!--Table Card-->
       <TableComponent
-        title="Secciones"
+        title="Usuarios"
         v-model="searchQuery"
         :columns="theadColumns"
         :filtered-data="store.filteredData"
