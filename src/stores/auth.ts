@@ -1,13 +1,16 @@
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { Admin, Record } from 'pocketbase'
 import { defineStore } from 'pinia'
 import router from '@/router'
 import PocketBase from 'pocketbase'
 
+type userWithRole = Admin & Record & {
+  rol: string
+}
+
 export const useAuthStore = defineStore('auth', () => {
   const pb = new PocketBase('http://localhost:8000')
-  const user = ref<Record | Admin | null>(pb.authStore.model)
-
+  const user = ref<Record | Admin | null | userWithRole>(pb.authStore.model)
   const errors = ref({
     isActive: false,
     message: 'El nombre de usuario o la contraseña son incorrectos'
@@ -19,7 +22,6 @@ export const useAuthStore = defineStore('auth', () => {
       .authWithPassword(username, password)
       .then(() => {
         router.push('dashboard')
-        console.log('You successfully logged in!')
       })
       .catch(() => {
         errors.value.isActive = true
@@ -29,14 +31,20 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
-  pb.authStore.onChange(() => {
-    user.value = pb.authStore.model
+  pb.authStore.onChange(async () => {
+    if(pb.authStore.model != null) {
+    user.value = await pb.collection('users').getOne<userWithRole>(pb.authStore.model.id)
+    }
   }, true)
 
-  function logout() {
-    pb.authStore.clear()
-    router.push('/')
+  const isAuthenticated = computed(() => {
+    return pb.authStore.isValid
+  })
+
+  async function logout() {
+    await pb.authStore.clear()
+    await router.push('/')
   }
 
-  return { pb, user, logout, login, errors }
+  return { pb, user, logout, login, errors, isAuthenticated }
 })

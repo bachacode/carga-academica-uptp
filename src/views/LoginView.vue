@@ -4,8 +4,6 @@ import { ref } from 'vue'
 import InputError from '@/components/InputError.vue'
 import InputField from '@/components/InputField.vue'
 import InputComponent from '@/components/InputComponent.vue'
-import { onBeforeMount } from 'vue'
-import router from '@/router'
 
 const auth = useAuthStore()
 const username = ref('')
@@ -14,12 +12,6 @@ const password = ref('')
 const login = async () => {
   await auth.login(username.value, password.value)
 }
-
-onBeforeMount(() => {
-  if (auth.pb.authStore.isValid) {
-    router.push('dashboard')
-  }
-})
 </script>
 
 <template>

@@ -2,11 +2,17 @@
 import { RouterView } from 'vue-router'
 import router from './router'
 import { useAuthStore } from './stores/auth'
-const { pb } = useAuthStore()
+const store = useAuthStore()
 
 router.beforeEach(async (to) => {
-  if (!pb.authStore.isValid && to.name !== 'login') {
+  if (!store.pb.authStore.isValid && to.name !== 'login'){
     return { name: 'login' }
+  }
+  if(store.pb.authStore.isValid && to.name === 'login'){
+    return { name: 'dashboard' }
+  }
+  if(store.user?.rol !== 'Administrador' && to.path === '/usuarios' ) {
+    return { name: 'dashboard' }
   }
 })
 </script>
