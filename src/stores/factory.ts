@@ -152,11 +152,10 @@ export function createCrudStore<
     })
 
     const uniqueKeysList = computed<uniqueKeysType>(() => {
-      if (!data.value) return
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
           return {
-            [uniqueKeys[index]]: data.value.map((record) => {
+            [uniqueKeys[index]]: data.value?.map((record) => {
               return record[uniqueKeys[index]]
             })
           } as any

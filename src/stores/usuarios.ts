@@ -9,7 +9,7 @@ export type usuarioType = {
   cedula: string
   telefono: string
   cargo: string
-  rol: 'Administrador' | 'Operador'
+  rol: 'Administrador' | 'Operador' | '' 
   status: boolean
 }
 
