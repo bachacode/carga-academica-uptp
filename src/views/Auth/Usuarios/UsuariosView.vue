@@ -27,7 +27,7 @@ const theadColumns = [
   {
     name: 'cedula',
     isAsc: false
-  },
+  }
 ]
 
 const sortTable = async (column: string) => {
@@ -61,8 +61,8 @@ async function destroyItem(id: string | undefined) {
       <div class="modal-box">
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
-          Estas a punto de borrar al usuario {{ store.singleData?.username }}. ¿Esta seguro que desea
-          hacer esto?
+          Estas a punto de borrar al usuario {{ store.singleData?.username }}. ¿Esta seguro que
+          desea hacer esto?
         </p>
         <div class="modal-action items-center">
           <label

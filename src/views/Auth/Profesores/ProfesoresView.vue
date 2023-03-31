@@ -4,7 +4,6 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-import LoadingCircle from '@/components/LoadingCircle.vue'
 const store = useProfesorStore()
 const { fetchAll, destroy, fetchOne } = store
 const { searchQuery } = storeToRefs(store)
@@ -59,7 +58,6 @@ async function destroyItem(id: string | undefined) {
     await destroy(id)
   }
 }
-
 </script>
 
 <template>
@@ -69,22 +67,30 @@ async function destroyItem(id: string | undefined) {
     <div class="modal">
       <div class="modal-box">
         <div class="flex justify-between">
-          <h3 class="text-lg font-bold">Saberes del profesor {{ `${store.singleData?.nombre} ${store.singleData?.apellido}` }}</h3>
-          <label 
-          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-          for="saberes-modal"
-          >X</label>
+          <h3 class="text-lg font-bold">
+            Saberes del profesor {{ `${store.singleData?.nombre} ${store.singleData?.apellido}` }}
+          </h3>
+          <label
+            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+            for="saberes-modal"
+            >X</label
+          >
         </div>
-        <div>
-        ¡Este profesor no tiene saberes asignados!
-        </div>
-        <table v-if="store.singleData && store.singleData.expand.saberes" class="mb-6 w-full border border-blue-700">
+        <div>¡Este profesor no tiene saberes asignados!</div>
+        <table
+          v-if="store.singleData && store.singleData.expand.saberes"
+          class="mb-6 w-full border border-blue-700"
+        >
           <thead>
             <th class="bg-blue-300 py-2 pl-2">Codigo</th>
             <th class="bg-blue-300 py-2 pl-2">Materia</th>
           </thead>
           <tbody class="text-center">
-            <tr class="bg-white odd:bg-gray-200" v-for="saber in store.singleData?.expand.saberes">
+            <tr
+              class="bg-white odd:bg-gray-200"
+              v-for="saber in store.singleData?.expand.saberes"
+              :key="saber.codigo"
+            >
               <td>{{ saber.codigo }}</td>
               <td>{{ saber.materia }}</td>
             </tr>

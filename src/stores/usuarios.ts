@@ -10,7 +10,7 @@ export type usuarioType = {
   cedula: string
   telefono: string
   cargo: string
-  rol: 'Administrador' | 'Operador' | '' 
+  rol: 'Administrador' | 'Operador' | ''
   status: boolean
 }
 
@@ -31,7 +31,6 @@ export type uniqueKeysType = {
   username: Array<string>
   email: Array<string>
   cedula: Array<string>
-
 }
 
 const successMessages = {
@@ -52,5 +51,5 @@ export const useUsuarioStore = createCrudStore<usuarioType, IUsuario, uniqueKeys
   collectionName: 'users',
   success: successMessages,
   error: errorMessages,
-  uniqueKeys: ['username', 'email', 'cedula'],
+  uniqueKeys: ['username', 'email', 'cedula']
 })

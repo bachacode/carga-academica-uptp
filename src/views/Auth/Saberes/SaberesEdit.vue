@@ -29,7 +29,8 @@ const formData = reactive<saberType>({
   periodo: null,
   creditos: null
 })
-const isTaken = (value: never) => !store.uniqueKeysList?.codigo.includes(value) || store.singleData?.codigo == value
+const isTaken = (value: never) =>
+  !store.uniqueKeysList?.codigo.includes(value) || store.singleData?.codigo == value
 const isUnique = helpers.withAsync(isTaken, () => formData.codigo)
 const rules = computed(() => {
   return {

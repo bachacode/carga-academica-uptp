@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
-import { UseTimeAgo, vOnClickOutside } from '@vueuse/components'
+import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
 
 export type optionType = {
@@ -10,7 +10,9 @@ export type optionType = {
 }
 
 export type relationsType = {
-  table: string, stored: Array<string>, removed: Array<string>
+  table: string
+  stored: Array<string>
+  removed: Array<string>
 }
 
 interface Props {
@@ -43,15 +45,12 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
   } else if (!tag.isActive) {
     selectedOptions.splice(selectedOptions.indexOf(tag.value), 1)
   }
-  if(modelRelations) {
-    if (modelRelations.stored.includes(tag.value) && !modelRelations.removed.includes(tag.value) )
-    {
+  if (modelRelations) {
+    if (modelRelations.stored.includes(tag.value) && !modelRelations.removed.includes(tag.value)) {
       modelRelations.removed.push(tag.value)
-    } else
-    modelRelations.removed.splice(selectedOptions.indexOf(tag.value), 1)
+    } else modelRelations.removed.splice(selectedOptions.indexOf(tag.value), 1)
   }
 }
-
 </script>
 
 <template>
@@ -98,7 +97,11 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
           @click.stop="toggleTag(tag, selectedOptions, modelRelations)"
         >
           <span>{{ tag.name }}</span>
-          <font-awesome-icon icon="check" v-if="tag.isActive" class="absolute right-0 inset-y-2 pr-1" />
+          <font-awesome-icon
+            icon="check"
+            v-if="tag.isActive"
+            class="absolute inset-y-2 right-0 pr-1"
+          />
         </li>
       </ul>
     </div>

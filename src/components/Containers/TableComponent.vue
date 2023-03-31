@@ -33,37 +33,42 @@ const updateValue = (e: Event) => {
 
 <template>
   <!-- Saberes Modal -->
-  <template v-for="record in filteredData">
-  <Teleport to="#modal">
-    <input type="checkbox" :id="record.id" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <div class="flex justify-between">
-          <h3 class="text-lg font-bold">Saberes del profesor {{ `${record.nombre} ${record.apellido}` }}</h3>
-          <label 
-          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-          :for="record.id"
-          >X</label>
+  <template v-for="record in filteredData" :key="record.id">
+    <Teleport to="#modal">
+      <input type="checkbox" :id="record.id" class="modal-toggle" />
+      <div class="modal">
+        <div class="modal-box">
+          <div class="flex justify-between">
+            <h3 class="text-lg font-bold">
+              Saberes del profesor {{ `${record.nombre} ${record.apellido}` }}
+            </h3>
+            <label
+              class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+              :for="record.id"
+              >X</label
+            >
+          </div>
+          <div v-if="!record.expand.saberes">¡Este profesor no tiene saberes asignados!</div>
+          <table v-if="record && record.expand.saberes" class="mb-6 w-full border border-blue-700">
+            <thead>
+              <th class="bg-blue-300 py-2 pl-2">Codigo</th>
+              <th class="bg-blue-300 py-2 pl-2">Materia</th>
+            </thead>
+            <tbody class="text-center">
+              <tr
+                class="bg-white odd:bg-gray-200"
+                v-for="saber in record.expand.saberes"
+                :key="saber.codigo"
+              >
+                <td>{{ saber.codigo }}</td>
+                <td>{{ saber.materia }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div v-if="!record.expand.saberes">
-        ¡Este profesor no tiene saberes asignados!
-        </div>
-        <table v-if="record && record.expand.saberes" class="mb-6 w-full border border-blue-700">
-          <thead>
-            <th class="bg-blue-300 py-2 pl-2">Codigo</th>
-            <th class="bg-blue-300 py-2 pl-2">Materia</th>
-          </thead>
-          <tbody class="text-center">
-            <tr class="bg-white odd:bg-gray-200" v-for="saber in record.expand.saberes">
-              <td>{{ saber.codigo }}</td>
-              <td>{{ saber.materia }}</td>
-            </tr>
-          </tbody>
-        </table>
       </div>
-    </div>
-  </Teleport>
-</template>
+    </Teleport>
+  </template>
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
     <div class="flex justify-between border-b p-3">
@@ -136,7 +141,9 @@ const updateValue = (e: Event) => {
                 </td>
               </template>
               <template v-else>
-                <td class="min-w-[140px] max-w-[220px] break-words whitespace-normal">{{ record[column.name.toLowerCase()] }}</td>
+                <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                  {{ record[column.name.toLowerCase()] }}
+                </td>
               </template>
             </template>
             <td class="space-x-3">

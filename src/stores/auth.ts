@@ -4,9 +4,10 @@ import { defineStore } from 'pinia'
 import router from '@/router'
 import PocketBase from 'pocketbase'
 
-type userWithRole = Admin & Record & {
-  rol: string
-}
+type userWithRole = Admin &
+  Record & {
+    rol: string
+  }
 
 export const useAuthStore = defineStore('auth', () => {
   const pb = new PocketBase('http://localhost:8000')
@@ -32,8 +33,8 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   pb.authStore.onChange(async () => {
-    if(pb.authStore.model != null) {
-    user.value = await pb.collection('users').getOne<userWithRole>(pb.authStore.model.id)
+    if (pb.authStore.model != null) {
+      user.value = await pb.collection('users').getOne<userWithRole>(pb.authStore.model.id)
     }
   }, true)
 

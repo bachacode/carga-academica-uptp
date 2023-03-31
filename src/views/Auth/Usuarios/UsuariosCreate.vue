@@ -31,7 +31,7 @@ const formData = reactive<registerUserType>({
   telefono: '',
   cargo: '',
   rol: 'Operador',
-  status: true,
+  status: true
 })
 const isUsernameTaken = (value: string) => !store.uniqueKeysList?.username.includes(value)
 
@@ -47,11 +47,14 @@ const rules = computed(() => {
     username: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      unique: helpers.withMessage('¡Ya existe un usuario con ese nombre registrado!', usernameIsUnique)
+      unique: helpers.withMessage(
+        '¡Ya existe un usuario con ese nombre registrado!',
+        usernameIsUnique
+      )
     },
     password: {
       required: requiredValidation(),
-      minLength: minLengthValidation(8),
+      minLength: minLengthValidation(8)
     },
     passwordConfirm: {
       required: requiredValidation(),
@@ -79,7 +82,10 @@ const rules = computed(() => {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40),
-      unique: helpers.withMessage('¡Ya existe un usuario con esa cedula registrada!', cedulaIsUnique)
+      unique: helpers.withMessage(
+        '¡Ya existe un usuario con esa cedula registrada!',
+        cedulaIsUnique
+      )
     },
     telefono: {
       required: requiredValidation(),
@@ -87,17 +93,17 @@ const rules = computed(() => {
       maxLength: maxLengthValidation(40)
     },
     cargo: {
-      required: requiredValidation(),
+      required: requiredValidation()
     },
     rol: {
-      required: requiredValidation(),
-    },
+      required: requiredValidation()
+    }
   }
 })
 
 const cargoOptions = reactive([
   { value: 'Profesor', name: 'Profesor' },
-  { value: 'Administracion', name: 'Administracion' },
+  { value: 'Administracion', name: 'Administracion' }
 ])
 
 const v$ = useVuelidate(rules, formData)
@@ -116,34 +122,39 @@ const submitData = async () => {
       <template #inputs>
         <!-- Nombre de usuario -->
         <InputField label="Nombre de usuario" name="username">
-            <template #InputField
-              ><InputComponent name="username" v-model.trim="formData.username"
-            /></template>
-            <template #InputError
-              ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
-            /></template>
-          </InputField>
+          <template #InputField
+            ><InputComponent name="username" v-model.trim="formData.username"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
+          /></template>
+        </InputField>
 
-          <!-- Contraseña -->
-          <InputField label="Contraseña" name="password">
-            <template #InputField
-              ><InputComponent type="password" name="password" v-model.trim="formData.password"
-            /></template>
-            <template #InputError
-              ><InputError v-if="v$.password.$error" :message="v$.password.$errors[0]?.$message"
-            /></template>
-          </InputField>
+        <!-- Contraseña -->
+        <InputField label="Contraseña" name="password">
+          <template #InputField
+            ><InputComponent type="password" name="password" v-model.trim="formData.password"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.password.$error" :message="v$.password.$errors[0]?.$message"
+          /></template>
+        </InputField>
 
-          <!-- Confirmar contraseña -->
-          <InputField label="Confirmar Contraseña" name="passwordConfirm">
-            <template #InputField
-              ><InputComponent type="password" name="passwordConfirm" v-model.trim="formData.passwordConfirm"
-            /></template>
-            <template #InputError
-              ><InputError v-if="v$.passwordConfirm.$error" :message="v$.passwordConfirm.$errors[0]?.$message"
-            /></template>
-          </InputField>
-          
+        <!-- Confirmar contraseña -->
+        <InputField label="Confirmar Contraseña" name="passwordConfirm">
+          <template #InputField
+            ><InputComponent
+              type="password"
+              name="passwordConfirm"
+              v-model.trim="formData.passwordConfirm"
+          /></template>
+          <template #InputError
+            ><InputError
+              v-if="v$.passwordConfirm.$error"
+              :message="v$.passwordConfirm.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
         <!-- Nombre + Apellido -->
         <div class="flex w-full space-x-2">
           <!-- Nombre -->
@@ -212,9 +223,7 @@ const submitData = async () => {
 
         <!-- Correo -->
         <InputField type="email" label="Correo" name="email">
-          <template #InputField
-            ><InputComponent name="email" v-model="formData.email"
-          /></template>
+          <template #InputField><InputComponent name="email" v-model="formData.email" /></template>
           <template #InputError
             ><InputError v-if="v$.email.$error" :message="v$.email.$errors[0]?.$message"
           /></template>

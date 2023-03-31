@@ -7,7 +7,6 @@ import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import {
   requiredValidation,
-  passwordValidation,
   minLengthValidation,
   maxLengthValidation,
   emailValidation
@@ -21,7 +20,7 @@ import InputSelect from '@/components/InputSelect.vue'
 const store = useUsuarioStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
-  const formData = reactive<editUserType>({
+const formData = reactive<editUserType>({
   username: '',
   email: '',
   emailVisibility: true,
@@ -31,14 +30,16 @@ const id = ref<string>('')
   telefono: '',
   cargo: '',
   rol: 'Operador',
-  status: true,
-
+  status: true
 })
-const isUsernameTaken = (value: string) => !store.uniqueKeysList?.username.includes(value) || store.singleData?.username == value
+const isUsernameTaken = (value: string) =>
+  !store.uniqueKeysList?.username.includes(value) || store.singleData?.username == value
 
-const isEmailTaken = (value: string) => !store.uniqueKeysList?.email.includes(value) || store.singleData?.email == value
+const isEmailTaken = (value: string) =>
+  !store.uniqueKeysList?.email.includes(value) || store.singleData?.email == value
 
-const isCedulaTaken = (value: string) => !store.uniqueKeysList?.cedula.includes(value) || store.singleData?.cedula == value
+const isCedulaTaken = (value: string) =>
+  !store.uniqueKeysList?.cedula.includes(value) || store.singleData?.cedula == value
 
 const usernameIsUnique = helpers.withAsync(isUsernameTaken, () => formData.username)
 const emailIsUnique = helpers.withAsync(isEmailTaken, () => formData.email)
@@ -48,7 +49,10 @@ const rules = computed(() => {
     username: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      unique: helpers.withMessage('¡Ya existe un usuario con ese nombre registrado!', usernameIsUnique)
+      unique: helpers.withMessage(
+        '¡Ya existe un usuario con ese nombre registrado!',
+        usernameIsUnique
+      )
     },
     email: {
       required: requiredValidation(),
@@ -71,7 +75,10 @@ const rules = computed(() => {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40),
-      unique: helpers.withMessage('¡Ya existe un usuario con esa cedula registrada!', cedulaIsUnique)
+      unique: helpers.withMessage(
+        '¡Ya existe un usuario con esa cedula registrada!',
+        cedulaIsUnique
+      )
     },
     telefono: {
       required: requiredValidation(),
@@ -79,8 +86,8 @@ const rules = computed(() => {
       maxLength: maxLengthValidation(40)
     },
     cargo: {
-      required: requiredValidation(),
-    },
+      required: requiredValidation()
+    }
   }
 })
 
@@ -88,7 +95,7 @@ const v$ = useVuelidate(rules, formData)
 
 const cargoOptions = reactive([
   { value: 'Profesor', name: 'Profesor' },
-  { value: 'Administracion', name: 'Administracion' },
+  { value: 'Administracion', name: 'Administracion' }
 ])
 
 async function submitData() {
@@ -115,14 +122,14 @@ onMounted(async () => {
       <template #inputs>
         <!-- Nombre de usuario -->
         <InputField label="Nombre de usuario" name="username">
-            <template #InputField
-              ><InputComponent name="username" v-model.trim="formData.username"
-            /></template>
-            <template #InputError
-              ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
-            /></template>
-          </InputField>
-          
+          <template #InputField
+            ><InputComponent name="username" v-model.trim="formData.username"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
         <!-- Nombre + Apellido -->
         <div class="flex w-full space-x-2">
           <!-- Nombre -->
@@ -191,9 +198,7 @@ onMounted(async () => {
 
         <!-- Correo -->
         <InputField type="email" label="Correo" name="email">
-          <template #InputField
-            ><InputComponent name="email" v-model="formData.email"
-          /></template>
+          <template #InputField><InputComponent name="email" v-model="formData.email" /></template>
           <template #InputError
             ><InputError v-if="v$.email.$error" :message="v$.email.$errors[0]?.$message"
           /></template>

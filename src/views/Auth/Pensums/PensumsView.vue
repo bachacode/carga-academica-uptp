@@ -48,45 +48,45 @@ onMounted(async () => {
         <h5 class="m-3 border-b border-gray-300 font-bold uppercase text-gray-600">PENSUM</h5>
         <LoadingCircle :is-loaded="!store.data" />
         <template v-if="store.data">
-        <template v-for="trayecto in 4" :key="trayecto">
-          <table v-for="periodo in 3" :key="periodo" class="mb-6 w-full border border-blue-700">
-            <thead>
-              <tr>
-                <th colspan="5" class="bg-blue-700 py-2 pl-2 text-left text-white">
-                  {{ `TRAYECTO ${trayecto} - PERIODO ${periodo}` }}
-                </th>
-              </tr>
-              <tr>
-                <th class="w-2/12 bg-blue-300 py-2 pl-2 text-left">CodMateria</th>
-                <th class="w-7/12 bg-blue-300 py-2 pl-2 text-left">Materia</th>
-                <th class="w-1/12 bg-blue-300 py-2 pl-2 text-left">Trayecto</th>
-                <th class="w-1/12 bg-blue-300 py-2 pl-2 text-center">Periodo</th>
-                <th class="w-1/12 bg-blue-300 py-2 pl-2 text-center">Creditos</th>
-              </tr>
-            </thead>
-            <tbody>
-              <template v-if="check(trayecto, periodo)">
+          <template v-for="trayecto in 4" :key="trayecto">
+            <table v-for="periodo in 3" :key="periodo" class="mb-6 w-full border border-blue-700">
+              <thead>
                 <tr>
-                  <td colspan="5" class="bg-white p-2">
-                    ¡No hay materias en este trayecto - periodo!
-                  </td>
+                  <th colspan="5" class="bg-blue-700 py-2 pl-2 text-left text-white">
+                    {{ `TRAYECTO ${trayecto} - PERIODO ${periodo}` }}
+                  </th>
                 </tr>
-              </template>
-              <template v-for="record in store.data" :key="record.codigo">
-                <template v-if="record.trayecto == trayecto && record.periodo == periodo">
-                  <tr class="bg-white even:bg-gray-200">
-                    <td class="p-2">{{ record.codigo }}</td>
-                    <td class="p-2">{{ record.materia }}</td>
-                    <td class="p-2 text-center">{{ record.trayecto }}</td>
-                    <td class="p-2 text-center">{{ record.periodo }}</td>
-                    <td class="p-2 text-center">{{ record.creditos }}</td>
+                <tr>
+                  <th class="w-2/12 bg-blue-300 py-2 pl-2 text-left">CodMateria</th>
+                  <th class="w-7/12 bg-blue-300 py-2 pl-2 text-left">Materia</th>
+                  <th class="w-1/12 bg-blue-300 py-2 pl-2 text-left">Trayecto</th>
+                  <th class="w-1/12 bg-blue-300 py-2 pl-2 text-center">Periodo</th>
+                  <th class="w-1/12 bg-blue-300 py-2 pl-2 text-center">Creditos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template v-if="check(trayecto, periodo)">
+                  <tr>
+                    <td colspan="5" class="bg-white p-2">
+                      ¡No hay materias en este trayecto - periodo!
+                    </td>
                   </tr>
                 </template>
-              </template>
-            </tbody>
-          </table>
+                <template v-for="record in store.data" :key="record.codigo">
+                  <template v-if="record.trayecto == trayecto && record.periodo == periodo">
+                    <tr class="bg-white even:bg-gray-200">
+                      <td class="p-2">{{ record.codigo }}</td>
+                      <td class="p-2">{{ record.materia }}</td>
+                      <td class="p-2 text-center">{{ record.trayecto }}</td>
+                      <td class="p-2 text-center">{{ record.periodo }}</td>
+                      <td class="p-2 text-center">{{ record.creditos }}</td>
+                    </tr>
+                  </template>
+                </template>
+              </tbody>
+            </table>
+          </template>
         </template>
-      </template>
       </div>
       <!-- <TableComponent
         v-model="searchQuery"

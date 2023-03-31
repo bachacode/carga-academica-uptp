@@ -110,7 +110,7 @@ function toggle() {
         class="z-20 mt-2 hidden w-full flex-grow bg-white lg:mt-0 lg:flex lg:w-auto lg:items-center"
         id="nav-content"
       >
-        <ul class="list-reset flex-1 items-center px-4 md:px-0 lg:flex">
+        <ul class="flex-1 items-center px-4 md:px-0 lg:flex">
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/dashboard" text="Inicio">
               <font-awesome-icon icon="home" />
@@ -137,7 +137,7 @@ function toggle() {
             </NavLink>
           </li>
           <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
-            <NavLink class="text-orange-600" to="/usuarios" text="Operadores">
+            <NavLink class="text-cyan-600" to="/usuarios" text="Operadores">
               <font-awesome-icon icon="user" />
             </NavLink>
           </li>

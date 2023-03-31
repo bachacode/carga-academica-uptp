@@ -95,15 +95,15 @@ export function createCrudStore<
     }
 
     async function deSync(fatherId: string, relations: relationsType) {
-      relations.removed.forEach( async (relation) => {
+      relations.removed.forEach(async (relation) => {
         const relatedRecord = await pb
-            .collection(relations.table)
-            .getOne(relation, { $autoCancel: false })
-            relatedRecord[collectionName].splice(relatedRecord[collectionName].indexOf(fatherId), 1)
-            await pb
-            .collection(relations.table)
-            .update(relation, relatedRecord, { $autoCancel: false })
-            .catch((err) => console.log(err.data))
+          .collection(relations.table)
+          .getOne(relation, { $autoCancel: false })
+        relatedRecord[collectionName].splice(relatedRecord[collectionName].indexOf(fatherId), 1)
+        await pb
+          .collection(relations.table)
+          .update(relation, relatedRecord, { $autoCancel: false })
+          .catch((err) => console.log(err.data))
       })
     }
 
@@ -152,16 +152,16 @@ export function createCrudStore<
     })
 
     const uniqueKeysList = computed<uniqueKeysType>(() => {
-      let things = {}
+      const things = {}
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
           //@ts-ignore
           things[uniqueKeys[index]] = data.value?.map((record) => {
-              return record[uniqueKeys[index]]
-            })
+            return record[uniqueKeys[index]]
+          })
         }
-        return things as any
       }
+      return things as any
     })
 
     onMounted(async () => {
