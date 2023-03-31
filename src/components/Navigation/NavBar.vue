@@ -136,8 +136,8 @@ function toggle() {
               <font-awesome-icon icon="chalkboard-teacher" />
             </NavLink>
           </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/usuarios" text="Operadores">
+          <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
+            <NavLink class="text-orange-600" to="/usuarios" text="Operadores">
               <font-awesome-icon icon="user" />
             </NavLink>
           </li>

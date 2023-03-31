@@ -18,6 +18,7 @@ import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
+import { helpers } from '@vuelidate/validators'
 const store = useSaberStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
@@ -28,12 +29,15 @@ const formData = reactive<saberType>({
   periodo: null,
   creditos: null
 })
+const isTaken = (value: never) => !store.uniqueKeysList?.codigo.includes(value) || store.singleData?.codigo == value
+const isUnique = helpers.withAsync(isTaken, () => formData.codigo)
 const rules = computed(() => {
   return {
     codigo: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(40),
+      unique: helpers.withMessage('Ya existe un saber con ese codigo', isUnique)
     },
     materia: {
       required: requiredValidation(),

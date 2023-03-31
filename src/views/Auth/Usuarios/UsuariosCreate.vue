@@ -33,18 +33,15 @@ const formData = reactive<registerUserType>({
   rol: 'Operador',
   status: true,
 })
-const isUsernameTaken = computed(
-  () => (value: string) => !store.uniqueKeysList?.username.includes(value)
-)
-const isEmailTaken = computed(
-  () => (value: string) => !store.uniqueKeysList?.email.includes(value)
-)
-const isCedulaTaken = computed(
-  () => (value: string) => !store.uniqueKeysList?.cedula.includes(value)
-)
-const usernameIsUnique = helpers.withAsync(isUsernameTaken.value, () => formData.username)
-const emailIsUnique = helpers.withAsync(isEmailTaken.value, () => formData.email)
-const cedulaIsUnique = helpers.withAsync(isCedulaTaken.value, () => formData.cedula)
+const isUsernameTaken = (value: string) => !store.uniqueKeysList?.username.includes(value)
+
+const isEmailTaken = (value: string) => !store.uniqueKeysList?.email.includes(value)
+
+const isCedulaTaken = (value: string) => !store.uniqueKeysList?.cedula.includes(value)
+
+const usernameIsUnique = helpers.withAsync(isUsernameTaken, () => formData.username)
+const emailIsUnique = helpers.withAsync(isEmailTaken, () => formData.email)
+const cedulaIsUnique = helpers.withAsync(isCedulaTaken, () => formData.cedula)
 const rules = computed(() => {
   return {
     username: {
@@ -54,11 +51,11 @@ const rules = computed(() => {
     },
     password: {
       required: requiredValidation(),
-      minLength: minLengthValidation(),
+      minLength: minLengthValidation(8),
     },
     passwordConfirm: {
       required: requiredValidation(),
-      minLength: minLengthValidation(),
+      minLength: minLengthValidation(8),
       password: passwordValidation(formData.password)
     },
     email: {

@@ -19,6 +19,8 @@ export type registerUserType = usuarioType & {
   passwordConfirm: string
 }
 
+export type editUserType = usuarioType
+
 export interface IUsuario extends usuarioType, Record {
   id: string
   created: string
