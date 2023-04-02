@@ -142,10 +142,10 @@ export function createCrudStore<
         ?.filter((record) => {
           const keys = Object.keys(record).filter((el) => !defaultRecordKeys.value.includes(el))
           const testArray = keys.map((key) => {
-            return record[key].toString()
+            return record[key].toString().toLowerCase()
           })
           return testArray.some((text: string) => {
-            return text.includes(searchQuery.value)
+            return text.includes(searchQuery.value.toLowerCase())
           })
         })
         .map(mapData)
