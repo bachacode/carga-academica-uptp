@@ -4,12 +4,14 @@ import LoadingCircle from '../LoadingCircle.vue'
 export interface Props {
   title: string
   placeholder?: string
-  modelValue: any
+  modelValue?: any
   filteredData: any
   columns: Array<{
     name: string
     isAsc?: boolean
   }>
+  viewOnly: boolean
+  sortable: boolean
 }
 
 function orderBy(state: { name: string; isAsc?: boolean }) {
@@ -21,7 +23,9 @@ function orderBy(state: { name: string; isAsc?: boolean }) {
 }
 
 withDefaults(defineProps<Props>(), {
-  placeholder: 'Buscar'
+  placeholder: 'Buscar',
+  viewOnly: false,
+  sortable: true
 })
 
 const emit = defineEmits(['update:modelValue', 'sorting', 'deleteModal', 'relation', 'editButton'])
@@ -76,7 +80,7 @@ const updateValue = (e: Event) => {
       <label for="search" class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >Search</label
       >
-      <div class="relative">
+      <div v-if="modelValue" class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
           <svg
             aria-hidden="true"
@@ -113,8 +117,8 @@ const updateValue = (e: Event) => {
               <template v-if="column.isAsc != undefined">
                 <span @click="$emit('sorting', orderBy(column))" class="cursor-pointer">
                   {{ column.name }}
-                  <i v-if="column.isAsc" class="fas fa-sort-down pl-1"></i>
-                  <i v-if="!column.isAsc" class="fas fa-sort-up pl-1"></i>
+                  <i v-if="column.isAsc && sortable" class="fas fa-sort-down pl-1"></i>
+                  <i v-if="!column.isAsc && sortable" class="fas fa-sort-up pl-1"></i>
                 </span>
               </template>
               <template v-else>
@@ -123,7 +127,7 @@ const updateValue = (e: Event) => {
                 </span>
               </template>
             </th>
-            <th class="text-blue-900">Acciones</th>
+            <th v-if="!viewOnly" class="text-blue-900">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -146,7 +150,7 @@ const updateValue = (e: Event) => {
                 </td>
               </template>
             </template>
-            <td class="space-x-3">
+            <td v-if="!viewOnly" class="space-x-3">
               <button
                 class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
                 @click="$emit('editButton', record.id)"
