@@ -9,9 +9,11 @@ export interface Props {
   columns: Array<{
     name: string
     isAsc?: boolean
+    isToggable?: boolean
+    nameAlias?: string
   }>
-  viewOnly: boolean
-  sortable: boolean
+  viewOnly?: boolean
+  sortable?: boolean
 }
 
 function orderBy(state: { name: string; isAsc?: boolean }) {
@@ -28,7 +30,14 @@ withDefaults(defineProps<Props>(), {
   sortable: true
 })
 
-const emit = defineEmits(['update:modelValue', 'sorting', 'deleteModal', 'relation', 'editButton'])
+const emit = defineEmits([
+  'update:modelValue',
+  'sorting',
+  'deleteModal',
+  'relation',
+  'editButton',
+  'toggleColumn'
+])
 
 const updateValue = (e: Event) => {
   emit('update:modelValue', (e.target as HTMLInputElement).value)
@@ -73,6 +82,8 @@ const updateValue = (e: Event) => {
       </div>
     </Teleport>
   </template>
+  <!-- /Saberes Modal -->
+
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
     <div class="flex justify-between border-b p-3">
@@ -109,14 +120,17 @@ const updateValue = (e: Event) => {
       </div>
     </div>
     <div class="overflow-x-auto p-5">
+      <!-- Loading Circle -->
       <LoadingCircle :is-loaded="!filteredData" />
+
       <table v-if="filteredData" class="table-zebra table-normal table w-full">
         <thead>
           <tr>
             <th v-for="column in columns" class="text-blue-900" :key="column.name">
               <template v-if="column.isAsc != undefined">
                 <span @click="$emit('sorting', orderBy(column))" class="cursor-pointer">
-                  {{ column.name }}
+                  {{ column.nameAlias ?? column.name }}
+                  <!-- Acciones -->
                   <i v-if="column.isAsc && sortable" class="fas fa-sort-down pl-1"></i>
                   <i v-if="!column.isAsc && sortable" class="fas fa-sort-up pl-1"></i>
                 </span>
@@ -133,6 +147,7 @@ const updateValue = (e: Event) => {
         <tbody>
           <tr v-for="record in filteredData" :key="record.id">
             <template v-for="column in columns" :key="column.name">
+              <!-- Relaciones -->
               <template v-if="Array.isArray(record[column.name.toLowerCase()])">
                 <td>
                   <label
@@ -144,12 +159,33 @@ const updateValue = (e: Event) => {
                   </label>
                 </td>
               </template>
+
+              <!-- Activables -->
+              <template v-else-if="column.isToggable">
+                <td>
+                  <label
+                    for="hey"
+                    :class="`${
+                      record[column.name.toLowerCase()]
+                        ? 'bg-green-700 hover:bg-green-900'
+                        : 'bg-red-700 hover:bg-red-900'
+                    } btn rounded-xl `"
+                    @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
+                  >
+                    {{ record[column.name.toLowerCase()] ? `Activo` : `Inactivo` }}
+                  </label>
+                </td>
+              </template>
+
+              <!-- Columnas Normales -->
               <template v-else>
                 <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
                   {{ record[column.name.toLowerCase()] }}
                 </td>
               </template>
             </template>
+
+            <!-- Acciones -->
             <td v-if="!viewOnly" class="space-x-3">
               <button
                 class="btn rounded-xl bg-blue-700 hover:bg-blue-900"

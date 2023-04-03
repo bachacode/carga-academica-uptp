@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import MetricCard from '@/components/MetricCard.vue'
 import AuthLayout from './AuthLayout.vue'
-import { useProfesorStore } from '@/stores/profesores';
-import { useUsuarioStore } from '@/stores/usuarios';
-import { useSeccionStore } from '@/stores/secciones';
-import { useAuthStore } from '@/stores/auth';
-import { computed } from '@vue/reactivity';
-import TableComponent from '@/components/Containers/TableComponent.vue';
-import { reactive } from 'vue';
+import { useProfesorStore } from '@/stores/profesores'
+import { useUsuarioStore } from '@/stores/usuarios'
+import { useSeccionStore } from '@/stores/secciones'
+import { useAuthStore } from '@/stores/auth'
+import { computed } from 'vue'
+import TableComponent from '@/components/Containers/TableComponent.vue'
+import { reactive } from 'vue'
+import LoadingCircle from '@/components/LoadingCircle.vue'
 const profesores = useProfesorStore()
 const usuarios = useUsuarioStore()
 const secciones = useSeccionStore()
@@ -48,7 +49,7 @@ const theadColumns = reactive([
   {
     name: 'Titulo',
     isAsc: false
-  },
+  }
 ])
 </script>
 
@@ -56,7 +57,12 @@ const theadColumns = reactive([
   <AuthLayout>
     <!--Container-->
     <div class="container mx-auto w-full">
-      <div class="mb-16 w-full px-4 leading-normal text-gray-800 md:mt-8 md:px-0">
+      <!-- Loading Circle -->
+      <LoadingCircle :is-loaded="!(profesores.data && secciones.data && usuarios.data)" />
+      <div
+        v-if="profesores.data && secciones.data && usuarios.data"
+        class="mb-16 w-full px-4 leading-normal text-gray-800 md:mt-8 md:px-0"
+      >
         <!--Console Content-->
         <div class="flex flex-wrap">
           <div class="w-full p-3 md:w-1/2 xl:w-1/3">
@@ -68,7 +74,7 @@ const theadColumns = reactive([
               secondary-icon-color="green"
             >
               <template #main-icon>
-                <font-awesome-icon icon="wallet" class="fa-2x fa-fw fa-inverse" />
+                <font-awesome-icon icon="user-group" class="fa-2x fa-fw fa-inverse" />
               </template>
             </MetricCard>
             <!--/Metric Card-->
@@ -82,7 +88,7 @@ const theadColumns = reactive([
               secondary-icon-color="green"
             >
               <template #main-icon>
-                <font-awesome-icon icon="wallet" class="fa-2x fa-fw fa-inverse" />
+                <font-awesome-icon icon="chalkboard-teacher" class="fa-2x fa-fw fa-inverse" />
               </template>
             </MetricCard>
             <!--/Metric Card-->
@@ -96,7 +102,7 @@ const theadColumns = reactive([
               secondary-icon-color="green"
             >
               <template #main-icon>
-                <font-awesome-icon icon="wallet" class="fa-2x fa-fw fa-inverse" />
+                <font-awesome-icon icon="chalkboard" class="fa-2x fa-fw fa-inverse" />
               </template>
             </MetricCard>
             <!--/Metric Card-->
@@ -144,7 +150,7 @@ const theadColumns = reactive([
               secondary-icon-color="green"
             >
               <template #main-icon>
-                <font-awesome-icon icon="wallet" class="fa-2x fa-fw fa-inverse" />
+                <font-awesome-icon icon="user" class="fa-2x fa-fw fa-inverse" />
               </template>
             </MetricCard>
             <!--/Metric Card-->
@@ -158,11 +164,11 @@ const theadColumns = reactive([
           <div class="w-full p-3">
             <!--Table Card-->
             <TableComponent
-            title="Ultimos profesores agregados"
-            :columns="theadColumns"
-            :filtered-data="profesores.filteredData"
-            :sortable="false"
-            :view-only="true"
+              title="Ultimos profesores agregados"
+              :columns="theadColumns"
+              :filtered-data="profesores.filteredData"
+              :sortable="false"
+              :view-only="true"
             />
 
             <!--/table Card-->

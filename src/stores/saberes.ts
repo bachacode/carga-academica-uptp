@@ -35,8 +35,7 @@ const errorMessages: alertMessages = {
 const appendShit = (record: any) => {
   if (!record.trayecto.toString().startsWith('Trayecto'))
     record.trayecto = `Trayecto ${record.trayecto}`
-  if (!record.periodo.toString().startsWith('Periodo')) 
-    record.periodo = `Periodo ${record.periodo}`
+  if (!record.periodo.toString().startsWith('Periodo')) record.periodo = `Periodo ${record.periodo}`
   if (!record.creditos.toString().endsWith('creditos'))
     record.creditos = `${record.creditos} creditos`
   return record

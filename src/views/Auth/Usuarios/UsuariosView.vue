@@ -10,22 +10,30 @@ const { searchQuery } = storeToRefs(store)
 const theadColumns = [
   {
     name: 'username',
+    nameAlias: 'Usuario',
     isAsc: false
   },
   {
     name: 'email',
+    nameAlias: 'Correo',
     isAsc: false
   },
   {
     name: 'name',
+    nameAlias: 'Nombre',
     isAsc: false
   },
   {
-    name: 'apellido',
+    name: 'Status',
+    nameAlias: 'Estado',
+    isToggable: true
+  },
+  {
+    name: 'Apellido',
     isAsc: false
   },
   {
-    name: 'cedula',
+    name: 'Cedula',
     isAsc: false
   }
 ]
@@ -44,6 +52,20 @@ const edit = async (id: string) => {
 
 const selectItem = async (id: string) => {
   await fetchOne(id)
+}
+
+const toggleStatus = async (id: string, column: string) => {
+  console.log(id, column)
+  await fetchOne(id)
+  if (store.singleData)
+    store.pb
+      .collection('users')
+      .update(id, {
+        [column]: !store.singleData[column]
+      })
+      .then(async () => {
+        await fetchAll()
+      })
 }
 
 async function destroyItem(id: string | undefined) {
@@ -95,6 +117,7 @@ async function destroyItem(id: string | undefined) {
         @editButton="edit"
         @deleteModal="selectItem"
         @sorting="sortTable"
+        @toggle-column="toggleStatus"
       />
       <!--/table Card-->
     </div>
