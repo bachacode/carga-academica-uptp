@@ -4,38 +4,11 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
+import { data } from './ProfesoresData'
 const store = useProfesorStore()
 const { fetchAll, destroy, fetchOne } = store
 const { searchQuery } = storeToRefs(store)
-const theadColumns = [
-  {
-    name: 'Nombre',
-    isAsc: false
-  },
-  {
-    name: 'Apellido',
-    isAsc: false
-  },
-  {
-    name: 'Cedula',
-    isAsc: false
-  },
-  {
-    name: 'Titulo',
-    isAsc: false
-  },
-  {
-    name: 'Saberes'
-  },
-  {
-    name: 'Telefono',
-    isAsc: false
-  },
-  {
-    name: 'Correo',
-    isAsc: false
-  }
-]
+const { columns } = data
 
 async function create() {
   await router.push({ name: 'profesores.create' })
@@ -61,46 +34,6 @@ async function destroyItem(id: string | undefined) {
 </script>
 
 <template>
-  <!-- Saberes Modal -->
-  <Teleport to="#modal">
-    <input type="checkbox" id="saberes-modal" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <div class="flex justify-between">
-          <h3 class="text-lg font-bold">
-            Saberes del profesor {{ `${store.singleData?.nombre} ${store.singleData?.apellido}` }}
-          </h3>
-          <label
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-            for="saberes-modal"
-            >X</label
-          >
-        </div>
-        <div>¡Este profesor no tiene saberes asignados!</div>
-        <table
-          v-if="store.singleData && store.singleData.expand.saberes"
-          class="mb-6 w-full border border-blue-700"
-        >
-          <thead>
-            <th class="bg-blue-300 py-2 pl-2">Codigo</th>
-            <th class="bg-blue-300 py-2 pl-2">Materia</th>
-          </thead>
-          <tbody class="text-center">
-            <tr
-              class="bg-white odd:bg-gray-200"
-              v-for="saber in store.singleData?.expand.saberes"
-              :key="saber.codigo"
-            >
-              <td>{{ saber.codigo }}</td>
-              <td>{{ saber.materia }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </Teleport>
-  <!-- /Saberes Modal -->
-
   <!-- Delete Modal -->
   <Teleport to="#modal">
     <input type="checkbox" id="my-modal" class="modal-toggle" />
@@ -129,7 +62,6 @@ async function destroyItem(id: string | undefined) {
   </Teleport>
   <!-- /Delete Modal -->
   <AuthLayout>
-    <!-- Success Alert -->
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
         <i class="fas fa-plus-circle pr-1"></i> Registrar Profesor
@@ -138,7 +70,7 @@ async function destroyItem(id: string | undefined) {
       <TableComponent
         title="Profesores"
         v-model="searchQuery"
-        :columns="theadColumns"
+        :columns="columns"
         :filtered-data="store.filteredData"
         @editButton="edit"
         @deleteModal="selectItem"

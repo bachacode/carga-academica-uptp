@@ -1,70 +1,20 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive, computed } from 'vue'
+import { computed } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
-import {
-  requiredValidation,
-  emailValidation,
-  minLengthValidation,
-  maxLengthValidation
-} from '@/helpers/validationHelpers'
-import type { profesorType } from '@/stores/profesores'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import MultiSelect from '@/components/MultiSelect.vue'
 import type { optionType } from '@/components/MultiSelect.vue'
+import { data } from './ProfesoresData'
 const store = useProfesorStore()
 const saberes = useSaberStore()
 const { save } = store
-const formData = reactive<profesorType>({
-  nombre: '',
-  apellido: '',
-  cedula: '',
-  titulo: '',
-  saberes: [],
-  telefono: '',
-  correo: ''
-})
-
-const rules = computed(() => {
-  return {
-    nombre: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    apellido: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    cedula: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    titulo: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    telefono: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    correo: {
-      required: requiredValidation(),
-      email: emailValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    }
-  }
-})
+const { formData, formRules } = data
 
 const tags = computed<optionType[] | undefined>(() => {
   return saberes.filteredData?.map((record: any) => {
@@ -80,7 +30,7 @@ const removeTag = (tag: optionType) => {
   tag.isActive = false
 }
 
-const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(formRules, formData)
 
 const submitData = async () => {
   await v$.value.$validate()
