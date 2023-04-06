@@ -1,80 +1,25 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
-import {
-  requiredValidation,
-  emailValidation,
-  minLengthValidation,
-  maxLengthValidation
-} from '@/helpers/validationHelpers'
-import type { profesorType } from '@/stores/profesores'
+
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import MultiSelect from '@/components/MultiSelect.vue'
-import type { optionType, relationsType } from '@/components/MultiSelect.vue'
+import type { optionType } from '@/components/MultiSelect.vue'
 import { useSaberStore } from '@/stores/saberes'
+import { data } from './ProfesoresData'
 const store = useProfesorStore()
 const saberes = useSaberStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
-const formData = reactive<profesorType>({
-  nombre: '',
-  apellido: '',
-  cedula: '',
-  titulo: '',
-  saberes: [],
-  telefono: '',
-  correo: ''
-})
+const { formData, formRules, relations } = data
 
-const relations = reactive<relationsType>({
-  table: 'saberes',
-  stored: [],
-  removed: []
-})
-
-const rules = computed(() => {
-  return {
-    nombre: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    apellido: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    cedula: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    titulo: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    telefono: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    correo: {
-      required: requiredValidation(),
-      email: emailValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    }
-  }
-})
-
-const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(formRules, formData)
 
 const removeTag = (tag: optionType) => {
   tag.isActive = false
