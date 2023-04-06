@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
@@ -56,6 +56,19 @@ onMounted(async () => {
       })
     }
   }
+})
+
+onUnmounted(() => {
+  Object.assign(formData, {
+    nombre: '',
+    apellido: '',
+    cedula: '',
+    titulo: '',
+    saberes: [],
+    telefono: '',
+    correo: ''
+  })
+  store.singleData = undefined
 })
 </script>
 

@@ -1,112 +1,23 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive, computed } from 'vue'
+import { reactive } from 'vue'
 import { useUsuarioStore } from '@/stores/usuarios'
 import { useVuelidate } from '@vuelidate/core'
-import {
-  requiredValidation,
-  minLengthValidation,
-  maxLengthValidation,
-  emailValidation,
-  passwordValidation
-} from '@/helpers/validationHelpers'
-import type { registerUserType } from '@/stores/usuarios'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
-import { helpers } from '@vuelidate/validators'
 import FormComponent from '@/components/Containers/FormComponent.vue'
+import { data } from './UsuariosData'
 const store = useUsuarioStore()
 const { save } = store
-const formData = reactive<registerUserType>({
-  username: '',
-  email: '',
-  emailVisibility: true,
-  password: '',
-  passwordConfirm: '',
-  name: '',
-  apellido: '',
-  cedula: '',
-  telefono: '',
-  cargo: '',
-  rol: 'Operador',
-  status: true
-})
-const isUsernameTaken = (value: string) => !store.uniqueKeysList?.username.includes(value)
-
-const isEmailTaken = (value: string) => !store.uniqueKeysList?.email.includes(value)
-
-const isCedulaTaken = (value: string) => !store.uniqueKeysList?.cedula.includes(value)
-
-const usernameIsUnique = helpers.withAsync(isUsernameTaken, () => formData.username)
-const emailIsUnique = helpers.withAsync(isEmailTaken, () => formData.email)
-const cedulaIsUnique = helpers.withAsync(isCedulaTaken, () => formData.cedula)
-const rules = computed(() => {
-  return {
-    username: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      unique: helpers.withMessage(
-        '¡Ya existe un usuario con ese nombre registrado!',
-        usernameIsUnique
-      )
-    },
-    password: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(8)
-    },
-    passwordConfirm: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(8),
-      password: passwordValidation(formData.password)
-    },
-    email: {
-      required: requiredValidation(),
-      email: emailValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40),
-      unique: helpers.withMessage('¡Ya existe un usuario con ese correo registrado!', emailIsUnique)
-    },
-    name: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    apellido: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    cedula: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40),
-      unique: helpers.withMessage(
-        '¡Ya existe un usuario con esa cedula registrada!',
-        cedulaIsUnique
-      )
-    },
-    telefono: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
-    },
-    cargo: {
-      required: requiredValidation()
-    },
-    rol: {
-      required: requiredValidation()
-    }
-  }
-})
-
+const { formData, formRules } = data
 const cargoOptions = reactive([
   { value: 'Profesor', name: 'Profesor' },
   { value: 'Administracion', name: 'Administracion' }
 ])
 
-const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(formRules, formData)
 
 const submitData = async () => {
   await v$.value.$validate()

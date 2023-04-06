@@ -1,73 +1,21 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, onUnmounted } from 'vue'
 import { useSaberStore } from '@/stores/saberes'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
-import {
-  requiredValidation,
-  numericValidation,
-  minValueValidation,
-  maxValueValidation,
-  minLengthValidation,
-  maxLengthValidation
-} from '@/helpers/validationHelpers'
-import type { saberType } from '@/stores/saberes'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
-import { helpers } from '@vuelidate/validators'
+import { data } from './SaberesData'
 const store = useSaberStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
-const formData = reactive<saberType>({
-  codigo: '',
-  materia: '',
-  trayecto: null,
-  periodo: null,
-  creditos: null
-})
-const isTaken = (value: never) =>
-  !store.uniqueKeysList?.codigo.includes(value) || store.singleData?.codigo == value
-const isUnique = helpers.withAsync(isTaken, () => formData.codigo)
-const rules = computed(() => {
-  return {
-    codigo: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40),
-      unique: helpers.withMessage('Ya existe un saber con ese codigo', isUnique)
-    },
-    materia: {
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(80)
-    },
-    trayecto: {
-      required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(4)
-    },
-    periodo: {
-      required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(3)
-    },
-    creditos: {
-      required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(99)
-    }
-  }
-})
-
-const v$ = useVuelidate(rules, formData)
-
+const { formData, formRules } = data
+data.store = store
+const v$ = useVuelidate(formRules, formData)
 const periodoOptions = reactive([
   { value: 1, name: 'Periodo 1' },
   { value: 2, name: 'Periodo 2' },
@@ -96,6 +44,17 @@ onMounted(async () => {
       Object.assign(formData, store.singleData)
     }
   }
+})
+
+onUnmounted(() => {
+  Object.assign(formData, {
+    codigo: '',
+    materia: '',
+    trayecto: null,
+    periodo: null,
+    creditos: null
+  })
+  store.singleData = undefined
 })
 </script>
 

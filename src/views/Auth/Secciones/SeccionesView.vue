@@ -4,23 +4,11 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
+import { data } from './SeccionesData'
 const store = useSeccionStore()
 const { fetchAll, destroy, fetchOne } = store
 const { searchQuery } = storeToRefs(store)
-const theadColumns = [
-  {
-    name: 'Codigo',
-    isAsc: false
-  },
-  {
-    name: 'Trayecto',
-    isAsc: false
-  },
-  {
-    name: 'Estudiantes',
-    isAsc: false
-  }
-]
+const { columns } = data
 
 const sortTable = async (column: string) => {
   await fetchAll(column)
@@ -82,7 +70,7 @@ async function destroyItem(id: string | undefined) {
       <TableComponent
         title="Secciones"
         v-model="searchQuery"
-        :columns="theadColumns"
+        :columns="columns"
         :filtered-data="store.filteredData"
         @editButton="edit"
         @deleteModal="selectItem"

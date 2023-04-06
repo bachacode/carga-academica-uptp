@@ -6,6 +6,7 @@ export type theadColumnType = {
 }
 
 export type dataType<formType> = {
+  store?: any
   columns: Array<theadColumnType>
   formData: formType
   formRules: any

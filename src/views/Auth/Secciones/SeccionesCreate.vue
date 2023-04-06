@@ -1,66 +1,26 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive, computed } from 'vue'
+import { reactive } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import { useVuelidate } from '@vuelidate/core'
-import {
-  requiredValidation,
-  numericValidation,
-  minValueValidation,
-  maxValueValidation,
-  minLengthValidation,
-  maxLengthValidation
-} from '@/helpers/validationHelpers'
-import type { seccionType } from '@/stores/secciones'
+
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
-import { helpers } from '@vuelidate/validators'
 import FormComponent from '@/components/Containers/FormComponent.vue'
+import { data } from './SeccionesData'
 const store = useSeccionStore()
 const { save } = store
-const formData = reactive<seccionType>({
-  codigo: '',
-  trayecto: '',
-  estudiantes: ''
-})
-const isSeccionTaken = computed(
-  () => (value: string) => !store.uniqueKeysList?.codigo.includes(value)
-)
-const isUnique = helpers.withAsync(isSeccionTaken.value, () => formData.codigo)
-const rules = computed(() => {
-  return {
-    codigo: {
-      lazy: true,
-      required: requiredValidation(),
-      minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(4),
-      unique: helpers.withMessage('Ya existe una sección con ese codigo', isUnique)
-    },
-    trayecto: {
-      required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(4)
-    },
-    estudiantes: {
-      required: requiredValidation(),
-      numeric: numericValidation(),
-      minValue: minValueValidation(),
-      maxValue: maxValueValidation(99)
-    }
-  }
-})
-
+const { formData, formRules } = data
 const trayectoOptions = reactive([
   { value: 1, name: 'Trayecto 1' },
   { value: 2, name: 'Trayecto 2' },
   { value: 3, name: 'Trayecto 3' },
   { value: 4, name: 'Trayecto 4' }
 ])
-
-const v$ = useVuelidate(rules, formData)
+const v$ = useVuelidate(formRules, formData)
+data.store = store
 
 const submitData = async () => {
   await v$.value.$validate()

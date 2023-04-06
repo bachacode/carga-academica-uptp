@@ -4,34 +4,14 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
+import { data } from './SaberesData'
 const store = useSaberStore()
 const { fetchAll, destroy, fetchOne } = store
 const { searchQuery } = storeToRefs(store)
-const theadColumns = [
-  {
-    name: 'Codigo',
-    isAsc: false
-  },
-  {
-    name: 'Materia',
-    isAsc: false
-  },
-  {
-    name: 'Trayecto',
-    isAsc: false
-  },
-  {
-    name: 'Periodo',
-    isAsc: false
-  },
-  {
-    name: 'Creditos',
-    isAsc: false
-  }
-]
-
+const { columns } = data
+data.store = store
 async function create() {
-  router.push({ name: 'saberes.create' })
+  await router.push({ name: 'saberes.create' })
 }
 
 const edit = async (id: string) => {
@@ -92,7 +72,7 @@ async function destroyItem(id: string | undefined) {
       <TableComponent
         title="Saberes"
         v-model="searchQuery"
-        :columns="theadColumns"
+        :columns="columns"
         :filtered-data="store.filteredData"
         @editButton="edit"
         @deleteModal="selectItem"

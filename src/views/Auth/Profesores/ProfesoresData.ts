@@ -1,14 +1,14 @@
-import type { profesorType } from "@/stores/profesores"
-import type { dataType } from "@/types/moduleDataType"
-import { reactive } from "vue"
-import { computed } from "vue"
+import type { profesorType } from '@/stores/profesores'
+import type { dataType } from '@/types/moduleDataType'
+import { reactive } from 'vue'
+import { computed } from 'vue'
 import {
   requiredValidation,
   emailValidation,
   minLengthValidation,
   maxLengthValidation
 } from '@/helpers/validationHelpers'
-import type { relationsType, optionType } from "@/components/MultiSelect.vue"
+import type { relationsType } from '@/components/MultiSelect.vue'
 export const data: dataType<profesorType> = {
   columns: [
     {
@@ -87,17 +87,5 @@ export const data: dataType<profesorType> = {
     table: 'saberes',
     stored: [],
     removed: []
-  }),
-  tags: computed<optionType[] | undefined>((prop) => {
-    return prop.filteredData?.map((record: any) => {
-      {
-        return {
-          name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo,
-          value: record.id,
-          isActive: data.formData.saberes.includes(record.id) ? true : false
-        }
-      }
-    })
   })
 }
-
