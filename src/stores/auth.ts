@@ -32,6 +32,18 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
+  async function recover(email:string) {
+    await pb
+      .collection('users')
+      .requestPasswordReset(email)
+      .then(() => {
+        router.push('correct_request')
+      })
+      .catch(() => {
+        router.push('incorrect_request')
+      })
+  }
+
   pb.authStore.onChange(async () => {
     if (pb.authStore.model != null) {
       user.value = await pb.collection('users').getOne<userWithRole>(pb.authStore.model.id)
@@ -47,5 +59,5 @@ export const useAuthStore = defineStore('auth', () => {
     await router.push('/')
   }
 
-  return { pb, user, logout, login, errors, isAuthenticated }
+  return { pb, user, logout, login, errors, isAuthenticated, recover }
 })
