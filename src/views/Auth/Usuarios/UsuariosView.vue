@@ -5,6 +5,7 @@ import router from '@/router'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { data } from './UsuariosData'
+import { onMounted } from 'vue'
 const store = useUsuarioStore()
 const { fetchAll, destroy, fetchOne } = store
 const { searchQuery } = storeToRefs(store)
@@ -45,6 +46,10 @@ async function destroyItem(id: string | undefined) {
     await destroy(id)
   }
 }
+
+onMounted(async () => {
+  await store.fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
+})
 </script>
 
 <template>

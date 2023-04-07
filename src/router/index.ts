@@ -19,6 +19,11 @@ const router = createRouter({
       component: () => import('@/views/Auth/DashboardView.vue')
     },
     {
+      path: '/my-account',
+      name: 'my-account',
+      component: () => import('@/views/Auth/MyAccount/MyAccountView.vue')
+    },
+    {
       path: '/secciones',
       children: [
         {

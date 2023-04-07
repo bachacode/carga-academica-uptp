@@ -4,6 +4,7 @@ import { useAuthStore } from '@/stores/auth'
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
 import NavLink from './NavLink.vue'
+import router from '@/router'
 const auth = useAuthStore()
 
 defineProps<{
@@ -20,6 +21,14 @@ const dropdownHandler: OnClickOutsideHandler = () => {
 function toggle() {
   dropdown.value = !dropdown.value
 }
+
+async function dashboard() {
+  await router.push('dashboard')
+}
+
+async function myAccount() {
+  await router.push('my-account')
+}
 </script>
 
 <template>
@@ -27,8 +36,8 @@ function toggle() {
     <div class="container mx-auto mt-0 flex w-full flex-wrap items-center pt-3 pb-3 md:pb-0">
       <div class="w-1/2 pl-2 md:pl-0">
         <a
-          class="text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
-          href="#"
+          class="text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl cursor-pointer"
+          @click.prevent="dashboard"
         >
           <i class="fas fa-sun pr-3 text-pink-600"></i><span>Carga Academica UPTP</span>
         </a>
@@ -70,8 +79,8 @@ function toggle() {
               <ul class="list-reset">
                 <li>
                   <a
-                    href="#"
-                    class="block px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
+                    @click="myAccount"
+                    class="block px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline cursor-pointer"
                     >Mi cuenta</a
                   >
                 </li>

@@ -46,10 +46,11 @@ export function createCrudStore<
     const searchQuery = ref<string>('')
     const defaultRecordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
 
-    async function fetchAll(sortBy: string = '-created') {
+    async function fetchAll(sortBy: string = '-created', filter: string = '') {
       data.value = await pb.collection(collectionName).getFullList<IData>({
         sort: sortBy,
-        expand: relations?.toString()
+        expand: relations?.toString(),
+        filter: filter
       })
     }
 
