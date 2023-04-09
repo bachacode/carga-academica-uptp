@@ -4,12 +4,11 @@ import { ref } from 'vue'
 import InputError from '@/components/InputError.vue'
 import InputField from '@/components/InputField.vue'
 import InputComponent from '@/components/InputComponent.vue'
-
 const auth = useAuthStore()
 const email = ref('')
 
 const submit = async () => {
-  await auth.recover(email.value)
+  await auth.recoverPassword(email.value)
 }
 </script>
 

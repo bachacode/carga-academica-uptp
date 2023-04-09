@@ -32,16 +32,18 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
-  async function recover(email:string) {
+  async function recoverPassword(email:string) {
     await pb
       .collection('users')
       .requestPasswordReset(email)
-      .then(() => {
-        router.push('correct_request')
-      })
-      .catch(() => {
-        router.push('incorrect_request')
-      })
+  }
+
+  async function changePassword(token: string, password: string, confirmPassword: string) {
+    await pb.collection('users').confirmPasswordReset(
+      token,
+      password,
+      confirmPassword,
+    ).catch((error) => console.log(error));
   }
 
   pb.authStore.onChange(async () => {
@@ -59,5 +61,5 @@ export const useAuthStore = defineStore('auth', () => {
     await router.push('/')
   }
 
-  return { pb, user, logout, login, errors, isAuthenticated, recover }
+  return { pb, user, logout, login, errors, isAuthenticated, recoverPassword, changePassword }
 })
