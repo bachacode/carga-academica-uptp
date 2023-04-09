@@ -6,13 +6,14 @@ const store = useAuthStore()
 
 router.beforeEach(async (to) => {
   //@ts-ignore
-  if (!store.pb.authStore.isValid && !['login', 'recover-password', 'confirm-password-reset'].includes(to.name)) {
+  if (
+    !store.pb.authStore.isValid &&
+    !['login', 'recover-password', 'confirm-password-reset'].includes(to.name)
+  ) {
     return { name: 'login' }
-  }
-  else if (store.pb.authStore.isValid && to.name === 'login') {
+  } else if (store.pb.authStore.isValid && to.name === 'login') {
     return { name: 'dashboard' }
-  }
-  else if (store.user?.rol !== 'Administrador' && to.path === '/usuarios') {
+  } else if (store.user?.rol !== 'Administrador' && to.path === '/usuarios') {
     return { name: 'dashboard' }
   }
 })

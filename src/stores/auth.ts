@@ -32,18 +32,15 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
-  async function recoverPassword(email:string) {
-    await pb
-      .collection('users')
-      .requestPasswordReset(email)
+  async function recoverPassword(email: string) {
+    await pb.collection('users').requestPasswordReset(email)
   }
 
   async function changePassword(token: string, password: string, confirmPassword: string) {
-    await pb.collection('users').confirmPasswordReset(
-      token,
-      password,
-      confirmPassword,
-    ).catch((error) => console.log(error));
+    await pb
+      .collection('users')
+      .confirmPasswordReset(token, password, confirmPassword)
+      .catch((error) => console.log(error))
   }
 
   pb.authStore.onChange(async () => {

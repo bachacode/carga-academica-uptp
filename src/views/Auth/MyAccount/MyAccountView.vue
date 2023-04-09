@@ -4,8 +4,6 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 
 <template>
   <AuthLayout>
-    <div>
-      Config de cuenta
-    </div>
+    <div>Config de cuenta</div>
   </AuthLayout>
 </template>

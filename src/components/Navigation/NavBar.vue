@@ -36,7 +36,7 @@ async function myAccount() {
     <div class="container mx-auto mt-0 flex w-full flex-wrap items-center pt-3 pb-3 md:pb-0">
       <div class="w-1/2 pl-2 md:pl-0">
         <a
-          class="text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl cursor-pointer"
+          class="cursor-pointer text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
           @click.prevent="dashboard"
         >
           <i class="fas fa-sun pr-3 text-pink-600"></i><span>Carga Academica UPTP</span>
@@ -80,7 +80,7 @@ async function myAccount() {
                 <li>
                   <a
                     @click="myAccount"
-                    class="block px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline cursor-pointer"
+                    class="block cursor-pointer px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
                     >Mi cuenta</a
                   >
                 </li>
