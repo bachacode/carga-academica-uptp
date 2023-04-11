@@ -28,7 +28,6 @@ const selectItem = async (id: string) => {
 }
 
 const toggleStatus = async (id: string, column: string) => {
-  console.log(id, column)
   await fetchOne(id)
   if (store.singleData)
     store.pb
@@ -37,7 +36,7 @@ const toggleStatus = async (id: string, column: string) => {
         [column]: !store.singleData[column]
       })
       .then(async () => {
-        await fetchAll()
+        await fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
       })
 }
 
@@ -48,7 +47,7 @@ async function destroyItem(id: string | undefined) {
 }
 
 onMounted(async () => {
-  await store.fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
+  await fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
 })
 </script>
 

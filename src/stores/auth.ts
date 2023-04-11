@@ -21,10 +21,16 @@ export const useAuthStore = defineStore('auth', () => {
     await pb
       .collection('users')
       .authWithPassword(username, password)
-      .then(() => {
-        router.push('dashboard')
+      .then((data) => {
+        if (data.record.status == true) {
+          router.push('dashboard')
+        } else if (data.record.status == false) pb.authStore.clear()
+        errors.value.message =
+          '¡Su cuenta esta desactivada! contacte con un administrador si cree que esto es un error'
+        errors.value.isActive = true
       })
       .catch(() => {
+        errors.value.message = 'El nombre de usuario o la contraseña son incorrectos'
         errors.value.isActive = true
         setTimeout(() => {
           errors.value.isActive = false

@@ -5,7 +5,6 @@ import InputError from '@/components/InputError.vue'
 import InputField from '@/components/InputField.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import GuessLayout from './GuessLayout.vue'
-import router from '@/router'
 const auth = useAuthStore()
 const email = ref('')
 const emailSent = ref(false)

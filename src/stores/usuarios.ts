@@ -51,5 +51,6 @@ export const useUsuarioStore = createCrudStore<usuarioType, IUsuario, uniqueKeys
   collectionName: 'users',
   success: successMessages,
   error: errorMessages,
-  uniqueKeys: ['username', 'email', 'cedula']
+  uniqueKeys: ['username', 'email', 'cedula'],
+  autoFetch: false
 })

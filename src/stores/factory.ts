@@ -21,7 +21,9 @@ export interface IStoreOptions<IData> {
   uniqueKeys?: Array<string>
   mapData?: (value: IData, index: number, array: IData[]) => unknown
   relations?: Array<string>
+  autoFetch?: boolean
 }
+
 export function createCrudStore<
   dataType extends {} | undefined,
   IData extends Record & Object,
@@ -36,7 +38,8 @@ export function createCrudStore<
   mapData = (record: any) => {
     return record
   },
-  relations
+  relations,
+  autoFetch = true
 }: IStoreOptions<IData>) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
@@ -166,7 +169,9 @@ export function createCrudStore<
     })
 
     onMounted(async () => {
-      await fetchAll()
+      if (autoFetch == true) {
+        await fetchAll()
+      }
     })
 
     return {
