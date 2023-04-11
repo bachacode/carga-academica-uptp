@@ -52,8 +52,8 @@ const theadColumns = reactive([
   }
 ])
 
-onMounted(() => {
-  usuarios.fetchAll()
+onMounted(async () => {
+  await usuarios.fetchAll('-created', `rol = "Operador" && id != "${auth.pb.authStore.model?.id}"`)
 })
 </script>
 
@@ -148,7 +148,7 @@ onMounted(() => {
           <div v-if="auth.user?.rol == 'Administrador'" class="w-full p-3 md:w-1/2 xl:w-1/3">
             <!--Metric Card-->
             <MetricCard
-              title="Usuarios Activos"
+              title="Operadores Activos"
               :amount="`${totalActiveUsers} / ${totalUsers}`"
               main-icon-color="green"
               secondary-icon-color="green"
