@@ -11,16 +11,16 @@ const router = createRouter({
     {
       path: '/recover-password',
       name: 'recover-password',
-      beforeEnter: () => {
-        if (!router.currentRoute.value.query.token) {
-          router.back()
-        }
-      },
       component: () => import('@/views/RecoverPassword.vue')
     },
     {
       path: '/confirm-password-reset',
       name: 'confirm-password-reset',
+      beforeEnter: () => {
+        if (!router.currentRoute.value.query.token) {
+          router.back()
+        }
+      },
       component: () => import('@/views/validation/ConfirmPassword.vue')
     },
     {

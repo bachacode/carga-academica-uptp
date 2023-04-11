@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Transition, ref } from 'vue'
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
