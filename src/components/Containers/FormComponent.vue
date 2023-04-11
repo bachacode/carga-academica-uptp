@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router'
+import CardContainer from './CardContainer.vue'
 export interface Props {
   submitText?: string
   backText?: string
@@ -18,9 +19,7 @@ defineEmits(['formSubmit'])
 </script>
 
 <template>
-  <div class="flex items-center justify-center">
-    <div :class="`${formWidth} px-16 pb-8`">
-      <div class="rounded border bg-white pb-2 shadow">
+  <CardContainer :card-width="formWidth">
         <button
           v-if="backButton"
           class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
@@ -38,7 +37,5 @@ defineEmits(['formSubmit'])
             {{ submitText }}
           </button>
         </form>
-      </div>
-    </div>
-  </div>
+</CardContainer>
 </template>
