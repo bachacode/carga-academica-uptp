@@ -6,6 +6,10 @@
   @apply border-b-2 border-blue-500 text-blue-600;
 }
 
+.router-link-exact-sidebar-active {
+  @apply text-blue-600 hover:text-blue-700;
+}
+
 .slide-fade-enter-from {
   @apply translate-x-full opacity-0 blur-sm;
 }

@@ -5,19 +5,21 @@ export interface Props {
   backText?: string
   backButton?: boolean
   formTitle?: string
+  formWidth?: string
 }
 
 withDefaults(defineProps<Props>(), {
   submitText: 'Crear',
   backText: 'Volver',
-  backButton: true
+  backButton: true,
+  formWidth: 'w-2/4'
 })
 defineEmits(['formSubmit'])
 </script>
 
 <template>
   <div class="flex items-center justify-center">
-    <div class="w-2/4 px-16 pb-8">
+    <div :class="`${formWidth} px-16 pb-8`">
       <div class="rounded border bg-white pb-2 shadow">
         <button
           v-if="backButton"

@@ -50,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   pb.authStore.onChange(async () => {
+    console.log('hey')
     if (pb.authStore.model != null) {
       user.value = await pb.collection('users').getOne<userWithRole>(pb.authStore.model.id)
     }

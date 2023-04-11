@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    // Rutas no autenticadas
     {
       path: '/',
       name: 'login',
@@ -23,16 +24,38 @@ const router = createRouter({
       },
       component: () => import('@/views/validation/ConfirmPassword.vue')
     },
+
+    // Rutas Autenticadas
     {
       path: '/dashboard',
       name: 'dashboard',
       component: () => import('@/views/Auth/DashboardView.vue')
     },
+
+    // Rutas Autenticadas - Mi cuenta
     {
       path: '/my-account',
-      name: 'my-account',
-      component: () => import('@/views/Auth/MyAccount/MyAccountView.vue')
+      component: () => import('@/views/Auth/MyAccount/MyAccountView.vue'),
+      children: [
+        {
+          path: '',
+          name: 'my-account',
+          component: () => import('@/views/Auth/MyAccount/MyAccountPersonal.vue')
+        },
+        {
+          path: 'change-password',
+          name: 'my-password',
+          component: () => import('@/views/Auth/MyAccount/MyAccountPassword.vue')
+        },
+        {
+          path: 'change-email',
+          name: 'my-email',
+          component: () => import('@/views/Auth/MyAccount/MyAccountEmail.vue')
+        }
+      ]
     },
+
+    // Rutas Autenticadas - Secciones
     {
       path: '/secciones',
       children: [

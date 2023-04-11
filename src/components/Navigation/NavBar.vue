@@ -27,7 +27,7 @@ async function dashboard() {
 }
 
 async function myAccount() {
-  await router.push('my-account')
+  await router.push({ name: 'my-account' })
 }
 </script>
 
@@ -84,7 +84,7 @@ async function myAccount() {
               <ul class="list-reset">
                 <li>
                   <a
-                    @click="myAccount"
+                    @click.prevent="myAccount()"
                     class="block cursor-pointer px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
                     >Mi cuenta</a
                   >

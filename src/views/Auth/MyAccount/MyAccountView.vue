@@ -1,147 +1,88 @@
 <script setup lang="ts">
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
-import FormComponent from '@/components/Containers/FormComponent.vue'
-import InputField from '@/components/InputField.vue'
-import InputComponent from '@/components/InputComponent.vue'
-import InputError from '@/components/InputError.vue'
-import { data } from '../Usuarios/UsuariosData'
-import { useUsuarioStore } from '@/stores/usuarios'
-import { reactive, onMounted, onUnmounted } from 'vue'
-import useVuelidate from '@vuelidate/core'
-import router from '@/router'
-import InputSelect from '@/components/InputSelect.vue'
-import { useAuthStore } from '@/stores/auth'
-import { useAlertStore } from '@/stores/alert'
-const store = useUsuarioStore()
-const auth = useAuthStore()
-const alert = useAlertStore()
-const { editFormData, editFormRules } = data
-const v$ = useVuelidate(editFormRules, editFormData)
-
-const cargoOptions = reactive([
-  { value: 'Profesor', name: 'Profesor' },
-  { value: 'Administracion', name: 'Administracion' }
-])
-
-async function submitData() {
-  await v$.value.$validate()
-  if (!v$.value.$error && auth.user?.id) {
-    await store.pb
-      .collection('users')
-      .update(auth.user?.id, editFormData)
-      .then(async () => {
-        await router.push('dashboard')
-        await alert.setSuccess({ message: '¡Se han actualizado sus datos correctamente!' })
-        await auth.pb.collection('users').authRefresh()
-      })
-      .catch(async () => {
-        await router.push('dashboard')
-        await alert.setError({ message: '¡Ha ocurrido un error al actualizar sus datos!' })
-      })
-  }
-}
-
-onMounted(async () => {
-  Object.assign(editFormData, auth.user)
-})
-onUnmounted(() => {
-  Object.assign(editFormData, {
-    username: '',
-    name: '',
-    apellido: '',
-    cedula: '',
-    telefono: '',
-    cargo: ''
-  })
-  store.singleData = undefined
-})
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
   <AuthLayout>
-    <FormComponent
-      submit-text="Guardar Cambios"
-      @form-submit="submitData"
-      :back-button="false"
-      form-title="Datos Personales"
-    >
-      <template #inputs>
-        <!-- Nombre de usuario -->
-        <InputField label="Nombre de usuario" name="username">
-          <template #InputField
-            ><InputComponent name="username" v-model.trim="editFormData.username"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
-          /></template>
-        </InputField>
+    <div class="flex flex-row items-start">
+      <!-- Sidebar -->
+      <aside
+        class="ml-6 mt-3 w-64 -translate-x-full transition-transform sm:translate-x-0"
+        aria-label="Sidebar"
+      >
+        <div class="h-full overflow-y-auto rounded-lg bg-gray-50 px-3 py-4 shadow-lg">
+          <ul class="space-y-2 font-medium">
+            <!-- Datos personales -->
+            <li>
+              <router-link
+                exact-active-class="router-link-exact-sidebar-active"
+                :to="{ name: 'my-account' }"
+                class="flex border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                </svg>
+                <span class="ml-3">Datos Personales</span>
+              </router-link>
+            </li>
 
-        <!-- Nombre + Apellido -->
-        <div class="flex w-full space-x-2">
-          <!-- Nombre -->
-          <InputField label="Nombre" name="name">
-            <template #InputField
-              ><InputComponent name="name" v-model.trim="editFormData.name"
-            /></template>
-            <template #InputError
-              ><InputError v-if="v$.name.$error" :message="v$.name.$errors[0]?.$message"
-            /></template>
-          </InputField>
+            <!-- Cambiar contraseña -->
+            <li>
+              <router-link
+                exact-active-class="router-link-exact-sidebar-active"
+                :to="{ name: 'my-password' }"
+                class="flex border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                </svg>
+                <span class="ml-3">Cambiar Contraseña</span>
+              </router-link>
+            </li>
 
-          <!-- Apellido -->
-          <InputField label="Apellido" name="apellido">
-            <template #InputField
-              ><InputComponent name="apellido" v-model="editFormData.apellido"
-            /></template>
-            <template #InputError
-              ><InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0]?.$message"
-            /></template>
-          </InputField>
+            <!-- Cambiar correo -->
+            <li>
+              <router-link
+                exact-active-class="router-link-exact-sidebar-active"
+                :to="{ name: 'my-email' }"
+                class="flex border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-6 w-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
+                  <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
+                </svg>
+                <span class="ml-3">Cambiar Correo</span>
+              </router-link>
+            </li>
+          </ul>
         </div>
+      </aside>
 
-        <!-- Cedula -->
-        <InputField label="Cedula" name="cedula">
-          <template #InputField
-            ><InputComponent
-              v-maska
-              data-maska="V-##.###.###"
-              data-maska-tokens="'0':/[0-9]/:M"
-              name="cedula"
-              v-model="editFormData.cedula"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0]?.$message"
-          /></template>
-        </InputField>
-
-        <!-- Cargo -->
-        <InputField label="Cargo" name="cargo">
-          <template #InputField
-            ><InputSelect
-              :options="cargoOptions"
-              placeholder="Seleccione un cargo"
-              name="cargo"
-              v-model="editFormData.cargo"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.cargo.$error" :message="v$.cargo.$errors[0]?.$message"
-          /></template>
-        </InputField>
-
-        <!-- Telefono -->
-        <InputField label="Telefono" name="telefono">
-          <template #InputField
-            ><InputComponent
-              v-maska
-              data-maska="### ###-##-##"
-              name="telefono"
-              v-model="editFormData.telefono"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0]?.$message"
-          /></template>
-        </InputField>
-      </template>
-    </FormComponent>
+      <!-- Active Form -->
+      <Suspense>
+        <RouterView :key="$route.fullPath" />
+      </Suspense>
+    </div>
   </AuthLayout>
 </template>
