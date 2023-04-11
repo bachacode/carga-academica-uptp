@@ -5,7 +5,7 @@ import { useProfesorStore } from '@/stores/profesores'
 import { useUsuarioStore } from '@/stores/usuarios'
 import { useSeccionStore } from '@/stores/secciones'
 import { useAuthStore } from '@/stores/auth'
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { reactive } from 'vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
@@ -51,6 +51,10 @@ const theadColumns = reactive([
     isAsc: false
   }
 ])
+
+onMounted(() => {
+  usuarios.fetchAll()
+})
 </script>
 
 <template>

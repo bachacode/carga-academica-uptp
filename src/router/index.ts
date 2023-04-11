@@ -11,6 +11,11 @@ const router = createRouter({
     {
       path: '/recover-password',
       name: 'recover-password',
+      beforeEnter: () => {
+        if (!router.currentRoute.value.query.token) {
+          router.back()
+        }
+      },
       component: () => import('@/views/RecoverPassword.vue')
     },
     {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { Transition, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { vOnClickOutside } from '@vueuse/components'
 import type { OnClickOutsideHandler } from '@vueuse/core'
@@ -45,13 +45,18 @@ async function myAccount() {
       <div class="w-1/2 pr-0">
         <div class="relative float-right flex">
           <div class="relative text-sm">
+            <font-awesome-icon
+              v-if="auth.user?.verified == false"
+              icon="circle-exclamation"
+              class="hover: absolute top-0 left-0 animate-bounce text-red-500"
+            />
             <button
               @click.stop="toggle()"
               id="userButton"
               class="mr-3 hidden items-center focus:outline-none md:flex"
             >
               <img
-                class="mr-4 h-8 w-8 rounded-full"
+                class="mr-4 ml-2 h-8 w-8 rounded-full"
                 src="https://ui-avatars.com/api/?name=John+Doe"
                 alt="Avatar of User"
               />
@@ -85,7 +90,7 @@ async function myAccount() {
                   >
                 </li>
                 <li>
-                  <hr class="mx-2 border-t border-gray-400" />
+                  <hr class="border-t border-gray-400" />
                 </li>
                 <li>
                   <a
