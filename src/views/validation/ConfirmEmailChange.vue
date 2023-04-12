@@ -35,8 +35,8 @@ const submit = async () => {
       .confirmEmailChange(formData.token, formData.password)
       .then(async () => {
         formSent.value = true
-        if (auth.user?.email) {
-          await auth.pb.collection('users').authWithPassword(auth.user.email, formData.password)
+        if (auth.user?.username) {
+          await auth.pb.collection('users').authWithPassword(auth.user.username, formData.password)
         }
       })
       .catch(() => {
