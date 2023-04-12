@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive } from 'vue'
+import { onUnmounted, reactive, ref } from 'vue'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
@@ -26,20 +26,31 @@ const periodoOptions = reactive([
   { value: 2, name: 'Periodo 2' },
   { value: 3, name: 'Periodo 3' }
 ])
-
+const isLoading = ref(false)
 const v$ = useVuelidate(formRules, formData)
 
 const submitData = async () => {
-  await v$.value.$validate()
+  isLoading.value = true
+  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
   if (!v$.value.$error) {
     save(formData)
   }
 }
+
+onUnmounted(() => {
+  Object.assign(formData, {
+    codigo: '',
+    materia: '',
+    trayecto: null,
+    periodo: null,
+    creditos: null
+  })
+})
 </script>
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Crear Saber" @form-submit="submitData">
+    <FormComponent submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <InputField label="Codigo" name="codigo">
           <template #InputField

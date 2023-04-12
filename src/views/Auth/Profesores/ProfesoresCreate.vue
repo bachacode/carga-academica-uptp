@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { computed } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
@@ -25,7 +25,7 @@ const tags = computed<optionType[] | undefined>(() => {
     }
   })
 })
-
+const isLoading = ref(false)
 const removeTag = (tag: optionType) => {
   tag.isActive = false
 }
@@ -33,16 +33,29 @@ const removeTag = (tag: optionType) => {
 const v$ = useVuelidate(formRules, formData)
 
 const submitData = async () => {
-  await v$.value.$validate()
+  isLoading.value = true
+  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
   if (!v$.value.$error) {
     save(formData)
   }
 }
+
+onUnmounted(() => {
+  Object.assign(formData, {
+    nombre: '',
+    apellido: '',
+    cedula: '',
+    titulo: '',
+    saberes: [],
+    telefono: '',
+    correo: ''
+  })
+})
 </script>
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Agregar Profesor" @form-submit="submitData">
+    <FormComponent submit-text="Agregar Profesor" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- Nombre + Apellido -->
         <div class="flex w-full space-x-2">

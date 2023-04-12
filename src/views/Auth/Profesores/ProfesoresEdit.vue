@@ -18,7 +18,7 @@ const saberes = useSaberStore()
 const { update, fetchOne } = store
 const id = ref<string>('')
 const { formData, formRules, relations } = data
-
+const isLoading = ref(false)
 const v$ = useVuelidate(formRules, formData)
 
 const removeTag = (tag: optionType) => {
@@ -26,7 +26,8 @@ const removeTag = (tag: optionType) => {
 }
 
 async function submitData() {
-  await v$.value.$validate()
+  isLoading.value = true
+  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
   if (!v$.value.$error) {
     await store.deSync(id.value, relations)
     await update(id.value, formData)
@@ -74,7 +75,7 @@ onUnmounted(() => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Editar Profesor" @form-submit="submitData">
+    <FormComponent submit-text="Editar Profesor" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- Nombre + Apellido -->
         <div class="flex w-full space-x-2">

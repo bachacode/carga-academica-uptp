@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive } from 'vue'
+import { onUnmounted, reactive, ref } from 'vue'
 import { useSeccionStore } from '@/stores/secciones'
 import { useVuelidate } from '@vuelidate/core'
 
@@ -21,18 +21,26 @@ const trayectoOptions = reactive([
 ])
 const v$ = useVuelidate(formRules, formData)
 data.store = store
-
+const isLoading = ref(false)
 const submitData = async () => {
-  await v$.value.$validate()
+  isLoading.value = true
+  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
   if (!v$.value.$error) {
     save(formData)
   }
 }
+onUnmounted(() => {
+  Object.assign(formData, {
+    codigo: '',
+    trayecto: '',
+    estudiantes: ''
+  })
+})
 </script>
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Crear Sección" @form-submit="submitData">
+    <FormComponent submit-text="Crear Sección" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <InputField label="Codigo" name="codigo">
           <template #InputField

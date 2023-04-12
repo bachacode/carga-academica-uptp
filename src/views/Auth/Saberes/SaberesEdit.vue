@@ -28,9 +28,10 @@ const trayectoOptions = reactive([
   { value: 3, name: 'Trayecto 3' },
   { value: 4, name: 'Trayecto 4' }
 ])
-
+const isLoading = ref(false)
 async function submitData() {
-  await v$.value.$validate()
+  isLoading.value = true
+  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
   if (!v$.value.$error) {
     await update(id.value, formData)
   }
@@ -60,7 +61,7 @@ onUnmounted(() => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Editar Saber" @form-submit="submitData">
+    <FormComponent submit-text="Editar Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <InputField label="Codigo" name="codigo">
           <template #InputField

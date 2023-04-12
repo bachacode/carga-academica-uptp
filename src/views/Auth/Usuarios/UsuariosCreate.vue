@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { reactive } from 'vue'
+import { onUnmounted, reactive, ref } from 'vue'
 import { useUsuarioStore } from '@/stores/usuarios'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
@@ -16,20 +16,38 @@ const cargoOptions = reactive([
   { value: 'Profesor', name: 'Profesor' },
   { value: 'Administracion', name: 'Administracion' }
 ])
-
+const isLoading = ref(false)
 const v$ = useVuelidate(formRules, formData)
 
 const submitData = async () => {
-  await v$.value.$validate()
+  isLoading.value = true
+  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
   if (!v$.value.$error) {
     save(formData)
   }
 }
+
+onUnmounted(() => {
+  Object.assign(formData, {
+    username: '',
+    email: '',
+    emailVisibility: true,
+    password: '',
+    passwordConfirm: '',
+    name: '',
+    apellido: '',
+    cedula: '',
+    telefono: '',
+    cargo: '',
+    rol: 'Operador',
+    status: true
+  })
+})
 </script>
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Registrar Usuario" @form-submit="submitData">
+    <FormComponent submit-text="Registrar Usuario" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- Nombre de usuario -->
         <InputField label="Nombre de usuario" name="username">
