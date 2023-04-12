@@ -4,7 +4,7 @@ import InputField from '@/components/InputField.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputError from '@/components/InputError.vue'
 import { data } from '../Usuarios/UsuariosData'
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertStore } from '@/stores/alert'
@@ -12,18 +12,21 @@ const auth = useAuthStore()
 const alert = useAlertStore()
 const { editFormData, editFormRules } = data
 const v$ = useVuelidate(editFormRules, editFormData)
-
+const isLoading = ref(false)
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error && auth.user?.id) {
+    isLoading.value = true
     await auth.pb
       .collection('users')
       .update(auth.user?.id, editFormData)
       .then(async () => {
         await alert.setSuccess({ message: '¡Se han actualizado sus datos correctamente!' })
+        isLoading.value = false
       })
       .catch(async () => {
         await alert.setError({ message: '¡Ha ocurrido un error al actualizar sus datos!' })
+        isLoading.value = false
       })
   }
 }
@@ -42,6 +45,7 @@ onMounted(async () => {
     @form-submit="submitData"
     :back-button="false"
     form-title="Datos Personales"
+    :is-loading="isLoading"
   >
     <template #inputs>
       <!-- Nombre de usuario -->

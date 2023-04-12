@@ -25,9 +25,9 @@ const trayectoOptions = reactive([
 data.store = store
 const isLoading = ref(false)
 async function submitData() {
-  isLoading.value = true
-  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
+  await v$.value.$validate()
   if (!v$.value.$error) {
+    isLoading.value = true
     await update(id.value, formData)
   }
 }

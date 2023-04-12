@@ -6,7 +6,7 @@ import InputError from '@/components/InputError.vue'
 import useVuelidate from '@vuelidate/core'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertStore } from '@/stores/alert'
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import {
   minLengthValidation,
   passwordValidation,
@@ -20,6 +20,7 @@ const editPasswordForm = reactive({
   password: '',
   passwordConfirm: ''
 })
+const isLoading = ref(false)
 const editPasswordRules = computed(() => {
   return {
     oldPassword: {
@@ -42,21 +43,26 @@ const v$ = useVuelidate(editPasswordRules, editPasswordForm)
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error && auth.user?.id) {
+    isLoading.value = true
     await auth.pb
       .collection('users')
       .update(auth.user?.id, editPasswordForm)
       .then(async (data) => {
+        v$.value.$reset()
         await auth.pb.collection('users').authWithPassword(data.username, editPasswordForm.password)
         editPasswordForm.oldPassword = ''
         editPasswordForm.password = ''
         editPasswordForm.passwordConfirm = ''
         await alert.setSuccess({ message: '¡Se ha actualizado su contraseña correctamente!' })
+        isLoading.value = false
       })
       .catch((error) => {
         if (error.response.code == 400) {
           alert.setError({ message: '¡La contraseña que introdujo es incorrecta!' })
+          isLoading.value = false
         } else if (error.response.code == 404) {
           alert.setError({ message: '¡No se ha encontrado su usuario!' })
+          isLoading.value = false
         }
       })
   }
@@ -72,6 +78,7 @@ async function submitData() {
     @form-submit="submitData"
     :back-button="false"
     form-title="Actualizar contraseña"
+    :is-loading="isLoading"
   >
     <template #inputs>
       <!-- Contraseña actual -->

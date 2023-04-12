@@ -25,9 +25,9 @@ const cargoOptions = reactive([
 const isLoading = ref(false)
 
 async function submitData() {
-  isLoading.value = true
-  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
+  await v$.value.$validate()
   if (!v$.value.$error) {
+    isLoading.value = true
     await update(id.value, formData)
   }
 }
@@ -62,7 +62,11 @@ onUnmounted(() => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Registrar Usuario" @form-submit="submitData" :is-loading="isLoading">
+    <FormComponent
+      submit-text="Registrar Usuario"
+      @form-submit="submitData"
+      :is-loading="isLoading"
+    >
       <template #inputs>
         <!-- Nombre de usuario -->
         <InputField label="Nombre de usuario" name="username">

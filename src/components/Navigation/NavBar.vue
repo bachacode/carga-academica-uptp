@@ -35,12 +35,12 @@ async function myAccount() {
   <nav id="header" :class="`${classes} fixed top-0 z-10 w-full bg-white shadow`">
     <div class="container mx-auto mt-0 flex w-full flex-wrap items-center pt-3 pb-3 md:pb-0">
       <div class="w-1/2 pl-2 md:pl-0">
-        <a
+        <button
           class="cursor-pointer text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
-          @click.prevent="dashboard"
+          @click="dashboard()"
         >
           <i class="fas fa-sun pr-3 text-pink-600"></i><span>Carga Academica UPTP</span>
-        </a>
+        </button>
       </div>
       <div class="w-1/2 pr-0">
         <div class="relative float-right flex">
@@ -83,10 +83,10 @@ async function myAccount() {
             >
               <ul class="list-reset">
                 <li>
-                  <a
-                    @click.prevent="myAccount()"
-                    class="block cursor-pointer px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
-                    >Mi cuenta</a
+                  <button
+                    @click="myAccount()"
+                    class="w-full text-left cursor-pointer px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
+                    >Mi cuenta</button
                   >
                 </li>
                 <li>

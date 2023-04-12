@@ -34,7 +34,10 @@ const v$ = useVuelidate(formRules, formData)
 
 const submitData = async () => {
   isLoading.value = true
-  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
+  await v$.value
+    .$validate()
+    .then(() => (isLoading.value = false))
+    .catch(() => (isLoading.value = false))
   if (!v$.value.$error) {
     save(formData)
   }

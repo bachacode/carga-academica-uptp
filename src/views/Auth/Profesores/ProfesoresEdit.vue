@@ -27,7 +27,10 @@ const removeTag = (tag: optionType) => {
 
 async function submitData() {
   isLoading.value = true
-  await v$.value.$validate().then(() => isLoading.value = false).catch(() => isLoading.value = false)
+  await v$.value
+    .$validate()
+    .then(() => (isLoading.value = false))
+    .catch(() => (isLoading.value = false))
   if (!v$.value.$error) {
     await store.deSync(id.value, relations)
     await update(id.value, formData)
