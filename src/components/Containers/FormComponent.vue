@@ -20,22 +20,22 @@ defineEmits(['formSubmit'])
 
 <template>
   <CardContainer :card-width="formWidth">
-        <button
-          v-if="backButton"
-          class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
-          @click="router.back()"
-        >
-          <i class="fas fa-arrow-left pr-1"></i>{{ backText }}
-        </button>
-        <h1 v-if="formTitle" class="pl-4 pt-2 text-xl font-semibold">{{ formTitle }}</h1>
-        <form class="mt-4 px-6 pb-6" @submit.prevent="$emit('formSubmit')">
-          <slot name="inputs"> </slot>
-          <button
-            type="submit"
-            class="text-md w-full rounded-lg bg-blue-700 px-6 py-3 text-center font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
-          >
-            {{ submitText }}
-          </button>
-        </form>
-</CardContainer>
+    <button
+      v-if="backButton"
+      class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
+      @click="router.back()"
+    >
+      <i class="fas fa-arrow-left pr-1"></i>{{ backText }}
+    </button>
+    <h1 v-if="formTitle" class="pl-4 pt-2 text-xl font-semibold">{{ formTitle }}</h1>
+    <form class="mt-4 px-6 pb-6" @submit.prevent="$emit('formSubmit')">
+      <slot name="inputs"> </slot>
+      <button
+        type="submit"
+        class="text-md w-full rounded-lg bg-blue-700 px-6 py-3 text-center font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+      >
+        {{ submitText }}
+      </button>
+    </form>
+  </CardContainer>
 </template>

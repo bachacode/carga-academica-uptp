@@ -24,6 +24,16 @@ const router = createRouter({
       },
       component: () => import('@/views/validation/ConfirmPassword.vue')
     },
+    {
+      path: '/confirm-email-change',
+      name: 'confirm-email-change',
+      beforeEnter: () => {
+        if (!router.currentRoute.value.query.token) {
+          router.back()
+        }
+      },
+      component: () => import('@/views/validation/ConfirmEmailChange.vue')
+    },
 
     // Rutas Autenticadas
     {

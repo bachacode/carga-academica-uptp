@@ -8,8 +8,8 @@ defineProps<Props>()
 
 <template>
   <div class="flex items-center justify-center">
-    <div :class="`${cardWidth} rounded border bg-white mb-6 shadow`">
-        <slot></slot>
+    <div :class="`${cardWidth} mb-6 rounded border bg-white shadow`">
+      <slot></slot>
     </div>
   </div>
 </template>

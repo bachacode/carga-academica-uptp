@@ -18,7 +18,7 @@ withDefaults(defineProps<Props>(), {
       <div class="flex w-full flex-col md:w-1/2">
         <div class="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
           <span
-            @click="router.push('login')"
+            @click="router.push({ name: 'login' })"
             class="cursor-pointer bg-blue-800 p-4 text-xl font-bold text-white"
             >Logo</span
           >

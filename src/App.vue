@@ -5,6 +5,7 @@ import { useAuthStore } from './stores/auth'
 const store = useAuthStore()
 
 router.beforeEach(async (to) => {
+  store.pb.collection('users').authRefresh()
   if (
     !store.pb.authStore.isValid &&
     //@ts-ignore

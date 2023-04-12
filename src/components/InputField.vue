@@ -15,10 +15,13 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <div :class="`flex ${col ? 'flex-col' : 'items-center'} mb-6 w-full`">
-    <label :for="name" :class="`${col ? 'mb-2' : ''} block text-sm font-medium text-gray-900`">{{ label }}</label>
+    <label :for="name" :class="`${col ? 'mb-2' : ''} block text-sm font-medium text-gray-900`">{{
+      label
+    }}</label>
     <div>
       <slot name="InputField"></slot>
-      <p v-if="helperText" class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+      <p v-if="helperText" class="mt-2 ml-4 text-sm text-gray-600">
+        <span class="text-red-600">*</span>
         {{ helperText }}
       </p>
       <slot name="InputError"></slot>
