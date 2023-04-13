@@ -12,6 +12,7 @@ export interface Props {
   sortable?: boolean
 }
 const modals = ref<Array<HTMLInputElement>>([])
+
 function orderBy(state: { name: string; isAsc?: boolean }) {
   if (state.isAsc == true) {
     state.isAsc = false
@@ -58,7 +59,7 @@ const updateValue = (e: Event) => {
       <label for="search" class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >Search</label
       >
-      <div v-if="modelValue" class="relative">
+      <div class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
           <svg
             aria-hidden="true"
@@ -187,7 +188,12 @@ const updateValue = (e: Event) => {
 
                 <!-- Custom Modal -->
                 <Teleport to="#modal">
-                  <input type="checkbox" :id="record.id + column.name" class="modal-toggle" />
+                  <input type="checkbox"
+                  :id="record.id + column.name"
+                  class="modal-toggle"
+                  @keydown.esc="closeModal(key)"
+                  :ref="(el) => setModal(el, key)"
+                  />
                   <div class="modal">
                     <div class="modal-box">
                       <div class="flex justify-between">
@@ -260,6 +266,35 @@ const updateValue = (e: Event) => {
               </label>
             </td>
           </tr>
+
+          <!-- Delete Modal
+          <Teleport to="#modal">
+              <input type="checkbox" id="my-modal" class="modal-toggle" />
+              <div class="modal">
+                <div class="modal-box">
+                  <h3 class="text-lg font-bold">¡Cuidado!</h3>
+                  <p class="py-4">
+                    Estas a punto de borrar al usuario {{ store.singleData?.username }}. ¿Esta seguro que
+                    desea hacer esto?
+                  </p>
+                  <div class="modal-action items-center">
+                    <label
+                      for="my-modal"
+                      class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+                      >¡No!</label
+                    >
+                    <label
+                      for="my-modal"
+                      class="btn rounded-xl bg-red-700"
+                      @click="destroyItem(store.singleData?.id)"
+                    >
+                      Borrar
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </Teleport> -->
+            
         </tbody>
       </table>
     </div>
