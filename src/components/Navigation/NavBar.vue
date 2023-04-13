@@ -6,7 +6,6 @@ import type { OnClickOutsideHandler } from '@vueuse/core'
 import NavLink from './NavLink.vue'
 import router from '@/router'
 const auth = useAuthStore()
-
 defineProps<{
   username?: string | null
   classes?: string
@@ -28,6 +27,10 @@ async function dashboard() {
 
 async function myAccount() {
   await router.push({ name: 'my-account' })
+}
+
+async function verifyEmail() {
+  await auth.sendVerification().then(() => toggle())
 }
 </script>
 
@@ -90,6 +93,24 @@ async function myAccount() {
                     Mi cuenta
                   </button>
                 </li>
+                <template v-if="auth.user?.verified == false">
+                  <li>
+                    <hr class="border-t border-gray-400" />
+                  </li>
+                  <li class="relative">
+                    <font-awesome-icon
+                      v-if="auth.user?.verified == false"
+                      icon="circle-exclamation"
+                      class="hover: absolute top-3 right-3 animate-bounce text-red-500"
+                    />
+                    <button
+                      @click="verifyEmail()"
+                      class="w-full cursor-pointer px-4 py-2 text-left text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
+                    >
+                      Verificar correo
+                    </button>
+                  </li>
+                </template>
                 <li>
                   <hr class="border-t border-gray-400" />
                 </li>

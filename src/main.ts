@@ -20,7 +20,9 @@ import {
   faChevronUp,
   faCheck,
   faCircleExclamation,
-  faClose
+  faClose,
+  faLock,
+  faEnvelope
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faChalkboard,
@@ -38,7 +40,9 @@ library.add(
   faChevronUp,
   faCheck,
   faCircleExclamation,
-  faClose
+  faClose,
+  faLock,
+  faEnvelope
 )
 import './assets/main.css'
 const pinia = createPinia()

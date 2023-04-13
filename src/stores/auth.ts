@@ -3,7 +3,7 @@ import type { Admin, Record } from 'pocketbase'
 import { defineStore } from 'pinia'
 import router from '@/router'
 import PocketBase from 'pocketbase'
-
+import { useAlertStore } from './alert'
 type userWithRole = Admin &
   Record & {
     rol: string
@@ -12,6 +12,7 @@ type userWithRole = Admin &
 export const useAuthStore = defineStore('auth', () => {
   const pb = new PocketBase('http://localhost:8000')
   const user = ref<Record | Admin | null | userWithRole>(pb.authStore.model)
+  const alert = useAlertStore()
   const errors = ref({
     isActive: false,
     message: 'El nombre de usuario o la contraseña son incorrectos'
@@ -43,6 +44,22 @@ export const useAuthStore = defineStore('auth', () => {
       })
   }
 
+  async function sendVerification() {
+    await pb
+      .collection('users')
+      .requestVerification(user.value?.email)
+      .then(async () =>
+        alert.setSuccess({
+          message: '¡Se ha enviado la verificación a su dirección de correo electronico!'
+        })
+      )
+      .catch(async () => alert.setError({ message: '¡Ha ocurrido un error inesperado!' }))
+  }
+
+  async function verifyEmail(token: string) {
+    await pb.collection('users').confirmVerification(token)
+  }
+
   async function recoverPassword(email: string) {
     await pb.collection('users').requestPasswordReset(email)
   }
@@ -69,5 +86,16 @@ export const useAuthStore = defineStore('auth', () => {
     await router.push('/')
   }
 
-  return { pb, user, logout, login, errors, isAuthenticated, recoverPassword, changePassword }
+  return {
+    pb,
+    user,
+    logout,
+    login,
+    errors,
+    isAuthenticated,
+    recoverPassword,
+    changePassword,
+    verifyEmail,
+    sendVerification
+  }
 })

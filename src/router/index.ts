@@ -17,8 +17,8 @@ const router = createRouter({
     {
       path: '/confirm-password-reset',
       name: 'confirm-password-reset',
-      beforeEnter: () => {
-        if (!router.currentRoute.value.query.token) {
+      beforeEnter: (to) => {
+        if (!to.query.token) {
           router.back()
         }
       },
@@ -27,14 +27,23 @@ const router = createRouter({
     {
       path: '/confirm-email-change',
       name: 'confirm-email-change',
-      beforeEnter: () => {
-        if (!router.currentRoute.value.query.token) {
+      beforeEnter: (to) => {
+        if (!to.query.token) {
           router.back()
         }
       },
       component: () => import('@/views/validation/ConfirmEmailChange.vue')
     },
-
+    {
+      path: '/confirm-verification',
+      name: 'confirm-verification',
+      beforeEnter: (to) => {
+        if (!to.query.token) {
+          router.back()
+        }
+      },
+      component: () => import('@/views/validation/ConfirmEmail.vue')
+    },
     // Rutas Autenticadas
     {
       path: '/dashboard',

@@ -8,8 +8,10 @@ router.beforeEach(async (to) => {
   store.pb.collection('users').authRefresh()
   if (
     !store.pb.authStore.isValid &&
-    //@ts-ignore
-    !['login', 'recover-password', 'confirm-password-reset'].includes(to.name)
+    !['login', 'recover-password', 'confirm-password-reset', 'confirm-verification'].includes(
+      //@ts-ignore
+      to.name
+    )
   ) {
     return { name: 'login' }
   } else if (
