@@ -50,6 +50,11 @@ export const data: dataType<registerUserType> & { editFormData: editUserType; ed
         name: 'Status',
         nameAlias: 'Estado',
         isToggable: true
+      },
+      {
+        name: 'Rol',
+        nameAlias: 'Promover',
+        hasAction: true
       }
     ],
     formData: reactive<registerUserType>({
