@@ -79,8 +79,6 @@ const updateValue = (e: Event) => {
     </Teleport>
   </template>
   <!-- /Saberes Modal -->
-  
-
 
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
@@ -145,7 +143,6 @@ const updateValue = (e: Event) => {
         <tbody>
           <tr v-for="record in filteredData" :key="record.id">
             <template v-for="column in columns" :key="column.name">
-
               <!-- Relaciones -->
               <template v-if="Array.isArray(record[column.name.toLowerCase()])">
                 <td>
@@ -160,7 +157,7 @@ const updateValue = (e: Event) => {
               </template>
 
               <!-- Conjuntos -->
-              <template v-if="column.multipleData">
+              <template v-else-if="column.multipleData">
                 <td>
                   <label
                     :for="record.id + column.name"
@@ -170,34 +167,36 @@ const updateValue = (e: Event) => {
                   </label>
                 </td>
 
-                  <!-- Custom Modal -->
-                  <Teleport to="#modal">
-                      <input type="checkbox" :id="record.id + column.name" class="modal-toggle" />
-                    <div class="modal">
-                      <div class="modal-box">
-                        <div class="flex justify-between">
-                          <h3 class="text-lg font-bold">
-                            Información
-                          </h3>
-                          <label
-                            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-                            :for="record.id + column.name"
-                            >X</label
-                          >
-                        </div>
-                        <table class="mb-6 w-full shadow-xl text-center">
-                            <tr v-for="data in column.multipleData" :key="data.name" class="even:bg-slate-300 odd:bg-slate-200">
-                              <th class="bg-blue-700 text-white py-2 pl-2">
-                                {{ data.nameAlias ?? data.name }}
-                              </th>
-                              <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words ">
-                              {{ record[data.name.toLowerCase()] }}
-                            </td>
-                            </tr>
-                        </table>
+                <!-- Custom Modal -->
+                <Teleport to="#modal">
+                  <input type="checkbox" :id="record.id + column.name" class="modal-toggle" />
+                  <div class="modal">
+                    <div class="modal-box">
+                      <div class="flex justify-between">
+                        <h3 class="text-lg font-bold">Información</h3>
+                        <label
+                          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+                          :for="record.id + column.name"
+                          >X</label
+                        >
                       </div>
+                      <table class="mb-6 w-full text-center shadow-xl">
+                        <tr
+                          v-for="data in column.multipleData"
+                          :key="data.name"
+                          class="odd:bg-slate-200 even:bg-slate-300"
+                        >
+                          <th class="bg-blue-700 py-2 pl-2 text-white">
+                            {{ data.nameAlias ?? data.name }}
+                          </th>
+                          <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                            {{ record[data.name.toLowerCase()] }}
+                          </td>
+                        </tr>
+                      </table>
                     </div>
-                  </Teleport>
+                  </div>
+                </Teleport>
                 <!-- /Custom Modal -->
               </template>
 

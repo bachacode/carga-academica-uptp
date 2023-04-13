@@ -31,18 +31,18 @@ export const data: dataType<registerUserType> & { editFormData: editUserType; ed
         name: 'Datos Personales',
         multipleData: [
           {
-          name: 'name',
-          nameAlias: 'Nombre'
+            name: 'name',
+            nameAlias: 'Nombre'
           },
           {
-            name: 'Apellido',
+            name: 'Apellido'
           },
           {
             name: 'email',
-            nameAlias: 'Correo',
+            nameAlias: 'Correo'
           },
           {
-            name: 'Cedula',
+            name: 'Cedula'
           }
         ]
       },
@@ -50,7 +50,7 @@ export const data: dataType<registerUserType> & { editFormData: editUserType; ed
         name: 'Status',
         nameAlias: 'Estado',
         isToggable: true
-      },
+      }
     ],
     formData: reactive<registerUserType>({
       username: '',

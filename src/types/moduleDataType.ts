@@ -4,7 +4,7 @@ export type theadColumnType = {
   isToggable?: boolean
   nameAlias?: string
   multipleData?: Array<{
-    name: string,
+    name: string
     nameAlias?: string
   }>
 }

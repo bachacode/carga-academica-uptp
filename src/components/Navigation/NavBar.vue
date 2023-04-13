@@ -85,9 +85,10 @@ async function myAccount() {
                 <li>
                   <button
                     @click="myAccount()"
-                    class="w-full text-left cursor-pointer px-4 py-2 text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
-                    >Mi cuenta</button
+                    class="w-full cursor-pointer px-4 py-2 text-left text-gray-900 no-underline hover:bg-gray-400 hover:no-underline"
                   >
+                    Mi cuenta
+                  </button>
                 </li>
                 <li>
                   <hr class="border-t border-gray-400" />
