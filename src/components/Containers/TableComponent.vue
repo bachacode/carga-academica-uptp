@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import { defineProps, ref } from 'vue'
 import LoadingCircle from '../LoadingCircle.vue'
 import type { theadColumnType } from '@/types/moduleDataType'
 export interface Props {
@@ -11,13 +11,23 @@ export interface Props {
   viewOnly?: boolean
   sortable?: boolean
 }
-
+const modals = ref<Array<HTMLInputElement>>([])
 function orderBy(state: { name: string; isAsc?: boolean }) {
   if (state.isAsc == true) {
     state.isAsc = false
     return `+${state.name.toLowerCase()}`
   } else state.isAsc = true
   return `-${state.name.toLowerCase()}`
+}
+
+function setModal(el: any, key: number) {
+  modals.value[key] = el
+}
+
+function closeModal(key: number) {
+  if (modals.value[key].checked == true) {
+    modals.value[key].checked = false
+  }
 }
 
 withDefaults(defineProps<Props>(), {
@@ -41,45 +51,6 @@ const updateValue = (e: Event) => {
 </script>
 
 <template>
-  <!-- Saberes Modal -->
-  <template v-for="record in filteredData" :key="record.id">
-    <Teleport to="#modal">
-      <input type="checkbox" :id="record.id" class="modal-toggle" />
-      <div class="modal">
-        <div class="modal-box">
-          <div class="flex justify-between">
-            <h3 class="text-lg font-bold">
-              Saberes del profesor {{ `${record.nombre} ${record.apellido}` }}
-            </h3>
-            <label
-              class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-              :for="record.id"
-              >X</label
-            >
-          </div>
-          <div v-if="!record.expand.saberes">¡Este profesor no tiene saberes asignados!</div>
-          <table v-if="record && record.expand.saberes" class="mb-6 w-full border border-blue-700">
-            <thead>
-              <th class="bg-blue-300 py-2 pl-2">Codigo</th>
-              <th class="bg-blue-300 py-2 pl-2">Materia</th>
-            </thead>
-            <tbody class="text-center">
-              <tr
-                class="bg-white odd:bg-gray-200"
-                v-for="saber in record.expand.saberes"
-                :key="saber.codigo"
-              >
-                <td>{{ saber.codigo }}</td>
-                <td>{{ saber.materia }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </Teleport>
-  </template>
-  <!-- /Saberes Modal -->
-
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
     <div class="flex justify-between border-b p-3">
@@ -141,19 +112,66 @@ const updateValue = (e: Event) => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="record in filteredData" :key="record.id">
+          <tr v-for="(record, key) in filteredData" :key="record.id">
             <template v-for="column in columns" :key="column.name">
               <!-- Relaciones -->
               <template v-if="Array.isArray(record[column.name.toLowerCase()])">
                 <td>
                   <label
-                    :for="record.id"
+                    :for="record.id + column.name"
                     class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
-                    @click="$emit('relation', record.id)"
                   >
                     {{ `Ver ${column.name}` }}
                   </label>
                 </td>
+
+                <!-- Saberes Modal -->
+                <Teleport to="#modal">
+                  <input
+                    type="checkbox"
+                    @keydown.esc="closeModal(key)"
+                    :id="record.id + column.name"
+                    class="modal-toggle"
+                    :ref="(el) => setModal(el, key)"
+                  />
+                  <div class="modal" @keypress.esc="closeModal(key)">
+                    <div class="modal-box">
+                      <div class="flex justify-between">
+                        <h3 class="text-lg font-bold">
+                          Saberes del profesor {{ `${record.nombre} ${record.apellido}` }}
+                        </h3>
+                        <label
+                          class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-blue-700"
+                          :for="record.id + column.name"
+                          ><font-awesome-icon icon="close"
+                        /></label>
+                      </div>
+                      <div v-if="!record.expand.saberes">
+                        ¡Este profesor no tiene saberes asignados!
+                      </div>
+                      <table
+                        v-if="record && record.expand.saberes"
+                        class="mb-6 w-full border border-blue-700"
+                      >
+                        <thead>
+                          <th class="bg-blue-300 py-2 pl-2">Codigo</th>
+                          <th class="bg-blue-300 py-2 pl-2">Materia</th>
+                        </thead>
+                        <tbody class="text-center">
+                          <tr
+                            class="bg-white odd:bg-gray-200"
+                            v-for="saber in record.expand.saberes"
+                            :key="saber.codigo"
+                          >
+                            <td>{{ saber.codigo }}</td>
+                            <td>{{ saber.materia }}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </Teleport>
+                <!-- /Saberes Modal -->
               </template>
 
               <!-- Conjuntos -->

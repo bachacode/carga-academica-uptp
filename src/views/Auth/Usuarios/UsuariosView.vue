@@ -12,7 +12,7 @@ const { searchQuery } = storeToRefs(store)
 const { columns } = data
 
 const sortTable = async (column: string) => {
-  await fetchAll(column)
+  await fetchAll(column, `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
 }
 
 async function create() {
