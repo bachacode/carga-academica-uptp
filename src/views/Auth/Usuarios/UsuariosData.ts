@@ -28,28 +28,29 @@ export const data: dataType<registerUserType> & { editFormData: editUserType; ed
         isAsc: false
       },
       {
-        name: 'email',
-        nameAlias: 'Correo',
-        isAsc: false
-      },
-      {
-        name: 'name',
-        nameAlias: 'Nombre',
-        isAsc: false
+        name: 'Datos Personales',
+        multipleData: [
+          {
+          name: 'name',
+          nameAlias: 'Nombre'
+          },
+          {
+            name: 'Apellido',
+          },
+          {
+            name: 'email',
+            nameAlias: 'Correo',
+          },
+          {
+            name: 'Cedula',
+          }
+        ]
       },
       {
         name: 'Status',
         nameAlias: 'Estado',
         isToggable: true
       },
-      {
-        name: 'Apellido',
-        isAsc: false
-      },
-      {
-        name: 'Cedula',
-        isAsc: false
-      }
     ],
     formData: reactive<registerUserType>({
       username: '',

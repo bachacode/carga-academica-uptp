@@ -3,6 +3,10 @@ export type theadColumnType = {
   isAsc?: boolean
   isToggable?: boolean
   nameAlias?: string
+  multipleData?: Array<{
+    name: string,
+    nameAlias?: string
+  }>
 }
 
 export type dataType<formType> = {
