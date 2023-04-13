@@ -7,6 +7,7 @@ export type theadColumnType = {
     name: string
     nameAlias?: string
   }>
+  hasAction?: boolean
 }
 
 export type dataType<formType> = {

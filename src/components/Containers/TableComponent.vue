@@ -43,7 +43,8 @@ const emit = defineEmits([
   'deleteModal',
   'relation',
   'editButton',
-  'toggleColumn'
+  'toggleColumn',
+  'triggerAction'
 ])
 
 const updateValue = (e: Event) => {
@@ -188,11 +189,12 @@ const updateValue = (e: Event) => {
 
                 <!-- Custom Modal -->
                 <Teleport to="#modal">
-                  <input type="checkbox"
-                  :id="record.id + column.name"
-                  class="modal-toggle"
-                  @keydown.esc="closeModal(key)"
-                  :ref="(el) => setModal(el, key)"
+                  <input
+                    type="checkbox"
+                    :id="record.id + column.name"
+                    class="modal-toggle"
+                    @keydown.esc="closeModal(key)"
+                    :ref="(el) => setModal(el, key)"
                   />
                   <div class="modal">
                     <div class="modal-box">
@@ -237,6 +239,19 @@ const updateValue = (e: Event) => {
                     @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
                   >
                     {{ record[column.name.toLowerCase()] ? `Activo` : `Inactivo` }}
+                  </label>
+                </td>
+              </template>
+
+              <!-- Acciones custom -->
+              <template v-else-if="column.hasAction">
+                <td>
+                  <label
+                    :for="`my-action-` + column.name.toLowerCase()"
+                    class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                    @click="$emit('triggerAction', record.id)"
+                  >
+                    {{ column.nameAlias }}
                   </label>
                 </td>
               </template>
@@ -294,7 +309,6 @@ const updateValue = (e: Event) => {
                 </div>
               </div>
             </Teleport> -->
-            
         </tbody>
       </table>
     </div>
