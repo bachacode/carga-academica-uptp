@@ -153,7 +153,7 @@ onMounted(async () => {
       </button>
       <!--Table Card-->
       <TableComponent
-        title="Usuarios"
+        title="Operadores"
         v-model="searchQuery"
         :columns="columns"
         :filtered-data="store.filteredData"

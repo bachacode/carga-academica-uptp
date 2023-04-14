@@ -36,7 +36,7 @@ const submit = async () => {
       .then(async () => {
         formSent.value = true
         if (auth.user?.username) {
-          await auth.pb.collection('users').authWithPassword(auth.user.username, formData.password)
+          await auth.pb.collection('users').authWithPassword(auth.user?.username, formData.password)
         }
       })
       .catch(() => {

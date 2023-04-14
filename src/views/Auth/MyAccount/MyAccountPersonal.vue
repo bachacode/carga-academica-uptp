@@ -32,7 +32,7 @@ async function submitData() {
 }
 
 onMounted(async () => {
-  Object.assign(editFormData, auth.user)
+  Object.assign(editFormData, auth.pb.authStore.model)
 })
 </script>
 

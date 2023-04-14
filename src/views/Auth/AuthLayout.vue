@@ -7,7 +7,6 @@ import AlertComponent from '@/components/AlertComponent.vue'
 import { onUnmounted } from 'vue'
 const auth = useAuthStore()
 const alert = useAlertStore()
-
 onUnmounted(() => {
   alert.data.isActive = false
 })

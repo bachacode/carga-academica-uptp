@@ -1,18 +1,13 @@
 import { ref, computed } from 'vue'
-import type { Admin, Record } from 'pocketbase'
 import { defineStore } from 'pinia'
 import router from '@/router'
-import PocketBase from 'pocketbase'
+import PocketBase, { Record, Admin } from 'pocketbase'
 import { useAlertStore } from './alert'
-type userWithRole = Admin &
-  Record & {
-    rol: string
-  }
 
 export const useAuthStore = defineStore('auth', () => {
   const pb = new PocketBase('http://localhost:8000')
-  const user = ref<Record | Admin | null | userWithRole>(pb.authStore.model)
   const alert = useAlertStore()
+  const user = ref<Record | Admin | null>()
   const errors = ref({
     isActive: false,
     message: 'El nombre de usuario o la contraseña son incorrectos'
@@ -47,7 +42,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function sendVerification() {
     await pb
       .collection('users')
-      .requestVerification(user.value?.email)
+      .requestVerification(pb.authStore.model?.email)
       .then(async () =>
         alert.setSuccess({
           message: '¡Se ha enviado la verificación a su dirección de correo electronico!'
@@ -71,12 +66,6 @@ export const useAuthStore = defineStore('auth', () => {
       .catch((error) => console.log(error))
   }
 
-  pb.authStore.onChange(async () => {
-    if (pb.authStore.model != null) {
-      user.value = await pb.collection('users').getOne<userWithRole>(pb.authStore.model.id)
-    }
-  }, true)
-
   const isAuthenticated = computed(() => {
     return pb.authStore.isValid
   })
@@ -86,9 +75,12 @@ export const useAuthStore = defineStore('auth', () => {
     await router.push('/')
   }
 
+  pb.authStore.onChange((token, model) => {
+    user.value = model
+  })
+
   return {
     pb,
-    user,
     logout,
     login,
     errors,
@@ -96,6 +88,7 @@ export const useAuthStore = defineStore('auth', () => {
     recoverPassword,
     changePassword,
     verifyEmail,
-    sendVerification
+    sendVerification,
+    user
   }
 })

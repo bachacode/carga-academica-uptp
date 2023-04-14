@@ -53,7 +53,7 @@ const theadColumns = reactive([
 ])
 
 onMounted(async () => {
-  await usuarios.fetchAll('-created', `rol = "Operador" && id != "${auth.pb.authStore.model?.id}"`)
+  await usuarios.fetchAll('-created', `rol = "Operador" && id != "${auth.user?.id}"`)
 })
 </script>
 

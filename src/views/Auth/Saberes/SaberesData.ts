@@ -32,6 +32,9 @@ export const data: dataType<saberType> = {
       isAsc: false
     },
     {
+      name: 'Profesores'
+    },
+    {
       name: 'Periodo',
       isAsc: false
     },
