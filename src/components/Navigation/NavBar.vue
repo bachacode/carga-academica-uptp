@@ -143,38 +143,36 @@ async function verifyEmail() {
         </div>
       </div>
 
-      <div
-        class="z-20 mt-2 flex w-full bg-white lg:hidden"
-      >
-        <ul class="flex flex-row items-center w-full px-4 md:px-0 lg:flex">
+      <div class="z-20 mt-2 flex w-full bg-white lg:hidden">
+        <ul class="flex w-full flex-row items-center px-4 md:px-0 lg:flex">
           <li class="m-2 flex-grow">
             <NavLink to="/dashboard">
-              <font-awesome-icon icon="home" class="text-2xl"/>
+              <font-awesome-icon icon="home" class="text-2xl" />
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
             <NavLink to="/secciones">
-              <font-awesome-icon icon="user-group" class="text-2xl"/>
+              <font-awesome-icon icon="user-group" class="text-2xl" />
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
             <NavLink to="/saberes">
-              <font-awesome-icon icon="chalkboard" class="text-2xl"/>
+              <font-awesome-icon icon="chalkboard" class="text-2xl" />
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
             <NavLink to="/profesores">
-              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl"/>
+              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
             <NavLink to="/pensums">
-              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl"/>
+              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
             </NavLink>
           </li>
           <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
             <NavLink class="text-cyan-600" to="/usuarios">
-              <font-awesome-icon icon="user" class="text-2xl"/>
+              <font-awesome-icon icon="user" class="text-2xl" />
             </NavLink>
           </li>
         </ul>

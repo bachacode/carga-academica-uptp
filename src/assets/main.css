@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .router-link-exact-active {
-  @apply lg:border-b-2 lg:border-blue-500 text-blue-600;
+  @apply text-blue-600 lg:border-b-2 lg:border-blue-500;
 }
 
 .router-link-exact-sidebar-active {
