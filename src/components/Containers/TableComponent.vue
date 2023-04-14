@@ -127,7 +127,7 @@ const updateValue = (e: Event) => {
                   </label>
                 </td>
 
-                <!-- Saberes Modal -->
+                <!-- Custom Table Modal -->
                 <Teleport to="#modal">
                   <input
                     type="checkbox"
@@ -139,8 +139,11 @@ const updateValue = (e: Event) => {
                   <div class="modal" @keypress.esc="closeModal(key)">
                     <div class="modal-box">
                       <div class="flex justify-between">
-                        <h3 class="text-lg font-bold">
-                          Saberes del profesor {{ `${record.nombre} ${record.apellido}` }}
+                        <h3 v-if="!column.fatherName" class="text-lg font-bold">
+                          {{ column.relationTitle ?? 'Datos' }}
+                        </h3>
+                        <h3 v-if="column.fatherName" class="text-lg font-bold">
+                          {{ column.relationTitle + record[column.fatherName] ?? 'Datos' }}
                         </h3>
                         <label
                           class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-blue-700"
@@ -148,32 +151,38 @@ const updateValue = (e: Event) => {
                           ><font-awesome-icon icon="close"
                         /></label>
                       </div>
-                      <div v-if="!record.expand.saberes">
-                        ¡Este profesor no tiene saberes asignados!
+                      <div v-if="!record.expand[column.name.toLowerCase()]">
+                        {{ column.noRelations ?? '¡Esta tabla esta vacia!' }}
                       </div>
                       <table
-                        v-if="record && record.expand.saberes"
+                        v-if="record && record.expand[column.name.toLowerCase()]"
                         class="mb-6 w-full border border-blue-700"
                       >
-                        <thead>
-                          <th class="bg-blue-300 py-2 pl-2">Codigo</th>
-                          <th class="bg-blue-300 py-2 pl-2">Materia</th>
+                        <thead >
+                          <th v-for="relationColumn in column.multipleData" :key="column.name" 
+                          class="bg-blue-300 py-2 pl-2 uppercase"
+                          >
+                            {{ relationColumn.nameAlias ?? relationColumn.name }}
+                          </th>
                         </thead>
                         <tbody class="text-center">
                           <tr
                             class="bg-white odd:bg-gray-200"
-                            v-for="saber in record.expand.saberes"
+                            v-for="saber in record.expand[column.name.toLowerCase()]"
                             :key="saber.codigo"
                           >
-                            <td>{{ saber.codigo }}</td>
-                            <td>{{ saber.materia }}</td>
+                            <td v-for="relationColumn in column.multipleData" :key="column.name"
+                            class="w-min-content" 
+                            >
+                              {{ saber[relationColumn.name.toLowerCase()] }}
+                            </td>
                           </tr>
                         </tbody>
                       </table>
                     </div>
                   </div>
                 </Teleport>
-                <!-- /Saberes Modal -->
+                <!-- /Custom Table Modal -->
               </template>
 
               <!-- Conjuntos -->

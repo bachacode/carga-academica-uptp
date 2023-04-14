@@ -28,7 +28,18 @@ export const data: dataType<profesorType> = {
       isAsc: false
     },
     {
-      name: 'Saberes'
+      name: 'Saberes',
+      relationTitle: 'Saberes del profesor ',
+      noRelations: '¡Este profesor no tiene saberes asignados!',
+      fatherName: 'nombre',
+      multipleData: [
+        {
+          name: 'codigo'
+        },
+        {
+          name: 'materia'
+        }
+      ]
     },
     {
       name: 'Telefono',

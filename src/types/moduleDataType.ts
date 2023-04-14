@@ -3,6 +3,9 @@ export type theadColumnType = {
   isAsc?: boolean
   isToggable?: boolean
   nameAlias?: string
+  relationTitle?: string
+  noRelations?: string
+  fatherName?: string
   multipleData?: Array<{
     name: string
     nameAlias?: string
