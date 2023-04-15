@@ -276,12 +276,14 @@ const updateValue = (e: Event) => {
             <!-- Acciones -->
             <td v-if="!viewOnly" class="space-x-3">
               <button
+                :title="`Editar`"
                 class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
                 @click="$emit('editButton', record.id)"
               >
                 <i class="fas fa-edit"></i>
               </button>
               <label
+                :title="`Eliminar`"
                 for="my-modal"
                 class="btn rounded-xl bg-red-700 hover:bg-rose-900"
                 @click="$emit('deleteModal', record.id)"
