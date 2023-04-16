@@ -58,7 +58,7 @@ onMounted(() => {
 
 <template>
   <GuessLayout title="Cambio de correo">
-    <template v-if="!formSent">
+    <template v-if="formSent">
       <form class="flex flex-col pt-3 md:pt-8" @submit.prevent="submit()">
         <!-- Contraseña -->
         <InputField label="Introduzca su contraseña" name="password">
@@ -81,10 +81,8 @@ onMounted(() => {
       </form>
     </template>
     <template v-else>
-      <div class="mt-6 rounded-lg p-2">
-        <p class="text-center text-4xl font-bold text-blue-900">
-          ¡Tu correo ha sido cambiado correctamente!
-        </p>
+      <div class="mt-6 rounded-lg border border-blue-700 bg-blue-100 p-2 shadow-2xl">
+        <p class="text-2xl font-medium text-blue-800">¡Tu correo ha sido cambiado correctamente!</p>
       </div>
     </template>
   </GuessLayout>

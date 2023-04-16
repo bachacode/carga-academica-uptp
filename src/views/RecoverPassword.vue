@@ -40,8 +40,8 @@ const submit = async () => {
       </form>
     </template>
     <template v-else>
-      <div class="mt-6 rounded-lg bg-blue-700 p-2 shadow-2xl">
-        <p class="text-xl text-white">
+      <div class="mt-6 rounded-lg border border-blue-700 bg-blue-300 p-2 shadow-2xl">
+        <p class="text-xl font-medium text-blue-800">
           Se han enviado las instrucciones para reestablecer su contraseña al correo que ha
           introducido, si no recibe ningún correo, intentelo nuevamente y aseguresé de que el correo
           introducido es el correcto

@@ -16,12 +16,12 @@ withDefaults(defineProps<Props>(), {
     <div class="flex w-full flex-wrap">
       <!-- Login Section -->
       <div class="flex w-full flex-col md:w-1/2">
-        <div class="flex justify-center pt-12 md:-mb-24 md:justify-start md:pl-12">
-          <span
+        <div class="flex justify-center pt-12 md:-mb-24">
+          <img
+            src="/logo.png"
             @click="router.push({ name: 'login' })"
-            class="cursor-pointer bg-blue-800 p-4 text-xl font-bold text-white"
-            >Logo</span
-          >
+            class="mb-6 w-1/4 cursor-pointer py-4 pl-1 text-xl font-bold text-white"
+          />
         </div>
 
         <div
@@ -43,7 +43,7 @@ withDefaults(defineProps<Props>(), {
       <div class="w-1/2 shadow-2xl">
         <img
           class="hidden h-screen w-full object-cover md:block"
-          src="https://source.unsplash.com/IXUM4cJynP0"
+          src="https://img.freepik.com/free-vector/minimal-geometric-stripe-shape-background_1409-1014.jpg"
         />
       </div>
     </div>
