@@ -158,9 +158,11 @@ const updateValue = (e: Event) => {
                         v-if="record && record.expand[column.name.toLowerCase()]"
                         class="mb-6 w-full border border-blue-700"
                       >
-                        <thead >
-                          <th v-for="relationColumn in column.multipleData" :key="column.name" 
-                          class="bg-blue-300 py-2 pl-2 uppercase"
+                        <thead>
+                          <th
+                            v-for="relationColumn in column.multipleData"
+                            :key="relationColumn.name"
+                            class="bg-blue-300 py-2 pl-2 uppercase"
                           >
                             {{ relationColumn.nameAlias ?? relationColumn.name }}
                           </th>
@@ -169,10 +171,12 @@ const updateValue = (e: Event) => {
                           <tr
                             class="bg-white odd:bg-gray-200"
                             v-for="saber in record.expand[column.name.toLowerCase()]"
-                            :key="saber.codigo"
+                            :key="saber.id"
                           >
-                            <td v-for="relationColumn in column.multipleData" :key="column.name"
-                            class="w-min-content" 
+                            <td
+                              v-for="relationColumn in column.multipleData"
+                              :key="relationColumn.name"
+                              class="w-min-content"
                             >
                               {{ saber[relationColumn.name.toLowerCase()] }}
                             </td>

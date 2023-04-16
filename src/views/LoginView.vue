@@ -44,7 +44,7 @@ const login = async () => {
         Iniciar Sesión
       </button>
       <router-link class="mt-2 text-center text-sm text-blue-600 underline" to="recover-password"
-        >¿Has olvidado la contraseña?</router-link
+        >¿Has olvidado tu contraseña?</router-link
       >
     </form>
   </GuessLayout>

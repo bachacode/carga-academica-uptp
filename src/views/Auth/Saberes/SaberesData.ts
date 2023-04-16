@@ -48,7 +48,7 @@ export const data: dataType<saberType> = {
         },
         {
           name: 'Telefono'
-        },
+        }
       ]
     },
     {
