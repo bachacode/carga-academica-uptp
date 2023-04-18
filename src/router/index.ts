@@ -136,6 +136,26 @@ const router = createRouter({
       ]
     },
     {
+      path: '/carga',
+      children: [
+        {
+          path: '',
+          name: 'carga',
+          component: () => import('@/views/Auth/Carga/CargaView.vue')
+        },
+        {
+          path: 'create',
+          name: 'carga.create',
+          component: () => import('@/views/Auth/Carga/CargaCreate.vue')
+        },
+        {
+          path: 'edit/:id',
+          name: 'carga.edit',
+          component: () => import('@/views/Auth/Carga/CargaEdit.vue')
+        }
+      ]
+    },
+    {
       path: '/usuarios',
       children: [
         {

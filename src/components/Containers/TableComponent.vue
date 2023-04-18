@@ -55,6 +55,7 @@ const updateValue = (e: Event) => {
 <template>
   <!--Table Card-->
   <div class="rounded border bg-white shadow">
+    <slot name="header"></slot>
     <div class="flex justify-between border-b p-3">
       <h5 class="font-bold uppercase text-gray-600">{{ title }}</h5>
       <label for="search" class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
