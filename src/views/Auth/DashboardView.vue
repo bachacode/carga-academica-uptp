@@ -14,21 +14,21 @@ const usuarios = useUsuarioStore()
 const secciones = useSeccionStore()
 const auth = useAuthStore()
 const totalProfs = computed(() => {
-  return profesores.data?.length
+  return profesores.data?.items.length
 })
 const profsConMaterias = computed(() => {
-  return profesores.data?.filter((profesor) => {
+  return profesores.data?.items.filter((profesor) => {
     return profesor.expand.saberes
   }).length
 })
 const totalUsers = computed(() => {
-  return usuarios.data?.length
+  return usuarios.data?.items.length
 })
 const totalSecciones = computed(() => {
-  return secciones.data?.length
+  return secciones.data?.items.length
 })
 const totalActiveUsers = computed(() => {
-  return usuarios.data?.filter((usuario) => {
+  return usuarios.data?.items.filter((usuario) => {
     return usuario.status == true
   }).length
 })
