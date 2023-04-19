@@ -1,15 +1,12 @@
-import type { profesorType } from '@/stores/profesores'
 import type { dataType } from '@/types/moduleDataType'
-import { reactive, ref } from 'vue'
+import { reactive } from 'vue'
 import { computed } from 'vue'
 import {
   requiredValidation,
-  emailValidation,
-  minLengthValidation,
-  maxLengthValidation
+  numericValidation
 } from '@/helpers/validationHelpers'
 import type { relationsType } from '@/components/MultiSelect.vue'
-export const data: dataType<profesorType> = {
+export const data: dataType<any> = {
   columns: [
     {
       name: 'Nombre',
@@ -42,48 +39,31 @@ export const data: dataType<profesorType> = {
       ]
     }
   ],
-  formData: reactive<profesorType>({
-    nombre: '',
-    apellido: '',
-    cedula: '',
-    titulo: '',
-    saberes: [],
-    telefono: '',
-    correo: ''
+  formData: reactive<any>({
+    id_seccion: '',
+    id_profesor: '',
+    id_saber: '',
+    dia: '',
+    horas: ''
   }),
   formRules: computed(() => {
     return {
-      nombre: {
+      id_seccion: {
         required: requiredValidation(),
-        minLength: minLengthValidation(),
-        maxLength: maxLengthValidation(40)
       },
-      apellido: {
+      id_profesor: {
         required: requiredValidation(),
-        minLength: minLengthValidation(),
-        maxLength: maxLengthValidation(40)
       },
-      cedula: {
+      id_saber: {
         required: requiredValidation(),
-        minLength: minLengthValidation(),
-        maxLength: maxLengthValidation(40)
       },
-      titulo: {
+      dia: {
         required: requiredValidation(),
-        minLength: minLengthValidation(),
-        maxLength: maxLengthValidation(40)
       },
-      telefono: {
+      horas: {
         required: requiredValidation(),
-        minLength: minLengthValidation(),
-        maxLength: maxLengthValidation(40)
+        numeric: numericValidation(),
       },
-      correo: {
-        required: requiredValidation(),
-        email: emailValidation(),
-        minLength: minLengthValidation(),
-        maxLength: maxLengthValidation(40)
-      }
     }
   }),
   relations: reactive<relationsType>({

@@ -3,7 +3,7 @@ import { useAuthStore } from './auth'
 import { useAlertStore } from './alert'
 import { computed, onMounted, ref } from 'vue'
 import router from '@/router'
-import type { Record } from 'pocketbase'
+import type { ListResult, Record } from 'pocketbase'
 import type { relationsType } from '@/components/MultiSelect.vue'
 
 export type alertMessages = {
@@ -44,13 +44,13 @@ export function createCrudStore<
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
     const alert = useAlertStore()
-    const data = ref<IData[]>()
+    const data = ref<ListResult<IData>>()
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
     const defaultRecordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
 
     async function fetchAll(sortBy: string = '-created', filter: string = '') {
-      data.value = await pb.collection(collectionName).getFullList<IData>({
+      data.value = await pb.collection(collectionName).getList<IData>(1, 10, {
         sort: sortBy,
         expand: relations?.toString(),
         filter: filter
@@ -142,7 +142,7 @@ export function createCrudStore<
     }
 
     const filteredData = computed(() => {
-      return data.value
+      return data.value?.items
         ?.filter((record) => {
           const keys = Object.keys(record).filter((el) => !defaultRecordKeys.value.includes(el))
           const testArray = keys.map((key) => {

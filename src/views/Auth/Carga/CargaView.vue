@@ -12,11 +12,11 @@ const { searchQuery } = storeToRefs(store)
 const { columns } = data
 const activeDay = ref('Lunes')
 async function create() {
-  await router.push({ name: 'profesores.create' })
+  await router.push({ name: 'carga.create' })
 }
 
 const edit = async (id: string) => {
-  await router.push({ name: 'profesores.edit', params: { id } })
+  await router.push({ name: 'carga.edit', params: { id } })
 }
 
 const sortTable = async (column: string) => {
@@ -35,7 +35,7 @@ async function destroyItem(id: string | undefined) {
 
 watchEffect(async () => {
   if (activeDay.value == 'all') {
-    store.data = await store.pb.collection('carga_total').getFullList()
+    store.data = await store.pb.collection('carga_total').getList(1, 50)
   } else await fetchAll('-horas', `dia = "${activeDay.value}"`)
 })
 </script>
@@ -72,7 +72,7 @@ watchEffect(async () => {
   <AuthLayout>
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
-        <i class="fas fa-plus-circle pr-1"></i> Registrar Profesor
+        <i class="fas fa-plus-circle pr-1"></i> Registrar Horas Academicas
       </button>
       <!--Table Card-->
       <TableComponent
