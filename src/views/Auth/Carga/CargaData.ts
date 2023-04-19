@@ -1,12 +1,10 @@
 import type { dataType } from '@/types/moduleDataType'
 import { reactive } from 'vue'
 import { computed } from 'vue'
-import {
-  requiredValidation,
-  numericValidation
-} from '@/helpers/validationHelpers'
+import { requiredValidation, numericValidation } from '@/helpers/validationHelpers'
 import type { relationsType } from '@/components/MultiSelect.vue'
-export const data: dataType<any> = {
+import type { claseType } from '@/stores/clases'
+export const data: dataType<claseType> = {
   columns: [
     {
       name: 'Nombre',
@@ -25,21 +23,11 @@ export const data: dataType<any> = {
       isAsc: false
     },
     {
-      name: 'Saberes',
-      relationTitle: 'Saberes del profesor ',
-      noRelations: '¡Este profesor no tiene saberes asignados!',
-      fatherName: 'nombre',
-      multipleData: [
-        {
-          name: 'codigo'
-        },
-        {
-          name: 'materia'
-        }
-      ]
+      name: 'Materia',
+      isAsc: false
     }
   ],
-  formData: reactive<any>({
+  formData: reactive<claseType>({
     id_seccion: '',
     id_profesor: '',
     id_saber: '',
@@ -49,21 +37,21 @@ export const data: dataType<any> = {
   formRules: computed(() => {
     return {
       id_seccion: {
-        required: requiredValidation(),
+        required: requiredValidation()
       },
       id_profesor: {
-        required: requiredValidation(),
+        required: requiredValidation()
       },
       id_saber: {
-        required: requiredValidation(),
+        required: requiredValidation()
       },
       dia: {
-        required: requiredValidation(),
+        required: requiredValidation()
       },
       horas: {
         required: requiredValidation(),
-        numeric: numericValidation(),
-      },
+        numeric: numericValidation()
+      }
     }
   }),
   relations: reactive<relationsType>({

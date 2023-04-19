@@ -17,7 +17,7 @@ const options = ref({
   }
 })
 function check(trayecto: any, periodo: any) {
-  const count = store.data?.filter((record) => {
+  const count = store.data?.items.filter((record) => {
     if (record.trayecto == trayecto && record.periodo == periodo) {
       return true
     } else return false
@@ -72,7 +72,7 @@ onMounted(async () => {
                     </td>
                   </tr>
                 </template>
-                <template v-for="record in store.data" :key="record.codigo">
+                <template v-for="record in store.data.items" :key="record.codigo">
                   <template v-if="record.trayecto == trayecto && record.periodo == periodo">
                     <tr class="bg-white even:bg-gray-200">
                       <td class="p-2">{{ record.codigo }}</td>
