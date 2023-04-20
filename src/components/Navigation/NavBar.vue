@@ -165,9 +165,9 @@ async function verifyEmail() {
               <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
             </NavLink>
           </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/carga" text="Carga Academica">
-              <font-awesome-icon icon="chalkboard-teacher" />
+          <li class="m-2 flex-grow">
+            <NavLink to="/carga">
+              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
             </NavLink>
           </li>
           <li class="m-2 flex-grow">

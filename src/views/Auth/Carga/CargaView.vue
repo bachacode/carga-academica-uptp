@@ -75,9 +75,18 @@ watchEffect(async () => {
   </Teleport>
   <!-- /Delete Modal -->
   <AuthLayout>
-    <div class="w-full px-16 pb-8">
-      <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
+    <div class="w-full space-x-3 px-16 pb-8">
+      <button
+        @click="create()"
+        class="btn mb-3 rounded-lg bg-green-700 text-white hover:bg-green-900"
+      >
         <i class="fas fa-plus-circle pr-1"></i> Registrar Horas Academicas
+      </button>
+      <button
+        @click="router.push({ name: 'carga.recommend' })"
+        class="btn mb-3 rounded-lg bg-yellow-500 text-yellow-900 hover:bg-yellow-900 hover:text-yellow-500"
+      >
+        <i class="fas fa-plus-circle pr-1"></i> Profesores recomendados
       </button>
       <!--Table Card-->
       <TableComponent
@@ -93,13 +102,13 @@ watchEffect(async () => {
         <!-- Selector de dia -->
         <template #header>
           <div>
-            <ul class="flex justify-between py-6 px-10">
+            <ul class="flex justify-around py-6 px-10">
               <li v-for="day in daySelector" :key="day">
                 <button
                   v-if="day != 'all'"
                   @click="activeDay = day"
                   :title="day"
-                  :class="`btn-outline btn rounded-xl px-10 hover:bg-blue-900 ${
+                  :class="`btn-outline btn rounded-xl px-16 hover:bg-blue-900 ${
                     activeDay == day ? 'bg-blue-700 text-white' : ''
                   }`"
                 >
@@ -109,7 +118,7 @@ watchEffect(async () => {
                   v-if="day == 'all'"
                   @click="activeDay = day"
                   title="Total"
-                  :class="`btn-outline btn rounded-xl px-10 hover:bg-blue-900 ${
+                  :class="`btn-outline btn rounded-xl px-16 hover:bg-blue-900 ${
                     activeDay == day ? 'bg-blue-700 text-white' : ''
                   }`"
                 >

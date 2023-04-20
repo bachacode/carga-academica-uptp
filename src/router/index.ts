@@ -152,6 +152,11 @@ const router = createRouter({
           path: 'edit/:id',
           name: 'carga.edit',
           component: () => import('@/views/Auth/Carga/CargaEdit.vue')
+        },
+        {
+          path: 'recommend',
+          name: 'carga.recommend',
+          component: () => import('@/views/Auth/Carga/CargaRecomendations.vue')
         }
       ]
     },

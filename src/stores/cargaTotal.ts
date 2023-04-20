@@ -4,11 +4,9 @@ import { createViewStore } from './factory'
 export type cargaType = {
   nombre: string
   apellido: string
-  cedula: string
   titulo: string
   saberes: Array<string>
-  telefono: string
-  correo: string
+  horas: number
 }
 
 export interface ICarga extends cargaType, Record {
@@ -17,9 +15,9 @@ export interface ICarga extends cargaType, Record {
   updated: string
 }
 
-export const useCargaStore = createViewStore<ICarga>({
-  storeId: 'carga',
-  collectionName: 'carga',
+export const useCargaTotalStore = createViewStore<ICarga>({
+  storeId: 'cargaTotal',
+  collectionName: 'carga_total',
   relations: ['saberes'],
-  autoFetch: false
+  autoFetch: true
 })

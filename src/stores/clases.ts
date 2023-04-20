@@ -32,6 +32,5 @@ export const useClaseStore = createCrudStore<claseType, IClase>({
   route: '/carga',
   collectionName: 'clases',
   success: successMessages,
-  error: errorMessages,
-  relations: ['profesores']
+  error: errorMessages
 })

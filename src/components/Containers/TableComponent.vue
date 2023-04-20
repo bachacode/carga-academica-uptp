@@ -58,10 +58,13 @@ const updateValue = (e: Event) => {
     <slot name="header"></slot>
     <div class="flex justify-between border-b p-3">
       <h5 class="font-bold uppercase text-gray-600">{{ title }}</h5>
-      <label for="search" class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      <label
+        v-if="!viewOnly"
+        for="search"
+        class="sr-only mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >Search</label
       >
-      <div class="relative">
+      <div v-if="!viewOnly" class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2">
           <svg
             aria-hidden="true"
@@ -329,7 +332,7 @@ const updateValue = (e: Event) => {
       </table>
 
       <!-- Paginacion -->
-      <nav aria-label="Page navigation" class="pt-1">
+      <nav v-if="!viewOnly" aria-label="Page navigation" class="pt-1">
         <ul class="flex justify-end -space-x-px">
           <li>
             <a

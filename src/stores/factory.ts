@@ -12,16 +12,20 @@ export type alertMessages = {
   delete: string
 }
 
-export interface IStoreOptions<IData> {
+export interface IViewStoreOptions<IData> {
   storeId: string
-  route: string
   collectionName: string
-  success: alertMessages
-  error: alertMessages
-  uniqueKeys?: Array<string>
   mapData?: (value: IData, index: number, array: IData[]) => unknown
   relations?: Array<string>
   autoFetch?: boolean
+  perPage?: number
+}
+
+export interface ICrudStoreOptions<IData> extends IViewStoreOptions<IData> {
+  route: string
+  success: alertMessages
+  error: alertMessages
+  uniqueKeys?: Array<string>
 }
 
 export function createCrudStore<
@@ -39,8 +43,9 @@ export function createCrudStore<
     return record
   },
   relations,
-  autoFetch = true
-}: IStoreOptions<IData>) {
+  autoFetch = true,
+  perPage = 20
+}: ICrudStoreOptions<IData>) {
   return defineStore(storeId, () => {
     const { pb } = useAuthStore()
     const alert = useAlertStore()
@@ -48,13 +53,16 @@ export function createCrudStore<
     const singleData = ref<IData>()
     const searchQuery = ref<string>('')
     const defaultRecordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
-
+    const itemsPerPage = ref(perPage)
+    const actualPage = ref(1)
     async function fetchAll(sortBy: string = '-created', filter: string = '') {
-      data.value = await pb.collection(collectionName).getList<IData>(1, 10, {
-        sort: sortBy,
-        expand: relations?.toString(),
-        filter: filter
-      })
+      data.value = await pb
+        .collection(collectionName)
+        .getList<IData>(actualPage.value, itemsPerPage.value, {
+          sort: sortBy,
+          expand: relations?.toString(),
+          filter: filter
+        })
     }
 
     async function fetchOne(id: string) {
@@ -160,7 +168,7 @@ export function createCrudStore<
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
           //@ts-ignore
-          things[uniqueKeys[index]] = data.value?.map((record) => {
+          things[uniqueKeys[index]] = data.value?.items.map((record) => {
             return record[uniqueKeys[index]]
           })
         }
@@ -189,6 +197,69 @@ export function createCrudStore<
       defaultRecordKeys,
       sync,
       deSync
+    }
+  })
+}
+
+export function createViewStore<IData extends Record & Object>({
+  storeId,
+  collectionName,
+  relations,
+  mapData = (record: IData) => {
+    return record
+  },
+  autoFetch = true
+}: IViewStoreOptions<IData>) {
+  return defineStore(storeId, () => {
+    const { pb } = useAuthStore()
+    const data = ref<ListResult<IData>>()
+    const singleData = ref<IData>()
+    const searchQuery = ref<string>('')
+    const defaultRecordKeys = ref(['collectionId', 'collectionName', 'id', 'expand'])
+
+    async function fetchAll(sortBy: string = '-created', filter: string = '') {
+      data.value = await pb.collection(collectionName).getList<IData>(1, 10, {
+        sort: sortBy,
+        expand: relations?.toString(),
+        filter: filter
+      })
+    }
+
+    async function fetchOne(id: string) {
+      singleData.value = await pb.collection(collectionName).getOne<IData>(id, {
+        sort: '-created',
+        expand: relations?.toString()
+      })
+    }
+
+    const filteredData = computed(() => {
+      return data.value?.items
+        ?.filter((record) => {
+          const keys = Object.keys(record).filter((el) => !defaultRecordKeys.value.includes(el))
+          const testArray = keys.map((key) => {
+            return record[key].toString().toLowerCase()
+          })
+          return testArray.some((text: string) => {
+            return text.includes(searchQuery.value.toLowerCase())
+          })
+        })
+        .map(mapData)
+    })
+
+    onMounted(async () => {
+      if (autoFetch == true) {
+        await fetchAll()
+      }
+    })
+    return {
+      data,
+      pb,
+      singleData,
+      fetchAll,
+      fetchOne,
+      filteredData,
+      searchQuery,
+      defaultRecordKeys
     }
   })
 }
