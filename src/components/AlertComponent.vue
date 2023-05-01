@@ -9,7 +9,7 @@ defineEmits<{
 </script>
 
 <template>
-  <div class="toast-end toast-bottom toast z-50">
+  <div class="toast-end toast-top toast z-50">
     <div :class="`alert alert-${type} w-full py-4 font-semibold shadow-lg`">
       <div class="flex">
         <font-awesome-icon v-if="type == 'success'" icon="circle-check" class="fa-fw" />

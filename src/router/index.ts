@@ -95,6 +95,30 @@ const router = createRouter({
         }
       ]
     },
+
+    // Rutas Autenticadas - Secciones
+    {
+      path: '/titulos',
+      children: [
+        {
+          path: '',
+          name: 'titulos',
+          component: () => import('@/views/Auth/Titulos/TitulosView.vue')
+        },
+        {
+          path: 'create',
+          name: 'titulos.create',
+          component: () => import('@/views/Auth/Titulos/TitulosCreate.vue')
+        },
+        {
+          path: 'edit/:id',
+          name: 'titulos.edit',
+          component: () => import('@/views/Auth/Titulos/TitulosEdit.vue')
+        }
+      ]
+    },
+
+    // Rutas Autenticadas - Saberes
     {
       path: '/saberes',
       children: [
@@ -112,9 +136,16 @@ const router = createRouter({
           path: 'edit/:id',
           name: 'saberes.edit',
           component: () => import('@/views/Auth/Saberes/SaberesEdit.vue')
+        },
+        {
+          path: 'pensum',
+          name: 'saberes.pensum',
+          component: () => import('@/views/Auth/Saberes/PensumView.vue')
         }
       ]
     },
+
+    // Rutas Autenticadas - Profesores
     {
       path: '/profesores',
       children: [
@@ -135,6 +166,8 @@ const router = createRouter({
         }
       ]
     },
+
+    // Rutas Autenticadas - Profesores
     {
       path: '/carga',
       children: [
@@ -160,6 +193,8 @@ const router = createRouter({
         }
       ]
     },
+
+    // Rutas Autenticadas - Profesores
     {
       path: '/usuarios',
       children: [
@@ -177,16 +212,6 @@ const router = createRouter({
           path: 'edit/:id',
           name: 'usuarios.edit',
           component: () => import('@/views/Auth/Usuarios/UsuariosEdit.vue')
-        }
-      ]
-    },
-    {
-      path: '/pensums',
-      children: [
-        {
-          path: '',
-          name: 'pensums',
-          component: () => import('@/views/Auth/Pensums/PensumsView.vue')
         }
       ]
     }

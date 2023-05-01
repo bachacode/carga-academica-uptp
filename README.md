@@ -10,7 +10,7 @@ Clona este repositorio, para esto necesitaras [node.js](https://nodejs.org/es/) 
 
 2. Corre `npm run dev` a través de la consola para correr el proyecto en modo desarrollador.
 
-3. corre `npm run pcoketbase` a través de la consola para iniciar el servidor
+3. corre `npm run pocketbase` a través de la consola para iniciar el servidor
 
 Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver la aplicación.
 Abre [http://localhost:8000](http://localhost:8000) en tu navegador para ver el admin panel de pocketbase.

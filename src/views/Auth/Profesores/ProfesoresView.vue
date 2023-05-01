@@ -2,69 +2,114 @@
 import { useProfesorStore } from '@/stores/profesores'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import router from '@/router'
 import { storeToRefs } from 'pinia'
-import { data } from './ProfesoresData'
+import DeleteModal from '@/components/Containers/DeleteModal.vue'
+import type { theadColumnType } from '@/types/moduleDataType'
+// Store del módulo
 const store = useProfesorStore()
-const { fetchAll, destroy, fetchOne } = store
+
+// Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
-const { columns } = data
 
-async function create() {
-  await router.push({ name: 'profesores.create' })
-}
+// Columnas de la tabla
+const columns: theadColumnType[] = [
+  {
+    name: 'Nombre',
+    isAsc: false
+  },
+  {
+    name: 'Apellido',
+    isAsc: false
+  },
+  {
+    name: 'Cedula',
+    isAsc: false
+  },
+  {
+    name: 'Titulo',
+    isSingleRelation: {
+      name: 'titulo_id',
+      childName: 'nombre'
+    },
+    isAsc: false
+  },
+  {
+    name: 'Contrato',
+    isSingleRelation: {
+      name: 'id_contrato',
+      childName: 'tipo'
+    },
+    isAsc: false
+  },
+  {
+    name: 'Saberes',
+    relationTitle: 'Saberes que ha dado el profesor ',
+    noRelations: '¡Este profesor no ha dado ningún saber anteriormente!',
+    fatherName: 'nombre',
+    multipleData: [
+      {
+        name: 'materia'
+      },
+      {
+        name: 'trayecto'
+      }
+    ]
+  },
+  {
+    name: 'Telefono',
+    isAsc: false
+  },
+  {
+    name: 'Correo',
+    isAsc: false
+  }
+]
 
-const edit = async (id: string) => {
-  await router.push({ name: 'profesores.edit', params: { id } })
-}
-
+// Función para ordenar la tabla de forma ASC o DESC
 const sortTable = async (column: string) => {
-  await fetchAll(column)
+  await store.fetchAll(column)
 }
 
+// Función para ir a la vista de "create"
+async function create() {
+  await store.goToCreate()
+}
+
+// Función para ir a la vista de "edit"
+const edit = async (id: string) => {
+  await store.goToEdit(id)
+}
+
+// Función para seleccionar un item del módulo
 const selectItem = async (id: string) => {
-  await fetchOne(id)
+  await store.fetchOne(id)
 }
 
+// Función para borrar un item del módulo
 async function destroyItem(id: string | undefined) {
   if (id) {
-    await destroy(id)
+    await store.destroy(id)
   }
+}
+
+// Función para cambiar pagina de la tabla
+const changePage = async (page: number) => {
+  store.actualPage = page
 }
 </script>
 
 <template>
   <!-- Delete Modal -->
-  <Teleport to="#modal">
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <h3 class="text-lg font-bold">¡Cuidado!</h3>
-        <p class="py-4">
-          Estas a punto de borrar al profesor {{ store.singleData?.nombre }}. ¿Esta seguro que desea
-          hacer esto?
-        </p>
-        <div class="modal-action items-center">
-          <label
-            for="my-modal"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-            >¡No!</label
-          >
-          <label
-            for="my-modal"
-            class="btn rounded-xl bg-red-700"
-            @click="destroyItem(store.singleData?.id)"
-            >Borrar</label
-          >
-        </div>
-      </div>
-    </div>
-  </Teleport>
+  <DeleteModal
+    :modal-text="`al profesor ${store.singleData?.nombre} ${store.singleData?.apellido}`"
+    @destroy-item="destroyItem(store.singleData?.id)"
+  />
   <!-- /Delete Modal -->
+
   <AuthLayout>
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
-        <i class="fas fa-plus-circle pr-1"></i> Registrar Profesor
+        <font-awesome-icon icon="circle-plus" class="mr-2" />Crear Profesor
       </button>
       <!--Table Card-->
       <TableComponent
@@ -76,6 +121,9 @@ async function destroyItem(id: string | undefined) {
         @deleteModal="selectItem"
         @sorting="sortTable"
         @relation="selectItem"
+        @change-page="changePage"
+        :total-pages="store.data?.totalPages"
+        :actual-page="store.actualPage"
       />
       <!--/table Card-->
     </div>

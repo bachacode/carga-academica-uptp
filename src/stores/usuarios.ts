@@ -1,6 +1,6 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
-
+import { useAuthStore } from './auth'
 export type usuarioType = {
   username: string
   email: string
@@ -52,12 +52,18 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar el usuario'
 }
 
+const auth = useAuthStore()
+const fetchAllQuery = {
+  sortBy: '-created',
+  filter: `rol = "Operador" && id != "${auth.pb.authStore.model?.id}"`
+}
+
 export const useUsuarioStore = createCrudStore<usuarioType, IUsuario, uniqueKeysType>({
   storeId: 'usuario',
-  route: '/usuarios',
+  route: 'usuarios',
   collectionName: 'users',
   success: successMessages,
   error: errorMessages,
   uniqueKeys: ['username', 'email', 'cedula'],
-  autoFetch: false
+  defaultFetchQuery: fetchAllQuery
 })

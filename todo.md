@@ -1,0 +1,11 @@
+- Añadir todas las materias en la base de datos por defecto
+- Añadir todas las materias del pensum a la base de datos por defecto
+- Completar el módulo de carga academica
+- Añadir graficas en el dashboard
+- Mejorar el módulo de titulos para añadir postgrados y seleccionar tipo de grado en los titulos
+- Añadir indicativo si un profesor tiene carga asignada o no
+- Añadir indicativo si una sección tiene carga asignada o no
+- Cambiar color principal de la aplicación(¿Quizas?)
+- Mejorar módulo de usuarios
+- Correcciones de bugs menores
+- Mejorar diseño

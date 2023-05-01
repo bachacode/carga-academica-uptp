@@ -1,36 +1,94 @@
 <script setup lang="ts">
 import { useUsuarioStore } from '@/stores/usuarios'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
-import router from '@/router'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import { data } from './UsuariosData'
-import { onMounted } from 'vue'
 import { useAlertStore } from '@/stores/alert'
+import DeleteModal from '@/components/Containers/DeleteModal.vue'
+import type { theadColumnType } from '@/types/moduleDataType'
+
+// Store del módulo
 const store = useUsuarioStore()
-const alert = useAlertStore()
-const { fetchAll, destroy, fetchOne } = store
+
+// Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
-const { columns } = data
 
+// Columnas de la tabla
+const columns: theadColumnType[] = [
+  {
+    name: 'username',
+    nameAlias: 'Usuario',
+    isAsc: false
+  },
+  {
+    name: 'Datos Personales',
+    multipleData: [
+      {
+        name: 'name',
+        nameAlias: 'Nombre'
+      },
+      {
+        name: 'Apellido'
+      },
+      {
+        name: 'email',
+        nameAlias: 'Correo'
+      },
+      {
+        name: 'Cedula'
+      }
+    ]
+  },
+  {
+    name: 'Status',
+    nameAlias: 'Estado',
+    isToggable: true
+  },
+  {
+    name: 'Rol',
+    nameAlias: 'Promover',
+    hasAction: true
+  }
+]
+
+// Función para ordenar la tabla de forma ASC o DESC
 const sortTable = async (column: string) => {
-  await fetchAll(column, `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
+  await store.fetchAll(column, `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
 }
 
+// Función para ir a la vista de "create"
 async function create() {
-  await router.push({ name: 'usuarios.create' })
+  await store.goToCreate()
 }
 
+// Función para ir a la vista de "edit"
 const edit = async (id: string) => {
-  await router.push({ name: 'usuarios.edit', params: { id } })
+  await store.goToEdit(id)
 }
 
+// Función para seleccionar un item del módulo
 const selectItem = async (id: string) => {
-  await fetchOne(id)
+  await store.fetchOne(id)
 }
 
+// Función para borrar un item del módulo
+async function destroyItem(id: string | undefined) {
+  if (id) {
+    await store.destroy(id)
+  }
+}
+
+// Función para cambiar pagina de la tabla
+const changePage = async (page: number) => {
+  store.actualPage = page
+}
+
+// Store de alertas del sistema
+const alert = useAlertStore()
+
+// Función para activar o desactivar a un usuario operador
 const toggleStatus = async (id: string, column: string) => {
-  await fetchOne(id)
+  await store.fetchOne(id)
   if (store.singleData)
     store.pb
       .collection('users')
@@ -43,7 +101,10 @@ const toggleStatus = async (id: string, column: string) => {
         } else {
           await alert.setSuccess({ message: '¡Se ha activado al usuario correctamente!' })
         }
-        await fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
+        await store.fetchAll(
+          '-created',
+          `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`
+        )
       })
       .catch(async () => {
         if (store.singleData && store.singleData[column] == true) {
@@ -54,6 +115,7 @@ const toggleStatus = async (id: string, column: string) => {
       })
 }
 
+// Función para promover a un usuario operador al rol de administrador
 async function promoteUser(id: string | undefined) {
   if (id) {
     if (store.singleData)
@@ -64,56 +126,27 @@ async function promoteUser(id: string | undefined) {
         })
         .then(async () => {
           await alert.setSuccess({ message: '¡Se ha promovido al usuario correctamente!' })
-          await fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
+          await store.fetchAll(
+            '-created',
+            `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`
+          )
         })
         .catch(async () => {
           await alert.setError({ message: '¡Ha ocurrido un error al promover este usuario!' })
         })
   }
 }
-
-async function destroyItem(id: string | undefined) {
-  if (id) {
-    await destroy(id)
-  }
-}
-
-onMounted(async () => {
-  await fetchAll('-created', `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
-})
 </script>
 
 <template>
   <!-- Delete Modal -->
-  <Teleport to="#modal">
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <h3 class="text-lg font-bold">¡Cuidado!</h3>
-        <p class="py-4">
-          Estas a punto de borrar al usuario {{ store.singleData?.username }}. ¿Esta seguro que
-          desea hacer esto?
-        </p>
-        <div class="modal-action items-center">
-          <label
-            for="my-modal"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-            >¡No!</label
-          >
-          <label
-            for="my-modal"
-            class="btn rounded-xl bg-red-700"
-            @click="destroyItem(store.singleData?.id)"
-          >
-            Borrar
-          </label>
-        </div>
-      </div>
-    </div>
-  </Teleport>
+  <DeleteModal
+    :modal-text="`al usuario ${store.singleData?.username}`"
+    @destroy-item="destroyItem(store.singleData?.id)"
+  />
   <!-- /Delete Modal -->
 
-  <!-- Delete Modal -->
+  <!-- Promote Modal -->
   <Teleport to="#modal">
     <input type="checkbox" id="my-action-rol" class="modal-toggle" />
     <div class="modal">
@@ -132,12 +165,12 @@ onMounted(async () => {
         <div class="modal-action items-center">
           <label
             for="my-action-rol"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
             >¡No!</label
           >
           <label
             for="my-action-rol"
-            class="btn rounded-xl bg-blue-700"
+            class="btn rounded-xl bg-green-700"
             @click="promoteUser(store.singleData?.id)"
           >
             ¡Promover!
@@ -146,10 +179,12 @@ onMounted(async () => {
       </div>
     </div>
   </Teleport>
+  <!-- /Promote Modal -->
+
   <AuthLayout>
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
-        <i class="fas fa-plus-circle pr-1"></i> Registrar Usuario
+        <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Usuario
       </button>
       <!--Table Card-->
       <TableComponent
@@ -162,6 +197,9 @@ onMounted(async () => {
         @sorting="sortTable"
         @toggle-column="toggleStatus"
         @trigger-action="selectItem"
+        @change-page="changePage"
+        :total-pages="store.data?.totalPages"
+        :actual-page="store.actualPage"
       />
       <!--/table Card-->
     </div>

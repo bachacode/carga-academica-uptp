@@ -2,8 +2,8 @@ import type { dataType } from '@/types/moduleDataType'
 import { reactive } from 'vue'
 import { computed } from 'vue'
 import { requiredValidation, numericValidation } from '@/helpers/validationHelpers'
-import type { relationsType } from '@/components/MultiSelect.vue'
 import type { claseType } from '@/stores/clases'
+
 export const data: dataType<claseType> = {
   columns: [
     {
@@ -20,6 +20,7 @@ export const data: dataType<claseType> = {
     },
     {
       name: 'Horas',
+      nameAlias: 'Horas Totales',
       isAsc: false
     },
     {
@@ -53,11 +54,6 @@ export const data: dataType<claseType> = {
         numeric: numericValidation()
       }
     }
-  }),
-  relations: reactive<relationsType>({
-    table: 'saberes',
-    stored: [],
-    removed: []
   })
 }
 

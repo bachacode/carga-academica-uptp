@@ -1,48 +1,118 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { onUnmounted, reactive, ref } from 'vue'
-import { useUsuarioStore } from '@/stores/usuarios'
+import { computed, reactive, ref } from 'vue'
+import { useUsuarioStore, type registerUserType } from '@/stores/usuarios'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
 import FormComponent from '@/components/Containers/FormComponent.vue'
-import { data } from './UsuariosData'
+import {
+  emailValidation,
+  isUnique,
+  maxLengthValidation,
+  minLengthValidation,
+  passwordValidation,
+  requiredValidation,
+  uniqueValidation
+} from '@/helpers/validationHelpers'
+
+// Store del módulo
 const store = useUsuarioStore()
-const { save } = store
-const { formData, formRules } = data
-const cargoOptions = reactive([
-  { value: 'Profesor', name: 'Profesor' },
-  { value: 'Administracion', name: 'Administracion' }
-])
+
+// Booleano para el botón de submit
 const isLoading = ref(false)
+
+// Variables reactivas del formulario
+const formData = reactive<registerUserType>({
+  username: '',
+  email: '',
+  emailVisibility: true,
+  password: '',
+  passwordConfirm: '',
+  name: '',
+  apellido: '',
+  cedula: '',
+  telefono: '',
+  cargo: '',
+  rol: 'Operador',
+  status: true
+})
+
+// Validaciones unicas
+const isUsernameTaken = isUnique(store, 'username')
+const isEmailTaken = isUnique(store, 'email')
+const isCedulaTaken = isUnique(store, 'cedula')
+
+// Reglas de validación
+const formRules = computed(() => {
+  return {
+    username: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      unique: uniqueValidation('usuario', 'usuarios', isUsernameTaken, formData.username)
+    },
+    password: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(8)
+    },
+    passwordConfirm: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(8),
+      password: passwordValidation(formData.password)
+    },
+    email: {
+      required: requiredValidation(),
+      email: emailValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('correo', 'usuarios', isEmailTaken, formData.email)
+    },
+    name: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    apellido: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    cedula: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('cedula', 'usuarios', isCedulaTaken, formData.cedula)
+    },
+    telefono: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    cargo: {
+      required: requiredValidation()
+    }
+  }
+})
+
+// Validación
 const v$ = useVuelidate(formRules, formData)
 
+// Función para enviar el formulario
 const submitData = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
     isLoading.value = true
-    save(formData)
+    await store.save(formData)
+    isLoading.value = false
   }
 }
 
-onUnmounted(() => {
-  Object.assign(formData, {
-    username: '',
-    email: '',
-    emailVisibility: true,
-    password: '',
-    passwordConfirm: '',
-    name: '',
-    apellido: '',
-    cedula: '',
-    telefono: '',
-    cargo: '',
-    rol: 'Operador',
-    status: true
-  })
-})
+const cargoOptions = reactive([
+  { value: 'Profesor', name: 'Profesor' },
+  { value: 'Administracion', name: 'Administracion' }
+])
 </script>
 
 <template>
@@ -112,11 +182,11 @@ onUnmounted(() => {
         </div>
 
         <!-- Cedula -->
-        <InputField label="Cedula" name="cedula">
+        <InputField label="Cedula" name="cedula" helper-text="Este campo solo acepta numeros">
           <template #InputField
             ><InputComponent
               v-maska
-              data-maska="V-##.###.###"
+              data-maska="########"
               data-maska-tokens="'0':/[0-9]/:M"
               name="cedula"
               v-model="formData.cedula"
@@ -141,11 +211,11 @@ onUnmounted(() => {
         </InputField>
 
         <!-- Telefono -->
-        <InputField label="Telefono" name="telefono">
+        <InputField label="Telefono" name="telefono" helper-text="Este campo solo acepta numeros">
           <template #InputField
             ><InputComponent
               v-maska
-              data-maska="### ###-##-##"
+              data-maska="###########"
               name="telefono"
               v-model="formData.telefono"
           /></template>

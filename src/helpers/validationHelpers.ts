@@ -11,10 +11,17 @@ import {
   sameAs
 } from '@vuelidate/validators'
 
-export const isUnique = (values: string[]) => (param: string) => {
-  return !values.indexOf(param)
+type uniqueStoreType = {
+  uniqueKeysList: any
+  singleData: any
 }
-
+// Validación Unica
+export const isUnique = (store: uniqueStoreType, key: any) => (value: never) => {
+  return (
+    !store.uniqueKeysList[key].includes(value) ||
+    (store.singleData && store.singleData[key] == value)
+  )
+}
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
   numeric: 'El valor de este campo tiene que ser numerico',
@@ -23,7 +30,7 @@ const errorMessages = ref({
   maxValue: (max: number) => `El valor de este campo es de maximo ${max}`,
   minLength: (min: number) => `Este campo tiene un minimo de ${min} caracteres`,
   maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`,
-  unique: (value: string, table: string) => `Este ${value} ya existe en la tabla ${table}`,
+  unique: (value: string, table: string) => `Este ${value} ya existe en el módulo ${table}`,
   password: () => `Las contraseña no coinciden`
 })
 
@@ -55,8 +62,11 @@ export const maxLengthValidation = (max: number) => {
   return helpers.withMessage(errorMessages.value.maxLength(max), maxLength(max))
 }
 
-export const uniqueValidation = (value: string, table: string, values: any) => {
-  return helpers.withMessage(errorMessages.value.unique(value, table), isUnique(values))
+export const uniqueValidation = (value: string, table: string, unique: any, formInput: any) => {
+  return helpers.withMessage(
+    errorMessages.value.unique(value, table),
+    helpers.withAsync(unique, () => formInput)
+  )
 }
 
 export const passwordValidation = (value: string) => {

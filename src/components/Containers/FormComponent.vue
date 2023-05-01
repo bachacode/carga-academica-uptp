@@ -23,10 +23,10 @@ defineEmits(['formSubmit'])
   <CardContainer :card-width="formWidth">
     <button
       v-if="backButton"
-      class="btn-ghost px-2 pt-2 hover:bg-white hover:text-blue-700"
+      class="btn-ghost px-2 pt-2 hover:bg-white hover:text-green-700"
       @click="router.back()"
     >
-      <i class="fas fa-arrow-left pr-1"></i>{{ backText }}
+      <font-awesome-icon icon="arrow-left" class="mr-2" />{{ backText }}
     </button>
     <h1 v-if="formTitle" class="pl-4 pt-2 text-xl font-semibold">{{ formTitle }}</h1>
     <form class="mt-4 px-6 pb-6" @submit.prevent="$emit('formSubmit')">
@@ -36,7 +36,7 @@ defineEmits(['formSubmit'])
       <button
         v-show="!isLoading"
         type="submit"
-        class="text-md w-full rounded-lg bg-blue-700 px-6 py-3 text-center font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        class="text-md w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
       >
         {{ submitText }}
       </button>
@@ -46,7 +46,7 @@ defineEmits(['formSubmit'])
         v-show="isLoading"
         disabled
         type="button"
-        class="text-md w-full rounded-lg bg-blue-700 px-6 py-3 text-center font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        class="text-md w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
       >
         <svg
           aria-hidden="true"

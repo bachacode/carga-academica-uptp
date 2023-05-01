@@ -5,8 +5,9 @@ export type profesorType = {
   nombre: string
   apellido: string
   cedula: string
-  titulo: string
+  titulo_id: string
   saberes: Array<string>
+  id_contrato: string
   telefono: string
   correo: string
 }
@@ -31,9 +32,10 @@ const errorMessages = {
 
 export const useProfesorStore = createCrudStore<profesorType, IProfesor>({
   storeId: 'profesor',
-  route: '/profesores',
+  route: 'profesores',
   collectionName: 'profesores',
   success: successMessages,
   error: errorMessages,
-  relations: ['saberes']
+  relations: ['saberes', 'titulo_id', 'id_contrato'],
+  manyToMany: ['saberes']
 })

@@ -5,8 +5,13 @@ import BasicFooter from '@/components/BasicFooter.vue'
 import NavBar from '@/components/Navigation/NavBar.vue'
 import AlertComponent from '@/components/AlertComponent.vue'
 import { onUnmounted } from 'vue'
+// Store de autenticación
 const auth = useAuthStore()
+
+// Store de alertas
 const alert = useAlertStore()
+
+// En cambio de ruta, se desactiva la alerta actual
 onUnmounted(() => {
   alert.data.isActive = false
 })

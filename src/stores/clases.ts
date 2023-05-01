@@ -29,7 +29,7 @@ const errorMessages = {
 
 export const useClaseStore = createCrudStore<claseType, IClase>({
   storeId: 'clases',
-  route: '/carga',
+  route: 'carga',
   collectionName: 'clases',
   success: successMessages,
   error: errorMessages

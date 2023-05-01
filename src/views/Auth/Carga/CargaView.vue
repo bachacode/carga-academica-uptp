@@ -5,88 +5,118 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-import { data, daySelector } from './CargaData'
+import { daySelector } from './CargaData'
 import { ref, watchEffect } from 'vue'
+import type { theadColumnType } from '@/types/moduleDataType'
+import DeleteModal from '@/components/Containers/DeleteModal.vue'
+
+// Store del módulo
 const store = useCargaStore()
+
+// Store del módulo 2
 const clases = useClaseStore()
-const { fetchAll } = store
+
+// Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
-const { columns } = data
-const activeDay = ref('Lunes')
-async function create() {
-  await router.push({ name: 'carga.create' })
-}
 
-const edit = async (id: string) => {
-  await router.push({ name: 'carga.edit', params: { id } })
-}
+// Columnas de la tabla
+const columns: theadColumnType[] = [
+  {
+    name: 'Nombre',
+    isAsc: false
+  },
+  {
+    name: 'Apellido',
+    isAsc: false
+  },
+  {
+    name: 'Titulo',
+    isAsc: false
+  },
+  {
+    name: 'Horas',
+    nameAlias: 'Horas Totales',
+    isAsc: false
+  },
+  {
+    name: 'Materia',
+    isAsc: false
+  }
+]
 
+// Función para ordenar la tabla de forma ASC o DESC
 const sortTable = async (column: string) => {
-  await fetchAll(column)
+  await store.fetchAll(column)
 }
 
+// Función para ir a la vista de "create"
+async function create() {
+  await clases.goToCreate()
+}
+
+// Función para ir a la vista de "edit"
+const edit = async (id: string) => {
+  await clases.goToEdit(id)
+}
+
+// Función para seleccionar un item del módulo
 const selectItem = async (id: string) => {
-  await store.fetchOne(id)
+  await clases.fetchOne(id)
 }
 
+// Función para borrar un item del módulo
 async function destroyItem(id: string | undefined) {
   if (id) {
-    console.log(id)
     await clases.destroy(id).then(async () => {
-      await fetchAll('-horas', `dia = "${activeDay.value}"`)
+      await store.fetchAll('-horas', `dia = "${activeDay.value}"`)
     })
   }
 }
 
+// Función para cambiar pagina de la tabla
+const changePage = async (page: number) => {
+  store.actualPage = page
+}
+
+// Variable reactiva que guarda el dia seleccionado
+const activeDay = ref('Lunes')
+
+// WatchEffect qeu vigila el "activeDay", en caso de cambios, realiza fetch a la BD con el nuevo dia
 watchEffect(async () => {
   if (activeDay.value == 'all') {
     store.data = await store.pb.collection('carga_total').getList(1, 50)
-  } else await fetchAll('-horas', `dia = "${activeDay.value}"`)
+  } else await store.fetchAll('-horas', `dia = "${activeDay.value}"`)
 })
 </script>
 
 <template>
   <!-- Delete Modal -->
-  <Teleport to="#modal">
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <h3 class="text-lg font-bold">¡Cuidado!</h3>
-        <p class="py-4">
-          Estas a punto de borrar la carga academica del profesor
-          {{ `${store.singleData?.nombre} ${store.singleData?.apellido}` }}. ¿Esta seguro que desea
-          hacer esto?
-        </p>
-        <div class="modal-action items-center">
-          <label
-            for="my-modal"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-            >¡No!</label
-          >
-          <label
-            for="my-modal"
-            class="btn rounded-xl bg-red-700"
-            @click="destroyItem(store.singleData?.id)"
-            >Borrar</label
-          >
-        </div>
-      </div>
-    </div>
-  </Teleport>
+  <DeleteModal
+    :modal-text="`la carga academica del profesor ${store.singleData?.nombre} ${store.singleData?.apellido}`"
+    @destroy-item="destroyItem(store.singleData?.id)"
+  />
   <!-- /Delete Modal -->
   <AuthLayout>
+    <!-- ALERTA DE DESARROLLO -->
+    <div :class="`alert alert-error mb-10 w-full py-4 font-semibold shadow-lg`">
+      <div class="flex">
+        <font-awesome-icon icon="circle-xmark" class="fa-fw" />
+        <span
+          >Este módulo todavia esta en desarrollo, algunas cosas pueden no funcionar
+          correctamente</span
+        >
+      </div>
+    </div>
+
     <div class="w-full space-x-3 px-16 pb-8">
-      <button
-        @click="create()"
-        class="btn mb-3 rounded-lg bg-green-700 text-white hover:bg-green-900"
-      >
-        <i class="fas fa-plus-circle pr-1"></i> Registrar Horas Academicas
+      <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
+        <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Horas Academicas
       </button>
       <button
         @click="router.push({ name: 'carga.recommend' })"
         class="btn mb-3 rounded-lg bg-yellow-500 text-yellow-900 hover:bg-yellow-900 hover:text-yellow-500"
       >
-        <i class="fas fa-plus-circle pr-1"></i> Profesores recomendados
+        <font-awesome-icon icon="star" class="mr-2" /> Profesores recomendados
       </button>
       <!--Table Card-->
       <TableComponent
@@ -98,6 +128,9 @@ watchEffect(async () => {
         @deleteModal="selectItem"
         @sorting="sortTable"
         @relation="selectItem"
+        @change-page="changePage"
+        :total-pages="store.data?.totalPages"
+        :actual-page="store.actualPage"
       >
         <!-- Selector de dia -->
         <template #header>
@@ -108,8 +141,8 @@ watchEffect(async () => {
                   v-if="day != 'all'"
                   @click="activeDay = day"
                   :title="day"
-                  :class="`btn-outline btn rounded-xl px-16 hover:bg-blue-900 ${
-                    activeDay == day ? 'bg-blue-700 text-white' : ''
+                  :class="`btn-outline btn rounded-xl px-16 hover:bg-green-900 ${
+                    activeDay == day ? 'bg-green-700 text-white' : ''
                   }`"
                 >
                   {{ day }}
@@ -118,8 +151,8 @@ watchEffect(async () => {
                   v-if="day == 'all'"
                   @click="activeDay = day"
                   title="Total"
-                  :class="`btn-outline btn rounded-xl px-16 hover:bg-blue-900 ${
-                    activeDay == day ? 'bg-blue-700 text-white' : ''
+                  :class="`btn-outline btn rounded-xl px-16 hover:bg-green-900 ${
+                    activeDay == day ? 'bg-green-700 text-white' : ''
                   }`"
                 >
                   Total
