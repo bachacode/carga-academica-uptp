@@ -22,8 +22,8 @@ interface Props {
   tags?: optionType[]
 }
 defineProps<Props>()
-
 defineEmits(['removeTag'])
+
 const dropdown = ref(false)
 
 const dropdownHandler: OnClickOutsideHandler = () => {
@@ -46,9 +46,11 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
     selectedOptions.splice(selectedOptions.indexOf(tag.value), 1)
   }
   if (modelRelations) {
-    if (modelRelations.stored.includes(tag.value) && !modelRelations.removed.includes(tag.value)) {
+    if (modelRelations.stored.includes(tag.value) && !tag.isActive) {
       modelRelations.removed.push(tag.value)
-    } else modelRelations.removed.splice(selectedOptions.indexOf(tag.value), 1)
+    } else if (modelRelations.stored.includes(tag.value) && tag.isActive) {
+      modelRelations.removed.splice(modelRelations.removed.indexOf(tag.value), 1)
+    }
   }
 }
 </script>
@@ -57,22 +59,22 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
   <div>
     <!-- Search Bar -->
     <!-- <input 
-    type="hidden" 
-    :value="modelValue"
-    @input="updateValue"
-    :name="name"
-    > -->
+          type="hidden" 
+          :value="modelValue"
+          @input="updateValue"
+          :name="name"
+          > -->
     <div class="relative">
       <div
         @click.stop="open"
-        class="flex min-h-[42px] w-full cursor-text items-center rounded-lg border border-blue-300 bg-blue-50 p-2.5 text-blue-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+        class="flex min-h-[42px] w-full cursor-text items-center rounded-lg border border-green-300 bg-green-50 p-2.5 text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
       ></div>
       <div
         @click.stop="toggle"
         class="absolute inset-y-0 right-0 z-10 flex cursor-pointer items-center pr-2"
       >
-        <font-awesome-icon v-if="!dropdown" icon="chevron-down" class="text-blue-500" />
-        <font-awesome-icon v-else icon="chevron-up" class="text-blue-500" />
+        <font-awesome-icon v-if="!dropdown" icon="chevron-down" class="text-green-500" />
+        <font-awesome-icon v-else icon="chevron-up" class="text-green-500" />
       </div>
       <div id="tags" class="absolute inset-y-2 left-0 flex h-auto space-x-2.5 pl-2">
         {{
@@ -87,7 +89,7 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
     <div
       v-show="dropdown"
       v-on-click-outside.bubble="dropdownHandler"
-      class="block w-full rounded-b-lg border border-blue-300 bg-blue-50 p-2.5 text-sm text-blue-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+      class="block w-full rounded-b-lg border border-green-300 bg-green-50 p-2.5 text-sm text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
     >
       <ul class="relative max-h-40 overflow-auto" v-for="tag in tags" :key="tag.value">
         <li

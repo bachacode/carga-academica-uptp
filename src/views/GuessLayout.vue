@@ -12,7 +12,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <main class="h-screen bg-blue-100">
+  <main class="h-screen bg-indigo-100">
     <div class="flex w-full flex-wrap">
       <!-- Login Section -->
       <div class="flex w-full flex-col md:w-1/2">
@@ -29,7 +29,7 @@ withDefaults(defineProps<Props>(), {
         >
           <template v-if="backButton">
             <button
-              class="btn-ghost pr-2 pt-2 text-center hover:bg-blue-100 hover:text-blue-700"
+              class="btn-ghost pr-2 pt-2 text-center hover:bg-indigo-100 hover:text-indigo-700"
               @click="router.push('login')"
             >
               <i class="fas fa-arrow-left pr-1"></i><span>Volver al inicio</span>

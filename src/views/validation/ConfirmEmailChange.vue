@@ -74,15 +74,17 @@ onMounted(() => {
         </InputField>
         <button
           type="submit"
-          class="mt-2 bg-blue-800 p-2 text-lg font-bold text-white hover:bg-blue-900"
+          class="mt-2 bg-green-800 p-2 text-lg font-bold text-white hover:bg-green-900"
         >
           Cambiar Correo
         </button>
       </form>
     </template>
     <template v-else>
-      <div class="mt-6 rounded-lg border border-blue-700 bg-blue-100 p-2 shadow-2xl">
-        <p class="text-2xl font-medium text-blue-800">¡Tu correo ha sido cambiado correctamente!</p>
+      <div class="mt-6 rounded-lg border border-green-700 bg-green-100 p-2 shadow-2xl">
+        <p class="text-2xl font-medium text-green-800">
+          ¡Tu correo ha sido cambiado correctamente!
+        </p>
       </div>
     </template>
   </GuessLayout>

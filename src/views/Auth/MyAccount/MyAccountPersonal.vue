@@ -3,23 +3,90 @@ import FormComponent from '@/components/Containers/FormComponent.vue'
 import InputField from '@/components/InputField.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputError from '@/components/InputError.vue'
-import { data } from '../Usuarios/UsuariosData'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertStore } from '@/stores/alert'
+import { useUsuarioStore, type editUserType } from '@/stores/usuarios'
+import {
+  isUnique,
+  maxLengthValidation,
+  minLengthValidation,
+  requiredValidation,
+  uniqueValidation
+} from '@/helpers/validationHelpers'
+// Store de autenticación
 const auth = useAuthStore()
+
+// Store de alertas
 const alert = useAlertStore()
-const { editFormData, editFormRules } = data
-const v$ = useVuelidate(editFormRules, editFormData)
+
+// Store de usuarios
+const users = useUsuarioStore()
+
+// Variables reactivas del formulario
+const formData = reactive<editUserType>({
+  username: '',
+  name: '',
+  apellido: '',
+  cedula: '',
+  telefono: '',
+  cargo: ''
+})
+
+// Booleano para el botón de submit
 const isLoading = ref(false)
+
+// Validaciones unicas
+const isUsernameTaken = isUnique(users, 'username')
+const isCedulaTaken = isUnique(users, 'cedula')
+
+// Reglas de validación
+const formRules = computed(() => {
+  return {
+    username: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      unique: uniqueValidation('usuario', 'usuarios', isUsernameTaken, formData.username)
+    },
+    name: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    apellido: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    cedula: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('cedula', 'usuarios', isCedulaTaken, formData.cedula)
+    },
+    telefono: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    cargo: {
+      required: requiredValidation()
+    }
+  }
+})
+
+// Objeto de validaciáon
+const v$ = useVuelidate(formRules, formData)
+
+// Función para enviar el formulario
 async function submitData() {
   await v$.value.$validate()
   if (!v$.value.$error && auth.user?.id) {
     isLoading.value = true
     await auth.pb
       .collection('users')
-      .update(auth.user?.id, editFormData)
+      .update(auth.user?.id, formData)
       .then(async () => {
         await alert.setSuccess({ message: '¡Se han actualizado sus datos correctamente!' })
         isLoading.value = false
@@ -31,8 +98,9 @@ async function submitData() {
   }
 }
 
+// Al inicializar el componente, asigna al objeto reactivo del formulario los datos del usuario autenticado
 onMounted(async () => {
-  Object.assign(editFormData, auth.pb.authStore.model)
+  Object.assign(formData, auth.pb.authStore.model)
 })
 </script>
 
@@ -51,7 +119,7 @@ onMounted(async () => {
       <!-- Nombre de usuario -->
       <InputField label="Nombre de usuario" name="username">
         <template #InputField
-          ><InputComponent name="username" v-model.trim="editFormData.username"
+          ><InputComponent name="username" v-model.trim="formData.username"
         /></template>
         <template #InputError
           ><InputError v-if="v$.username.$error" :message="v$.username.$errors[0]?.$message"
@@ -63,7 +131,7 @@ onMounted(async () => {
         <!-- Nombre -->
         <InputField label="Nombre" name="name">
           <template #InputField
-            ><InputComponent name="name" v-model.trim="editFormData.name"
+            ><InputComponent name="name" v-model.trim="formData.name"
           /></template>
           <template #InputError
             ><InputError v-if="v$.name.$error" :message="v$.name.$errors[0]?.$message"
@@ -73,7 +141,7 @@ onMounted(async () => {
         <!-- Apellido -->
         <InputField label="Apellido" name="apellido">
           <template #InputField
-            ><InputComponent name="apellido" v-model="editFormData.apellido"
+            ><InputComponent name="apellido" v-model="formData.apellido"
           /></template>
           <template #InputError
             ><InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0]?.$message"
@@ -89,7 +157,7 @@ onMounted(async () => {
             data-maska="V-##.###.###"
             data-maska-tokens="'0':/[0-9]/:M"
             name="cedula"
-            v-model="editFormData.cedula"
+            v-model="formData.cedula"
         /></template>
         <template #InputError
           ><InputError v-if="v$.cedula.$error" :message="v$.cedula.$errors[0]?.$message"
@@ -103,7 +171,7 @@ onMounted(async () => {
             v-maska
             data-maska="### ###-##-##"
             name="telefono"
-            v-model="editFormData.telefono"
+            v-model="formData.telefono"
         /></template>
         <template #InputError
           ><InputError v-if="v$.telefono.$error" :message="v$.telefono.$errors[0]?.$message"

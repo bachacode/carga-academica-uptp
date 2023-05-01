@@ -1,77 +1,125 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { onUnmounted, reactive, ref } from 'vue'
-import { useSeccionStore } from '@/stores/secciones'
+import { computed, reactive, ref } from 'vue'
+import { useSeccionStore, type seccionType } from '@/stores/secciones'
 import { useVuelidate } from '@vuelidate/core'
-
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
 import FormComponent from '@/components/Containers/FormComponent.vue'
-import { data } from './SeccionesData'
+import {
+  maxLengthValidation,
+  maxValueValidation,
+  minLengthValidation,
+  minValueValidation,
+  numericValidation,
+  requiredValidation,
+  uniqueValidation,
+  isUnique
+} from '@/helpers/validationHelpers'
+// Store del módulo
 const store = useSeccionStore()
-const { save } = store
-const { formData, formRules } = data
-const trayectoOptions = reactive([
+
+// Booleano para el botón de submit
+const isLoading = ref(false)
+
+// Variables reactivas del formulario
+const formData = reactive<seccionType>({
+  codigo: '',
+  trayecto: '',
+  estudiantes: ''
+})
+
+// Validación Unica
+const isCodigoTaken = isUnique(store, 'codigo')
+
+// Reglas de validación
+const formRules = computed(() => {
+  return {
+    codigo: {
+      lazy: true,
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(4),
+      unique: uniqueValidation('codigo', 'secciones', isCodigoTaken, formData.codigo)
+    },
+    trayecto: {
+      required: requiredValidation(),
+      numeric: numericValidation(),
+      minValue: minValueValidation(),
+      maxValue: maxValueValidation(4)
+    },
+    estudiantes: {
+      required: requiredValidation(),
+      numeric: numericValidation(),
+      minValue: minValueValidation(),
+      maxValue: maxValueValidation(99)
+    }
+  }
+})
+
+// Opciones del Select "Trayectos"
+const trayectoOptions = [
   { value: 1, name: 'Trayecto 1' },
   { value: 2, name: 'Trayecto 2' },
   { value: 3, name: 'Trayecto 3' },
   { value: 4, name: 'Trayecto 4' }
-])
+]
+
+// Validación
 const v$ = useVuelidate(formRules, formData)
-data.store = store
-const isLoading = ref(false)
+
+// Función para enviar el formulario
 const submitData = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
     isLoading.value = true
-    save(formData)
+    await store.save(formData)
+    isLoading.value = false
   }
 }
-onUnmounted(() => {
-  Object.assign(formData, {
-    codigo: '',
-    trayecto: '',
-    estudiantes: ''
-  })
-})
 </script>
 
 <template>
   <AuthLayout>
     <FormComponent submit-text="Crear Sección" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
+        <!-- Codigo -->
         <InputField label="Codigo" name="codigo">
           <template #InputField
-            ><InputComponent
-              v-maska
-              data-maska="i##"
-              name="codigo"
-              v-model="formData.codigo"
-              placeholder="i11"
+            ><InputComponent v-maska name="codigo" v-model="formData.codigo" placeholder="ej. i11"
           /></template>
           <template #InputError
             ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
           /></template>
         </InputField>
-        <InputField type="number" label="Trayecto" name="trayecto">
+
+        <!-- Trayecto -->
+        <InputField label="Trayecto" name="trayecto">
           <template #InputField
             ><InputSelect
               :options="trayectoOptions"
               placeholder="Seleccione un trayecto"
               name="trayecto"
-              v-model="formData.trayecto"
+              v-model.number="formData.trayecto"
           /></template>
           <template #InputError
             ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
           /></template>
         </InputField>
-        <InputField type="number" label="Estudiantes" name="estudiantes">
+
+        <!-- Estudiantes -->
+        <InputField
+          label="Estudiantes"
+          name="estudiantes"
+          helper-text="Este campo solo acepta numeros"
+        >
           <template #InputField
             ><InputComponent
               v-maska
-              data-maska="###"
+              data-maska="##"
+              type="number"
               name="estudiantes"
               v-model.number="formData.estudiantes"
           /></template>

@@ -10,6 +10,8 @@ export interface Props {
   columns: Array<theadColumnType>
   viewOnly?: boolean
   sortable?: boolean
+  totalPages?: number
+  actualPage?: number
 }
 const modals = ref<Array<HTMLInputElement>>([])
 
@@ -37,6 +39,16 @@ withDefaults(defineProps<Props>(), {
   sortable: true
 })
 
+const backPage = (actual: any) => {
+  if (actual - 1 <= 1) return actual
+  return actual - 1
+}
+
+const nextPage = (actual: any, total: any) => {
+  if (actual + 1 > total) return actual
+  return actual + 1
+}
+
 const emit = defineEmits([
   'update:modelValue',
   'sorting',
@@ -44,7 +56,8 @@ const emit = defineEmits([
   'relation',
   'editButton',
   'toggleColumn',
-  'triggerAction'
+  'triggerAction',
+  'changePage'
 ])
 
 const updateValue = (e: Event) => {
@@ -88,7 +101,7 @@ const updateValue = (e: Event) => {
           @input="updateValue"
           name="search"
           :placeholder="placeholder"
-          class="rounded-lg border border-blue-300 bg-blue-50 py-1 pl-8 text-sm text-blue-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+          class="rounded-lg border border-green-300 bg-green-50 py-1 pl-8 text-sm text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
         />
       </div>
     </div>
@@ -96,16 +109,23 @@ const updateValue = (e: Event) => {
       <!-- Loading Circle -->
       <LoadingCircle :is-loaded="!filteredData" />
 
-      <table v-if="filteredData" class="table-zebra table-normal table w-full border-b">
+      <table
+        v-if="filteredData"
+        class="table-zebra table-normal relative mb-6 table w-full border-b"
+      >
         <thead>
           <tr>
-            <th v-for="column in columns" class="text-blue-900" :key="column.name">
+            <th v-for="column in columns" class="text-green-900" :key="column.name">
               <template v-if="column.isAsc != undefined">
                 <span @click="$emit('sorting', orderBy(column))" class="cursor-pointer">
                   {{ column.nameAlias ?? column.name }}
                   <!-- Acciones -->
-                  <i v-if="column.isAsc && sortable" class="fas fa-sort-down pl-1"></i>
-                  <i v-if="!column.isAsc && sortable" class="fas fa-sort-up pl-1"></i>
+                  <font-awesome-icon
+                    v-if="column.isAsc && sortable"
+                    icon="sort-down"
+                    class="pl-1"
+                  />
+                  <font-awesome-icon v-if="!column.isAsc && sortable" icon="sort-up" class="pl-1" />
                 </span>
               </template>
               <template v-else>
@@ -114,7 +134,7 @@ const updateValue = (e: Event) => {
                 </span>
               </template>
             </th>
-            <th v-if="!viewOnly" class="text-blue-900">Acciones</th>
+            <th v-if="!viewOnly" class="text-green-900">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -125,7 +145,7 @@ const updateValue = (e: Event) => {
                 <td>
                   <label
                     :for="record.id + column.name"
-                    class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                    class="btn rounded-xl bg-green-700 hover:bg-green-900"
                   >
                     {{ `Ver ${column.name}` }}
                   </label>
@@ -150,7 +170,7 @@ const updateValue = (e: Event) => {
                           {{ column.relationTitle + record[column.fatherName] ?? 'Datos' }}
                         </h3>
                         <label
-                          class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-blue-700"
+                          class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-green-700"
                           :for="record.id + column.name"
                           ><font-awesome-icon icon="close"
                         /></label>
@@ -160,13 +180,13 @@ const updateValue = (e: Event) => {
                       </div>
                       <table
                         v-if="record && record.expand[column.name.toLowerCase()]"
-                        class="mb-6 w-full border border-blue-700"
+                        class="mb-6 w-full border border-green-700"
                       >
                         <thead>
                           <th
                             v-for="relationColumn in column.multipleData"
                             :key="relationColumn.name"
-                            class="bg-blue-300 py-2 pl-2 uppercase"
+                            class="bg-green-300 py-2 pl-2 uppercase"
                           >
                             {{ relationColumn.nameAlias ?? relationColumn.name }}
                           </th>
@@ -198,7 +218,7 @@ const updateValue = (e: Event) => {
                 <td>
                   <label
                     :for="record.id + column.name"
-                    class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                    class="btn rounded-xl bg-green-700 hover:bg-green-900"
                   >
                     {{ `Ver ${column.name}` }}
                   </label>
@@ -218,7 +238,7 @@ const updateValue = (e: Event) => {
                       <div class="flex justify-between">
                         <h3 class="text-lg font-bold">Información</h3>
                         <label
-                          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+                          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
                           :for="record.id + column.name"
                           >X</label
                         >
@@ -229,7 +249,7 @@ const updateValue = (e: Event) => {
                           :key="data.name"
                           class="odd:bg-slate-200 even:bg-slate-300"
                         >
-                          <th class="bg-blue-700 py-2 pl-2 text-white">
+                          <th class="bg-green-700 py-2 pl-2 text-white">
                             {{ data.nameAlias ?? data.name }}
                           </th>
                           <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
@@ -265,11 +285,22 @@ const updateValue = (e: Event) => {
                 <td>
                   <label
                     :for="`my-action-` + column.name.toLowerCase()"
-                    class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                    class="btn rounded-xl bg-green-700 hover:bg-green-900"
                     @click="$emit('triggerAction', record.id)"
                   >
                     {{ column.nameAlias }}
                   </label>
+                </td>
+              </template>
+
+              <!-- Columnas Normales -->
+              <template v-else-if="column.isSingleRelation">
+                <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                  {{
+                    record['expand'][column.isSingleRelation.name][
+                      column.isSingleRelation.childName
+                    ]
+                  }}
                 </td>
               </template>
 
@@ -288,7 +319,7 @@ const updateValue = (e: Event) => {
                 class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
                 @click="$emit('editButton', record.id)"
               >
-                <i class="fas fa-edit"></i>
+                <font-awesome-icon icon="edit" />
               </button>
               <label
                 :title="`Eliminar`"
@@ -296,7 +327,7 @@ const updateValue = (e: Event) => {
                 class="btn rounded-xl bg-red-700 hover:bg-rose-900"
                 @click="$emit('deleteModal', record.id)"
               >
-                <i class="fas fa-trash"></i>
+                <font-awesome-icon icon="trash" />
               </label>
             </td>
           </tr>
@@ -314,7 +345,7 @@ const updateValue = (e: Event) => {
         <div class="modal-action items-center">
           <label
           for="my-modal"
-          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
+          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
           >¡No!</label
           >
           <label
@@ -329,49 +360,44 @@ const updateValue = (e: Event) => {
   </div>
 </Teleport> -->
         </tbody>
+        <!-- Paginacion -->
+        <nav
+          v-if="actualPage && totalPages"
+          aria-label="Page navigation"
+          class="absolute right-0 -bottom-8"
+        >
+          <ul class="flex justify-end -space-x-px">
+            <li>
+              <a
+                @click="$emit('changePage', backPage(actualPage))"
+                class="ml-0 cursor-pointer rounded-bl-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >Anterior</a
+              >
+            </li>
+            <li v-for="index in totalPages" :key="index">
+              <a
+                v-if="index != actualPage"
+                @click="$emit('changePage', index)"
+                class="cursor-pointer border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >{{ index }}</a
+              >
+              <a
+                v-else
+                aria-current="page"
+                class="cursor-pointer border border-gray-300 bg-green-700 px-3 py-2 text-white hover:bg-green-100 hover:text-green-700"
+                >{{ index }}</a
+              >
+            </li>
+            <li>
+              <a
+                @click="$emit('changePage', nextPage(actualPage, totalPages))"
+                class="cursor-pointer rounded-br-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
+                >Siguiente</a
+              >
+            </li>
+          </ul>
+        </nav>
       </table>
-
-      <!-- Paginacion -->
-      <nav v-if="!viewOnly" aria-label="Page navigation" class="pt-1">
-        <ul class="flex justify-end -space-x-px">
-          <li>
-            <a
-              href="#"
-              class="ml-0 rounded-bl-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >Anterior</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >1</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >2</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              aria-current="page"
-              class="border border-gray-300 bg-blue-700 px-3 py-2 text-white hover:bg-blue-100 hover:text-blue-700"
-              >3</a
-            >
-          </li>
-          <li>
-            <a
-              href="#"
-              class="rounded-br-lg border border-gray-300 bg-white px-3 py-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-              >Siguiente</a
-            >
-          </li>
-        </ul>
-      </nav>
     </div>
   </div>
 </template>

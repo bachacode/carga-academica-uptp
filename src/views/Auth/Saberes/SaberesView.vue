@@ -4,79 +4,111 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-import { data } from './SaberesData'
+import type { theadColumnType } from '@/types/moduleDataType'
+import DeleteModal from '@/components/Containers/DeleteModal.vue'
+// Store del módulo
 const store = useSaberStore()
-const { fetchAll, destroy, fetchOne } = store
+
+// Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
-const { columns } = data
-data.store = store
-async function create() {
-  await router.push({ name: 'saberes.create' })
-}
 
-const edit = async (id: string) => {
-  await router.push({ name: 'saberes.edit', params: { id } })
-}
+// Columnas de la tabla
+const columns: theadColumnType[] = [
+  {
+    name: 'Materia',
+    isAsc: false
+  },
+  {
+    name: 'Trayecto',
+    isAsc: false
+  },
+  {
+    name: 'Profesores',
+    relationTitle: 'Profesores que dan ',
+    noRelations: '¡Esta materia no tiene profesores asignados!',
+    fatherName: 'materia',
+    multipleData: [
+      {
+        name: 'Nombre'
+      },
+      {
+        name: 'Apellido'
+      },
+      {
+        name: 'Cedula'
+      },
+      {
+        name: 'Telefono'
+      }
+    ]
+  }
+]
 
+// Función para ordenar la tabla de forma ASC o DESC
 const sortTable = async (column: string) => {
-  console.log(column)
-  await fetchAll(column)
+  await store.fetchAll(column)
 }
 
+// Función para ir a la vista de "pensum"
+async function pensum() {
+  await router.push({ name: 'saberes.pensum' })
+}
+
+// Función para ir a la vista de "create"
+async function create() {
+  await store.goToCreate()
+}
+
+// Función para ir a la vista de "edit"
+const edit = async (id: string) => {
+  await store.goToEdit(id)
+}
+
+// Función para seleccionar un item del módulo
 const selectItem = async (id: string) => {
-  await fetchOne(id)
+  await store.fetchOne(id)
 }
 
+// Función para borrar un item del módulo
 async function destroyItem(id: string | undefined) {
   if (id) {
-    await destroy(id)
+    await store.destroy(id)
   }
+}
+
+// Función para cambiar pagina de la tabla
+const changePage = async (page: number) => {
+  store.actualPage = page
 }
 </script>
 
 <template>
   <!-- Delete Modal -->
-  <Teleport to="#modal">
-    <!-- Put this part before </body> tag -->
-    <input type="checkbox" id="my-modal" class="modal-toggle" />
-    <div class="modal">
-      <div class="modal-box">
-        <h3 class="text-lg font-bold">¡Cuidado!</h3>
-        <p class="py-4">
-          Estas a punto de borrar el saber {{ store.singleData?.codigo }}. ¿Esta seguro que desea
-          hacer esto?
-        </p>
-        <div class="modal-action items-center">
-          <label
-            for="my-modal"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-blue-700"
-            >¡No!</label
-          >
-          <label
-            for="my-modal"
-            class="btn rounded-xl bg-red-700"
-            @click="destroyItem(store.singleData?.id)"
-            >Borrar</label
-          >
-        </div>
-      </div>
-    </div>
-  </Teleport>
+  <DeleteModal
+    :modal-text="`el saber ${store.singleData?.materia}`"
+    @destroy-item="destroyItem(store.singleData?.id)"
+  />
+  <!-- /Delete Modal -->
   <AuthLayout>
-    <!-- Success Alert -->
     <div class="w-full px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
-        <i class="fas fa-plus-circle pr-1"></i> Crear Saber
+        <font-awesome-icon icon="circle-plus" class="mr-2" />Crear Saber
+      </button>
+      <button @click="pensum()" class="btn mb-3 ml-4 rounded-lg bg-blue-700 text-white">
+        <font-awesome-icon icon="clipboard" class="mr-2" />Ver Pensum
       </button>
       <!--Table Card-->
       <TableComponent
-        title="Saberes"
+        title="módulo Saberes"
         v-model="searchQuery"
         :columns="columns"
         :filtered-data="store.filteredData"
         @editButton="edit"
         @deleteModal="selectItem"
         @sorting="sortTable"
+        @change-page="changePage"
+        :total-pages="store.data?.totalPages"
+        :actual-page="store.actualPage"
       />
       <!--/table Card-->
     </div>

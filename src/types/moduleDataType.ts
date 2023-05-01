@@ -10,6 +10,10 @@ export type theadColumnType = {
     name: string
     nameAlias?: string
   }>
+  isSingleRelation?: {
+    name: string
+    childName: string
+  }
   hasAction?: boolean
 }
 

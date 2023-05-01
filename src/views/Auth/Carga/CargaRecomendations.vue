@@ -4,7 +4,7 @@ import LoadingCircle from '@/components/LoadingCircle.vue'
 import { useSaberStore } from '@/stores/saberes'
 import InputSelect from '@/components/InputSelect.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, watch, reactive } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import AuthLayout from '../AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useProfesoresLibresStore } from '@/stores/profesoresLibres'
@@ -16,7 +16,7 @@ const saberesOptions = computed(() => {
   return saberes.filteredData?.map((record: any) => {
     return {
       value: record.id,
-      name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo
+      name: record.materia + ' - ' + record.trayecto
     }
   })
 })
@@ -60,6 +60,16 @@ const columnsLibres = reactive([
 
 <template>
   <AuthLayout>
+    <!-- ALERTA DE DESARROLLO -->
+    <div :class="`alert alert-error mb-10 w-full py-4 font-semibold shadow-lg`">
+      <div class="flex">
+        <font-awesome-icon icon="circle-xmark" class="fa-fw" />
+        <span
+          >Este módulo todavia esta en desarrollo, algunas cosas pueden no funcionar
+          correctamente</span
+        >
+      </div>
+    </div>
     <!-- Botones para elegir formulario -->
     <CardContainer card-width="w-full mt-10">
       <LoadingCircle :is-loaded="!saberes.data" />
@@ -90,9 +100,9 @@ const columnsLibres = reactive([
       </div>
 
       <template v-if="selectedSaber && selectedDia">
-        <div class="grid w-full grid-flow-row grid-cols-2 lg:flex-row">
+        <div class="mb-10 flex w-full flex-col xl:flex-row">
           <!-- Tabla de profesores Libres -->
-          <div class="relative mx-3 flex-grow pt-20">
+          <div class="mx-3 pt-20">
             <TableComponent
               title="¡Profesores sin carga asignada!"
               :columns="columnsLibres"
@@ -101,19 +111,9 @@ const columnsLibres = reactive([
             >
             </TableComponent>
           </div>
-          <div class="relative mx-3 flex-grow pt-20">
+          <div class="mx-3 pt-20">
             <TableComponent
-              title="Profesores que han dado ese saber anteriormente"
-              :columns="columnsLibres"
-              :view-only="true"
-              :filtered-data="profesoresLibres.filteredData"
-            >
-            </TableComponent>
-          </div>
-
-          <div class="relative mx-3 flex-grow pt-10">
-            <TableComponent
-              title="Profesores sin carga asignada ese dia"
+              title="Profesores que han dado ese saber"
               :columns="columnsLibres"
               :view-only="true"
               :filtered-data="profesoresLibres.filteredData"

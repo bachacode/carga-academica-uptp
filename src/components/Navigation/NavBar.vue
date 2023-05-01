@@ -22,7 +22,7 @@ function toggle() {
 }
 
 async function dashboard() {
-  await router.push('dashboard')
+  await router.push({ name: 'dashboard' })
 }
 
 async function myAccount() {
@@ -42,7 +42,9 @@ async function verifyEmail() {
           class="cursor-pointer text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
           @click="dashboard()"
         >
-          <i class="fas fa-sun pr-3 text-pink-600"></i><span>Carga Academica UPTP</span>
+          <font-awesome-icon icon="dashboard" class="pr-2 text-green-700" /><span
+            >Carga Academica UPTP</span
+          >
         </button>
       </div>
       <div class="w-1/2 pr-0">
@@ -56,10 +58,10 @@ async function verifyEmail() {
             <button
               @click.stop="toggle()"
               id="userButton"
-              class="mr-3 hidden items-center focus:outline-none md:flex"
+              class="mr-3 flex items-center focus:outline-none"
             >
               <img
-                class="mr-4 ml-2 h-8 w-8 rounded-full"
+                class="ml-2 h-8 w-8 rounded-full md:mr-3"
                 src="https://ui-avatars.com/api/?name=John+Doe"
                 alt="Avatar of User"
               />
@@ -124,25 +126,10 @@ async function verifyEmail() {
               </ul>
             </div>
           </div>
-          <div class="block pr-4 lg:hidden">
-            <button
-              @click.stop="toggle()"
-              id="nav-toggle"
-              class="flex appearance-none items-center rounded border border-gray-600 px-3 py-2 text-gray-500 hover:border-teal-500 hover:text-gray-900 focus:outline-none"
-            >
-              <svg
-                class="h-3 w-3 fill-current"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <title>Menu</title>
-                <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
 
+      <!-- Navbar Moviles -->
       <div class="z-20 mt-2 flex w-full bg-white lg:hidden">
         <ul class="flex w-full flex-row items-center px-4 md:px-0 lg:flex">
           <li class="m-2 flex-grow">
@@ -161,21 +148,21 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
+            <NavLink to="/titulos">
+              <font-awesome-icon icon="university" class="text-2xl" />
+            </NavLink>
+          </li>
+          <li class="m-2 flex-grow">
             <NavLink to="/profesores">
               <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
             <NavLink to="/carga">
-              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
+              <font-awesome-icon icon="clock" class="text-2xl" />
             </NavLink>
           </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/pensums">
-              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
+          <li v-if="auth.user?.rol == 'Administrador'" class="m-2 flex-grow">
             <NavLink class="text-cyan-600" to="/usuarios">
               <font-awesome-icon icon="user" class="text-2xl" />
             </NavLink>
@@ -205,18 +192,18 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
+            <NavLink to="/titulos" text="Titulos">
+              <font-awesome-icon icon="university" />
+            </NavLink>
+          </li>
+          <li class="my-2 mr-6 md:my-0">
             <NavLink to="/profesores" text="Profesores">
               <font-awesome-icon icon="chalkboard-teacher" />
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/carga" text="Carga Academica">
-              <font-awesome-icon icon="chalkboard-teacher" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/pensums" text="Pensums">
-              <font-awesome-icon icon="chalkboard-teacher" />
+              <font-awesome-icon icon="clock" />
             </NavLink>
           </li>
           <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { computed, onUnmounted, ref } from 'vue'
-import { useProfesorStore } from '@/stores/profesores'
+import { computed, reactive, ref } from 'vue'
+import { useProfesorStore, type profesorType } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
@@ -10,50 +10,132 @@ import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import MultiSelect from '@/components/MultiSelect.vue'
 import type { optionType } from '@/components/MultiSelect.vue'
-import { data } from './ProfesoresData'
+import { useContratoStore } from '@/stores/contratos'
+import InputSelect from '@/components/InputSelect.vue'
+import { useTituloStore } from '@/stores/titulos'
+import {
+  emailValidation,
+  maxLengthValidation,
+  minLengthValidation,
+  requiredValidation
+} from '@/helpers/validationHelpers'
+// Store del módulo
 const store = useProfesorStore()
-const saberes = useSaberStore()
-const { save } = store
-const { formData, formRules } = data
 
-const tags = computed<optionType[] | undefined>(() => {
-  return saberes.filteredData?.map((record: any) => {
-    return {
-      name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo,
-      value: record.id,
-      isActive: false
-    }
-  })
-})
+// Booleano para el botón de submit
 const isLoading = ref(false)
+
+// Store de saberes
+const saberes = useSaberStore()
+
+// Store de contratos
+const contratos = useContratoStore()
+
+// Store de titulos
+const titulos = useTituloStore()
+
+// Variables reactivas del formulario
+const formData = reactive<profesorType>({
+  nombre: '',
+  apellido: '',
+  cedula: '',
+  titulo_id: '',
+  saberes: [],
+  id_contrato: '',
+  telefono: '',
+  correo: ''
+})
+
+// Reglas de la validación
+const formRules = computed(() => {
+  return {
+    nombre: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    apellido: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    cedula: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    titulo_id: {
+      required: requiredValidation(),
+      minLength: minLengthValidation()
+    },
+    saberes: {},
+    id_contrato: {
+      required: requiredValidation()
+    },
+    telefono: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
+    correo: {
+      required: requiredValidation(),
+      email: emailValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    }
+  }
+})
+
+// Función para deseleccionar opciones del multiSelect
 const removeTag = (tag: optionType) => {
   tag.isActive = false
 }
 
-const v$ = useVuelidate(formRules, formData)
-
-const submitData = async () => {
-  isLoading.value = true
-  await v$.value
-    .$validate()
-    .then(() => (isLoading.value = false))
-    .catch(() => (isLoading.value = false))
-  if (!v$.value.$error) {
-    save(formData)
-  }
-}
-
-onUnmounted(() => {
-  Object.assign(formData, {
-    nombre: '',
-    apellido: '',
-    cedula: '',
-    titulo: '',
-    saberes: [],
-    telefono: '',
-    correo: ''
+// Valor computado de las opciones del multiselect
+const tags = computed<optionType[] | undefined>(() => {
+  return saberes.filteredData?.map((record: any) => {
+    {
+      return {
+        name: record.materia + ' - ' + record.trayecto,
+        value: record.id,
+        isActive: formData.saberes.includes(record.id) ? true : false
+      }
+    }
   })
 })
+
+// Valor computado de contratos del select
+const contratosOptions = computed(() => {
+  return contratos.filteredData?.map((record: any) => {
+    return {
+      value: record.id,
+      name: `${record.tipo} - ${record.horas_maximas} horas`
+    }
+  })
+})
+
+// Valor computado de titulos del select
+const titulosOptions = computed(() => {
+  return titulos.filteredData?.map((record: any) => {
+    return {
+      value: record.id,
+      name: `${record.nombre}`
+    }
+  })
+})
+
+// Objeto de validaciáon
+const v$ = useVuelidate(formRules, formData)
+
+// Función para enviar el formulario
+const submitData = async () => {
+  await v$.value.$validate()
+  if (!v$.value.$error) {
+    isLoading.value = true
+    await store.save(formData)
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -84,11 +166,11 @@ onUnmounted(() => {
         </div>
 
         <!-- Cedula -->
-        <InputField label="Cedula" name="cedula">
+        <InputField label="Cedula" name="cedula" helper-text="Este campo solo acepta numeros">
           <template #InputField
             ><InputComponent
               v-maska
-              data-maska="V-##.###.###"
+              data-maska="########"
               data-maska-tokens="'0':/[0-9]/:M"
               name="cedula"
               v-model="formData.cedula"
@@ -100,11 +182,15 @@ onUnmounted(() => {
 
         <!-- Titulo -->
         <InputField label="Titulo" name="titulo">
-          <template #InputField
-            ><InputComponent name="titulo" v-model="formData.titulo"
+          <template #InputField>
+            <InputSelect
+              :options="titulosOptions ?? [{ value: '', name: 'No se han encontrado titulos' }]"
+              placeholder="Seleccione un titulo"
+              name="titulos"
+              v-model="formData.titulo_id"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0]?.$message"
+            ><InputError v-if="v$.titulo_id.$error" :message="v$.titulo_id.$errors[0]?.$message"
           /></template>
         </InputField>
 
@@ -118,16 +204,32 @@ onUnmounted(() => {
               :selected-options="formData.saberes"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.titulo.$error" :message="v$.titulo.$errors[0]?.$message"
+            ><InputError v-if="v$.saberes.$error" :message="v$.saberes.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
+        <!-- Tipo de Contrato -->
+        <InputField label="Tipo de contrato" name="contrato">
+          <template #InputField>
+            <InputSelect
+              :options="contratosOptions ?? [{ value: '', name: 'No se han encontrado contratos' }]"
+              placeholder="Seleccione un contrato"
+              name="contratos"
+              v-model="formData.id_contrato"
+          /></template>
+          <template #InputError
+            ><InputError
+              v-if="v$.id_contrato.$error"
+              :message="v$.id_contrato.$errors[0]?.$message"
           /></template>
         </InputField>
 
         <!-- Telefono -->
-        <InputField label="Telefono" name="telefono">
+        <InputField label="Telefono" name="telefono" helper-text="Este campo solo acepta numeros">
           <template #InputField
             ><InputComponent
               v-maska
-              data-maska="### ###-##-##"
+              data-maska="###########"
               name="telefono"
               v-model="formData.telefono"
           /></template>
@@ -137,7 +239,7 @@ onUnmounted(() => {
         </InputField>
 
         <!-- Correo -->
-        <InputField type="email" label="Correo" name="correo">
+        <InputField label="Correo" name="correo">
           <template #InputField
             ><InputComponent name="correo" v-model="formData.correo"
           /></template>

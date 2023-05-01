@@ -56,7 +56,7 @@ const saberesOptions = computed(() => {
   return saberes.filteredData?.map((record: any) => {
     return {
       value: record.id,
-      name: record.codigo + ' - ' + record.materia + ' - ' + record.periodo
+      name: record.materia + ' - ' + record.trayecto
     }
   })
 })
@@ -82,6 +82,16 @@ onUnmounted(() => {
 
 <template>
   <AuthLayout>
+    <!-- ALERTA DE DESARROLLO -->
+    <div :class="`alert alert-error mb-10 w-full py-4 font-semibold shadow-lg`">
+      <div class="flex">
+        <font-awesome-icon icon="circle-xmark" class="fa-fw" />
+        <span
+          >Este módulo todavia esta en desarrollo, algunas cosas pueden no funcionar
+          correctamente</span
+        >
+      </div>
+    </div>
     <FormComponent submit-text="Asignar Carga" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- seccion -->

@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 .router-link-exact-active {
-  @apply text-blue-600 lg:border-b-2 lg:border-blue-500;
+  @apply text-green-600 lg:border-b-2 lg:border-green-500;
 }
 
 .router-link-exact-sidebar-active {
-  @apply text-blue-600 hover:text-blue-700;
+  @apply text-green-600 hover:text-green-700;
 }
 
 .slide-fade-enter-from {

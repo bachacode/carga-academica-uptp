@@ -39,7 +39,7 @@ const appendShit = (record: any) => {
 
 export const useSeccionStore = createCrudStore<seccionType, ISeccion, uniqueKeysType>({
   storeId: 'seccion',
-  route: '/secciones',
+  route: 'secciones',
   collectionName: 'secciones',
   success: successMessages,
   error: errorMessages,

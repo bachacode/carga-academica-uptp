@@ -25,7 +25,7 @@ const updateValue = (e: Event) => {
     :value="modelValue"
     @input="updateValue"
     :name="name"
-    class="block w-full rounded-lg border border-blue-300 bg-blue-50 p-2.5 text-sm text-blue-900 focus:border-gray-500 focus:ring-gray-500"
+    class="block w-full rounded-lg border border-green-300 bg-green-50 p-2.5 text-sm text-green-900 focus:border-gray-500 focus:ring-gray-500"
   >
     <option disabled hidden value="">{{ placeholder }}</option>
     <template v-for="option in options" :key="option.value">

@@ -1,65 +1,77 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { onUnmounted, reactive, ref } from 'vue'
-import { useSaberStore } from '@/stores/saberes'
+import { computed, reactive, ref } from 'vue'
+import { useSaberStore, type saberType } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
-import { data } from './SaberesData'
+import {
+  maxLengthValidation,
+  maxValueValidation,
+  minLengthValidation,
+  minValueValidation,
+  numericValidation,
+  requiredValidation
+} from '@/helpers/validationHelpers'
+// Store del módulo
 const store = useSaberStore()
-const { save } = store
-const { formData, formRules } = data
-data.store = store
 
-const trayectoOptions = reactive([
+// Booleano para el botón de submit
+const isLoading = ref(false)
+
+// Variables reactivas del formulario
+const formData = reactive<saberType>({
+  materia: '',
+  trayecto: null
+})
+
+// Reglas de validación
+const formRules = computed(() => {
+  return {
+    materia: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(80)
+    },
+    trayecto: {
+      required: requiredValidation(),
+      numeric: numericValidation(),
+      minValue: minValueValidation(),
+      maxValue: maxValueValidation(4)
+    }
+  }
+})
+
+// Opciones del Select "Trayectos"
+const trayectoOptions = [
   { value: 1, name: 'Trayecto 1' },
   { value: 2, name: 'Trayecto 2' },
   { value: 3, name: 'Trayecto 3' },
   { value: 4, name: 'Trayecto 4' }
-])
+]
 
-const periodoOptions = reactive([
-  { value: 1, name: 'Periodo 1' },
-  { value: 2, name: 'Periodo 2' },
-  { value: 3, name: 'Periodo 3' }
-])
-const isLoading = ref(false)
+// Validación
 const v$ = useVuelidate(formRules, formData)
 
+// Función para enviar el formulario
 const submitData = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
     isLoading.value = true
-    save(formData)
+    await store.save(formData)
+    isLoading.value = false
   }
 }
-
-onUnmounted(() => {
-  Object.assign(formData, {
-    codigo: '',
-    materia: '',
-    trayecto: null,
-    periodo: null,
-    creditos: null
-  })
-})
 </script>
 
 <template>
   <AuthLayout>
     <FormComponent submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
-        <InputField label="Codigo" name="codigo">
-          <template #InputField
-            ><InputComponent name="codigo" v-model.trim="formData.codigo"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
-          /></template>
-        </InputField>
+        <!-- Materia -->
         <InputField label="Materia" name="materia">
           <template #InputField
             ><InputComponent name="materia" v-model="formData.materia"
@@ -68,6 +80,8 @@ onUnmounted(() => {
             ><InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0]?.$message"
           /></template>
         </InputField>
+
+        <!-- Trayecto -->
         <InputField label="Trayecto" name="trayecto">
           <template #InputField
             ><InputSelect
@@ -78,26 +92,6 @@ onUnmounted(() => {
           /></template>
           <template #InputError
             ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
-          /></template>
-        </InputField>
-        <InputField label="Periodo" name="periodo">
-          <template #InputField
-            ><InputSelect
-              :options="periodoOptions"
-              placeholder="Seleccione un periodo"
-              name="periodo"
-              v-model="formData.periodo"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
-          /></template>
-        </InputField>
-        <InputField label="Creditos" name="creditos">
-          <template #InputField
-            ><InputComponent name="creditos" v-model.number="formData.creditos"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.creditos.$error" :message="v$.creditos.$errors[0]?.$message"
           /></template>
         </InputField>
       </template>
