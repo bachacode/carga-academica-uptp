@@ -19,7 +19,7 @@ onUnmounted(() => {
 
 <template>
   <div class="flex min-h-screen flex-col">
-    <NavBar :username="auth.user?.name" />
+    <NavBar :username="auth.user?.nombre" />
     <main class="flex-grow pt-28">
       <Transition name="slide-fade">
         <AlertComponent

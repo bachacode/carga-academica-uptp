@@ -51,7 +51,7 @@ const sortTable = async (column: string) => {
 
 // Función para ir a la vista de "pensum"
 async function pensum() {
-  await router.push({ name: 'saberes.pensum' })
+  await router.push('pensum.pdf')
 }
 
 // Función para ir a la vista de "create"
@@ -94,9 +94,9 @@ const changePage = async (page: number) => {
       <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
         <font-awesome-icon icon="circle-plus" class="mr-2" />Crear Saber
       </button>
-      <button @click="pensum()" class="btn mb-3 ml-4 rounded-lg bg-blue-700 text-white">
+      <a href="pensum.pdf" target="_blank" class="btn mb-3 ml-4 rounded-lg bg-blue-700 text-white">
         <font-awesome-icon icon="clipboard" class="mr-2" />Ver Pensum
-      </button>
+      </a>
       <!--Table Card-->
       <TableComponent
         title="módulo Saberes"

@@ -24,8 +24,7 @@ const columns: theadColumnType[] = [
     name: 'Datos Personales',
     multipleData: [
       {
-        name: 'name',
-        nameAlias: 'Nombre'
+        name: 'Nombre',
       },
       {
         name: 'Apellido'

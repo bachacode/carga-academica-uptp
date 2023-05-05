@@ -27,7 +27,7 @@ const users = useUsuarioStore()
 // Variables reactivas del formulario
 const formData = reactive<editUserType>({
   username: '',
-  name: '',
+  nombre: '',
   apellido: '',
   cedula: '',
   telefono: '',
@@ -49,7 +49,7 @@ const formRules = computed(() => {
       minLength: minLengthValidation(),
       unique: uniqueValidation('usuario', 'usuarios', isUsernameTaken, formData.username)
     },
-    name: {
+    nombre: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40)
@@ -131,10 +131,10 @@ onMounted(async () => {
         <!-- Nombre -->
         <InputField label="Nombre" name="name">
           <template #InputField
-            ><InputComponent name="name" v-model.trim="formData.name"
+            ><InputComponent name="name" v-model.trim="formData.nombre"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.name.$error" :message="v$.name.$errors[0]?.$message"
+            ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
           /></template>
         </InputField>
 

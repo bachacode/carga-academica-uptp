@@ -5,7 +5,7 @@ export type usuarioType = {
   username: string
   email: string
   emailVisibility: boolean
-  name: string
+  nombre: string
   apellido: string
   cedula: string
   telefono: string
@@ -21,7 +21,7 @@ export type registerUserType = usuarioType & {
 
 export type editUserType = {
   username: string
-  name: string
+  nombre: string
   apellido: string
   cedula: string
   telefono: string

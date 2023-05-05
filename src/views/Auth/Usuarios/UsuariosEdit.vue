@@ -37,7 +37,7 @@ const formData = reactive({
   emailVisibility: true,
   password: '',
   passwordConfirm: '',
-  name: '',
+  nombre: '',
   apellido: '',
   cedula: '',
   telefono: '',
@@ -60,11 +60,9 @@ const formRules = computed(() => {
       unique: uniqueValidation('usuario', 'usuarios', isUsernameTaken, formData.username)
     },
     password: {
-      required: requiredValidation(),
       minLength: minLengthValidation(8)
     },
     passwordConfirm: {
-      required: requiredValidation(),
       minLength: minLengthValidation(8),
       password: passwordValidation(formData.password)
     },
@@ -75,7 +73,7 @@ const formRules = computed(() => {
       maxLength: maxLengthValidation(40),
       unique: uniqueValidation('correo', 'usuarios', isEmailTaken, formData.email)
     },
-    name: {
+    nombre: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(40)
@@ -192,10 +190,10 @@ onMounted(async () => {
             <!-- Nombre -->
             <InputField label="Nombre" name="name">
               <template #InputField
-                ><InputComponent name="name" v-model.trim="formData.name"
+                ><InputComponent name="name" v-model.trim="formData.nombre"
               /></template>
               <template #InputError
-                ><InputError v-if="v$.name.$error" :message="v$.name.$errors[0]?.$message"
+                ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
               /></template>
             </InputField>
 
