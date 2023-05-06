@@ -1,18 +1,18 @@
-type materias = {
+type saberes = {
     trayectos: Array < {
         trayecto: number,
-        materias: Array < {
+        saberes: Array < {
             id: number,
             nom_materia: string,
         } >
     } >
 }
 
-export const materias: materias = {
+export const saberes: saberes = {
     trayectos: [
         {
             trayecto: 0,
-            materias: [
+            saberes: [
                 {
                     id: 1,
                     nom_materia: 'Introducción a los Proyectos y al Programa',
@@ -29,7 +29,7 @@ export const materias: materias = {
         },
         {
             trayecto: 1,
-            materias: [
+            saberes: [
                 {
                     id: 4,
                     nom_materia: 'Acreditable I',
@@ -66,7 +66,7 @@ export const materias: materias = {
         },
         {
             trayecto: 2,
-            materias: [
+            saberes: [
                 {
                     id: 12,
                     nom_materia: 'Acreditable II',
@@ -107,7 +107,7 @@ export const materias: materias = {
         },
         {
             trayecto: 3,
-            materias: [
+            saberes: [
                 {
                     id: 20,
                     nom_materia: 'Acreditable III',
@@ -148,7 +148,7 @@ export const materias: materias = {
         },
         {
             trayecto: 4,
-            materias: [
+            saberes: [
                 {
                     id: 29,
                     nom_materia: 'Acreditable IV',

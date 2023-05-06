@@ -11,7 +11,7 @@ export type usuarioType = {
   telefono: string
   cargo: string
   rol: 'Administrador' | 'Operador' | ''
-  status: boolean
+  estado: boolean
 }
 
 export type registerUserType = usuarioType & {

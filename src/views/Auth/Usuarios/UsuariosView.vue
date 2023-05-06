@@ -39,8 +39,7 @@ const columns: theadColumnType[] = [
     ]
   },
   {
-    name: 'Status',
-    nameAlias: 'Estado',
+    name: 'Estado',
     isToggable: true
   },
   {

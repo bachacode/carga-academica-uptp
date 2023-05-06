@@ -43,7 +43,7 @@ const formData = reactive({
   telefono: '',
   cargo: '',
   rol: 'Operador',
-  status: true
+  estado: true
 })
 
 // Validaciones unicas

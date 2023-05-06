@@ -270,7 +270,7 @@ const updateValue = (e: Event) => {
                     for="hey"
                     :class="`${
                       record[column.name.toLowerCase()]
-                        ? 'bg-indigo-700 hover:bg-indigo-900'
+                        ? 'bg-green-700 hover:bg-green-900'
                         : 'bg-red-700 hover:bg-red-900'
                     } btn rounded-xl `"
                     @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
