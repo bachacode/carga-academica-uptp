@@ -1,5 +1,5 @@
-- Añadir todas las materias en la base de datos por defecto
-- Añadir todas las materias del pensum a la base de datos por defecto
+- Añadir todas las materias en la base de datos por defecto (array listo)
+- Añadir todas las materias del pensum a la base de datos por defecto (listo)
 - Completar el módulo de carga academica
 - Añadir graficas en el dashboard
 - Mejorar el módulo de titulos para añadir postgrados y seleccionar tipo de grado en los titulos

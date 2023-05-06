@@ -5,7 +5,7 @@ defineProps<{
 </script>
 
 <template>
-  <footer :class="`${classes} flex flex-col bg-green-200 p-6 text-center`">
+  <footer :class="`${classes} flex flex-col bg-indigo-200 p-6 text-center`">
     <div class="font-bold">
       <p>&#169; 2023 Luis Mariano Rivera</p>
       <p>Este sitio web funciona con Vue.Js y PocketBase</p>

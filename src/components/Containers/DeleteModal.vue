@@ -19,7 +19,7 @@ defineEmits(['destroyItem'])
         <div class="modal-action items-center">
           <label
             for="my-modal"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
+            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
             >¡No!</label
           >
           <label for="my-modal" class="btn rounded-xl bg-red-700" @click="$emit('destroyItem')">

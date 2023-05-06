@@ -101,7 +101,7 @@ const updateValue = (e: Event) => {
           @input="updateValue"
           name="search"
           :placeholder="placeholder"
-          class="rounded-lg border border-green-300 bg-green-50 py-1 pl-8 text-sm text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+          class="rounded-lg border border-indigo-300 bg-indigo-50 py-1 pl-8 text-sm text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
         />
       </div>
     </div>
@@ -115,7 +115,7 @@ const updateValue = (e: Event) => {
       >
         <thead>
           <tr>
-            <th v-for="column in columns" class="text-green-900" :key="column.name">
+            <th v-for="column in columns" class="text-indigo-900" :key="column.name">
               <template v-if="column.isAsc != undefined">
                 <span @click="$emit('sorting', orderBy(column))" class="cursor-pointer">
                   {{ column.nameAlias ?? column.name }}
@@ -134,7 +134,7 @@ const updateValue = (e: Event) => {
                 </span>
               </template>
             </th>
-            <th v-if="!viewOnly" class="text-green-900">Acciones</th>
+            <th v-if="!viewOnly" class="text-indigo-900">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -145,7 +145,7 @@ const updateValue = (e: Event) => {
                 <td>
                   <label
                     :for="record.id + column.name"
-                    class="btn rounded-xl bg-green-700 hover:bg-green-900"
+                    class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
                   >
                     {{ `Ver ${column.name}` }}
                   </label>
@@ -170,7 +170,7 @@ const updateValue = (e: Event) => {
                           {{ column.relationTitle + record[column.fatherName] ?? 'Datos' }}
                         </h3>
                         <label
-                          class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-green-700"
+                          class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-indigo-700"
                           :for="record.id + column.name"
                           ><font-awesome-icon icon="close"
                         /></label>
@@ -180,13 +180,13 @@ const updateValue = (e: Event) => {
                       </div>
                       <table
                         v-if="record && record.expand[column.name.toLowerCase()]"
-                        class="mb-6 w-full border border-green-700"
+                        class="mb-6 w-full border border-indigo-700"
                       >
                         <thead>
                           <th
                             v-for="relationColumn in column.multipleData"
                             :key="relationColumn.name"
-                            class="bg-green-300 py-2 pl-2 uppercase"
+                            class="bg-indigo-300 py-2 pl-2 uppercase"
                           >
                             {{ relationColumn.nameAlias ?? relationColumn.name }}
                           </th>
@@ -218,7 +218,7 @@ const updateValue = (e: Event) => {
                 <td>
                   <label
                     :for="record.id + column.name"
-                    class="btn rounded-xl bg-green-700 hover:bg-green-900"
+                    class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
                   >
                     {{ `Ver ${column.name}` }}
                   </label>
@@ -238,7 +238,7 @@ const updateValue = (e: Event) => {
                       <div class="flex justify-between">
                         <h3 class="text-lg font-bold">Información</h3>
                         <label
-                          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
+                          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
                           :for="record.id + column.name"
                           >X</label
                         >
@@ -249,7 +249,7 @@ const updateValue = (e: Event) => {
                           :key="data.name"
                           class="odd:bg-slate-200 even:bg-slate-300"
                         >
-                          <th class="bg-green-700 py-2 pl-2 text-white">
+                          <th class="bg-indigo-700 py-2 pl-2 text-white">
                             {{ data.nameAlias ?? data.name }}
                           </th>
                           <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
@@ -270,7 +270,7 @@ const updateValue = (e: Event) => {
                     for="hey"
                     :class="`${
                       record[column.name.toLowerCase()]
-                        ? 'bg-green-700 hover:bg-green-900'
+                        ? 'bg-indigo-700 hover:bg-indigo-900'
                         : 'bg-red-700 hover:bg-red-900'
                     } btn rounded-xl `"
                     @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
@@ -285,7 +285,7 @@ const updateValue = (e: Event) => {
                 <td>
                   <label
                     :for="`my-action-` + column.name.toLowerCase()"
-                    class="btn rounded-xl bg-green-700 hover:bg-green-900"
+                    class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
                     @click="$emit('triggerAction', record.id)"
                   >
                     {{ column.nameAlias }}
@@ -345,7 +345,7 @@ const updateValue = (e: Event) => {
         <div class="modal-action items-center">
           <label
           for="my-modal"
-          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
+          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
           >¡No!</label
           >
           <label
@@ -384,7 +384,7 @@ const updateValue = (e: Event) => {
               <a
                 v-else
                 aria-current="page"
-                class="cursor-pointer border border-gray-300 bg-green-700 px-3 py-2 text-white hover:bg-green-100 hover:text-green-700"
+                class="cursor-pointer border border-gray-300 bg-indigo-700 px-3 py-2 text-white hover:bg-indigo-100 hover:text-indigo-700"
                 >{{ index }}</a
               >
             </li>

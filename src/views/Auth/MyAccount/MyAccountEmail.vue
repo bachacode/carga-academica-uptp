@@ -83,7 +83,7 @@ const sendEmail = async () => {
         @click="sendEmail"
         v-show="!isLoading"
         type="submit"
-        class="text-md w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        class="text-md w-full rounded-lg bg-indigo-700 px-6 py-3 text-center font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
       >
         Cambiar correo
       </button>
@@ -92,7 +92,7 @@ const sendEmail = async () => {
         v-show="isLoading"
         disabled
         type="button"
-        class="text-md w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        class="text-md w-full rounded-lg bg-indigo-700 px-6 py-3 text-center font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
       >
         <svg
           aria-hidden="true"

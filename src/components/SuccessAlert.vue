@@ -9,7 +9,7 @@ defineEmits<{
 
 <template>
   <div
-    class="alert alert-success fixed right-24 top-[106px] z-50 w-3/4 bg-green-300 py-4 font-semibold text-green-700 shadow-lg"
+    class="alert alert-success fixed right-24 top-[106px] z-50 w-3/4 bg-indigo-300 py-4 font-semibold text-indigo-700 shadow-lg"
   >
     <div class="flex">
       <svg

@@ -18,9 +18,9 @@ export const useAuthStore = defineStore('auth', () => {
       .collection('users')
       .authWithPassword(username, password)
       .then((data) => {
-        if (data.record.status == true) {
+        if (data.record.estado == true) {
           router.push('dashboard')
-        } else if (data.record.status == false) {
+        } else if (data.record.estado == false) {
           pb.authStore.clear()
           errors.value.message =
             '¡Su cuenta esta desactivada! contacte con un administrador si cree que esto es un error'

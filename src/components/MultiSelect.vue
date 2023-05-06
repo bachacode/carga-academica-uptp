@@ -67,14 +67,14 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
     <div class="relative">
       <div
         @click.stop="open"
-        class="flex min-h-[42px] w-full cursor-text items-center rounded-lg border border-green-300 bg-green-50 p-2.5 text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+        class="flex min-h-[42px] w-full cursor-text items-center rounded-lg border border-indigo-300 bg-indigo-50 p-2.5 text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
       ></div>
       <div
         @click.stop="toggle"
         class="absolute inset-y-0 right-0 z-10 flex cursor-pointer items-center pr-2"
       >
-        <font-awesome-icon v-if="!dropdown" icon="chevron-down" class="text-green-500" />
-        <font-awesome-icon v-else icon="chevron-up" class="text-green-500" />
+        <font-awesome-icon v-if="!dropdown" icon="chevron-down" class="text-indigo-500" />
+        <font-awesome-icon v-else icon="chevron-up" class="text-indigo-500" />
       </div>
       <div id="tags" class="absolute inset-y-2 left-0 flex h-auto space-x-2.5 pl-2">
         {{
@@ -89,12 +89,12 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
     <div
       v-show="dropdown"
       v-on-click-outside.bubble="dropdownHandler"
-      class="block w-full rounded-b-lg border border-green-300 bg-green-50 p-2.5 text-sm text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+      class="block w-full rounded-b-lg border border-indigo-300 bg-indigo-50 p-2.5 text-sm text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
     >
       <ul class="relative max-h-40 overflow-auto" v-for="tag in tags" :key="tag.value">
         <li
           :class="`${
-            !tag.isActive ? 'hover:bg-green-300' : 'hover:bg-red-300'
+            !tag.isActive ? 'hover:bg-indigo-300' : 'hover:bg-red-300'
           } cursor-pointer rounded-md py-1 px-2`"
           @click.stop="toggleTag(tag, selectedOptions, modelRelations)"
         >

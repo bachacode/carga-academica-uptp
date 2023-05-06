@@ -62,7 +62,7 @@ const changePage = async (page: number) => {
 
   <AuthLayout>
     <div class="w-full px-16 pb-8">
-      <button @click="create()" class="btn mb-3 ml-4 rounded-lg bg-green-700 text-white">
+      <button @click="create()" class="btn mb-3 ml-4 rounded-lg bg-indigo-700 text-white">
         <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Titulo
       </button>
       <!--Table Card-->

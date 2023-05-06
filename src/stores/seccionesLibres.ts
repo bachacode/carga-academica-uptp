@@ -17,5 +17,5 @@ export interface ISeccionesLibres extends seccionesLibresType, Record {
 export const useSeccionesLibresStore = createViewStore<ISeccionesLibres>({
   storeId: 'seccionesLibres',
   collectionName: 'secciones_libres',
-  autoFetch: true
+  autoFetch: false
 })

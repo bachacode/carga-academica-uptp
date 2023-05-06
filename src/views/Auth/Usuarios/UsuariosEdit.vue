@@ -149,21 +149,21 @@ onMounted(async () => {
         <LoadingCircle :is-loaded="!formData" />
         <div v-if="formData" class="flex h-44 flex-col space-y-3 p-6">
           <h1
-            class="mx-6 mb-3 rounded-lg border border-indigo-700 bg-green-200 py-3 text-center font-bold text-slate-800 md:text-xl"
+            class="mx-6 mb-3 rounded-lg border border-indigo-700 bg-indigo-200 py-3 text-center font-bold text-slate-800 md:text-xl"
           >
             {{ `${formData.username}` }}
           </h1>
           <button
             @click="changePersonal"
             type="submit"
-            class="w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+            class="w-full rounded-lg bg-indigo-700 px-6 py-3 text-center font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
           >
             Editar datos personales
           </button>
           <button
             @click="changePassword"
             type="submit"
-            class="w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+            class="w-full rounded-lg bg-indigo-700 px-6 py-3 text-center font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
           >
             Cambiar contraseña
           </button>

@@ -33,15 +33,15 @@ const submit = async () => {
         </InputField>
         <button
           type="submit"
-          class="mt-2 bg-green-800 p-2 text-lg font-bold text-white hover:bg-green-900"
+          class="mt-2 bg-indigo-800 p-2 text-lg font-bold text-white hover:bg-indigo-900"
         >
           Recuperar contraseña
         </button>
       </form>
     </template>
     <template v-else>
-      <div class="mt-6 rounded-lg border border-green-700 bg-green-300 p-2 shadow-2xl">
-        <p class="text-xl font-medium text-green-800">
+      <div class="mt-6 rounded-lg border border-indigo-700 bg-indigo-300 p-2 shadow-2xl">
+        <p class="text-xl font-medium text-indigo-800">
           Se han enviado las instrucciones para reestablecer su contraseña al correo que ha
           introducido, si no recibe ningún correo, intentelo nuevamente y aseguresé de que el correo
           introducido es el correcto

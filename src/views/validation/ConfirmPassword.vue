@@ -90,7 +90,7 @@ onMounted(() => {
 
         <button
           type="submit"
-          class="mt-2 bg-green-800 p-2 text-lg font-bold text-white hover:bg-green-900"
+          class="mt-2 bg-indigo-800 p-2 text-lg font-bold text-white hover:bg-indigo-900"
         >
           Cambiar Contraseña
         </button>
@@ -98,7 +98,7 @@ onMounted(() => {
     </template>
     <template v-else>
       <div class="mt-6 rounded-lg p-2">
-        <p class="text-center text-4xl font-bold text-green-900">
+        <p class="text-center text-4xl font-bold text-indigo-900">
           ¡Tu contraseña ha sido reestablecida exitosamente!
         </p>
       </div>

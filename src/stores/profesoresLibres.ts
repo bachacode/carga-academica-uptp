@@ -18,5 +18,5 @@ export const useProfesoresLibresStore = createViewStore<ICarga>({
   storeId: 'profesoresLibres',
   collectionName: 'profesores_libres',
   relations: ['saberes'],
-  autoFetch: true
+  autoFetch: false
 })

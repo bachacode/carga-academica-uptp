@@ -109,7 +109,7 @@ watchEffect(async () => {
     </div>
 
     <div class="w-full space-x-3 px-16 pb-8">
-      <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
+      <button @click="create()" class="btn mb-3 rounded-lg bg-indigo-700 text-white">
         <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Horas Academicas
       </button>
       <button
@@ -141,8 +141,8 @@ watchEffect(async () => {
                   v-if="day != 'all'"
                   @click="activeDay = day"
                   :title="day"
-                  :class="`btn-outline btn rounded-xl px-16 hover:bg-green-900 ${
-                    activeDay == day ? 'bg-green-700 text-white' : ''
+                  :class="`btn-outline btn rounded-xl px-16 hover:bg-indigo-900 ${
+                    activeDay == day ? 'bg-indigo-700 text-white' : ''
                   }`"
                 >
                   {{ day }}
@@ -151,8 +151,8 @@ watchEffect(async () => {
                   v-if="day == 'all'"
                   @click="activeDay = day"
                   title="Total"
-                  :class="`btn-outline btn rounded-xl px-16 hover:bg-green-900 ${
-                    activeDay == day ? 'bg-green-700 text-white' : ''
+                  :class="`btn-outline btn rounded-xl px-16 hover:bg-indigo-900 ${
+                    activeDay == day ? 'bg-indigo-700 text-white' : ''
                   }`"
                 >
                   Total

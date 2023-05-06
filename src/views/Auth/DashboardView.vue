@@ -69,7 +69,7 @@ const profsConMaterias = computed(() => {
 // Valor computado que devuelve la cantidad total de usuarios activos en el sistema
 const totalActiveUsers = computed(() => {
   return usuarios.data?.items.filter((usuario) => {
-    return usuario.status == true
+    return usuario.estado == true
   }).length
 })
 
@@ -99,7 +99,6 @@ const theadColumns = reactive([
 
 // Al inicializar el componente, hace fetch de tres módulos distintos
 onMounted(async () => {
-  await usuarios.fetchAll('-created', `rol = "Operador" && id != "${auth.user?.id}"`)
   await seccionesLibres.fetchAll()
   await profesoresLibres.fetchAll()
 })

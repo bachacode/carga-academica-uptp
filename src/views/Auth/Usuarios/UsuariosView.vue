@@ -164,12 +164,12 @@ async function promoteUser(id: string | undefined) {
         <div class="modal-action items-center">
           <label
             for="my-action-rol"
-            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-green-700"
+            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
             >¡No!</label
           >
           <label
             for="my-action-rol"
-            class="btn rounded-xl bg-green-700"
+            class="btn rounded-xl bg-indigo-700"
             @click="promoteUser(store.singleData?.id)"
           >
             ¡Promover!
@@ -182,7 +182,7 @@ async function promoteUser(id: string | undefined) {
 
   <AuthLayout>
     <div class="w-full px-16 pb-8">
-      <button @click="create()" class="btn mb-3 rounded-lg bg-green-700 text-white">
+      <button @click="create()" class="btn mb-3 rounded-lg bg-indigo-700 text-white">
         <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Usuario
       </button>
       <!--Table Card-->

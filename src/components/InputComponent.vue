@@ -29,6 +29,6 @@ const updateValue = (e: Event) => {
     @input="updateValue"
     :name="name"
     :placeholder="placeholder"
-    :class="`${inputClasses} block w-full rounded-lg border border-green-300 bg-green-50 p-2.5 text-sm text-green-900 shadow-sm focus:border-gray-500 focus:ring-gray-500`"
+    :class="`${inputClasses} block w-full rounded-lg border border-indigo-300 bg-indigo-50 p-2.5 text-sm text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500`"
   />
 </template>

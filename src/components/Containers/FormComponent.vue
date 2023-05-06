@@ -23,7 +23,7 @@ defineEmits(['formSubmit'])
   <CardContainer :card-width="formWidth">
     <button
       v-if="backButton"
-      class="btn-ghost px-2 pt-2 hover:bg-white hover:text-green-700"
+      class="btn-ghost px-2 pt-2 hover:bg-white hover:text-indigo-700"
       @click="router.back()"
     >
       <font-awesome-icon icon="arrow-left" class="mr-2" />{{ backText }}
@@ -36,7 +36,7 @@ defineEmits(['formSubmit'])
       <button
         v-show="!isLoading"
         type="submit"
-        class="text-md w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        class="text-md w-full rounded-lg bg-indigo-700 px-6 py-3 text-center font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
       >
         {{ submitText }}
       </button>
@@ -46,7 +46,7 @@ defineEmits(['formSubmit'])
         v-show="isLoading"
         disabled
         type="button"
-        class="text-md w-full rounded-lg bg-green-700 px-6 py-3 text-center font-medium text-white hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
+        class="text-md w-full rounded-lg bg-indigo-700 px-6 py-3 text-center font-medium text-white hover:bg-indigo-800 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:w-auto"
       >
         <svg
           aria-hidden="true"

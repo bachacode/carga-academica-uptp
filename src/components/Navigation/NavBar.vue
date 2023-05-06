@@ -42,7 +42,7 @@ async function verifyEmail() {
           class="cursor-pointer text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
           @click="dashboard()"
         >
-          <font-awesome-icon icon="dashboard" class="pr-2 text-green-700" /><span
+          <font-awesome-icon icon="dashboard" class="pr-2 text-indigo-700" /><span
             >Carga Academica UPTP</span
           >
         </button>
