@@ -23,12 +23,14 @@
     "@vuelidate/validators": "^2.0.0",
     "@vueuse/components": "^9.13.0",
     "@vueuse/core": "^9.13.0",
+    "chart.js": "^3.9.1",
     "daisyui": "^2.51.3",
     "html2pdf.js": "^0.10.1",
     "maska": "^2.1.7",
     "pinia": "^2.0.32",
     "pocketbase": "^0.12.1",
     "vue": "^3.2.47",
+    "vue-chart-3": "^3.1.8",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

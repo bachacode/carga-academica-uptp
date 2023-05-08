@@ -11,7 +11,18 @@ import { reactive } from 'vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import { useProfesoresLibresStore } from '@/stores/profesoresLibres'
 import { useSeccionesLibresStore } from '@/stores/seccionesLibres'
-
+import { Chart, registerables } from 'chart.js'
+import { DoughnutChart } from 'vue-chart-3'
+Chart.register(...registerables);
+const testData = reactive({
+  labels: ['Asignados', 'No Asignados'],
+  datasets: [
+  {
+    data: [12, 2],
+    backgroundColor: ['#77CEFF', '#0079AF'],
+  },
+  ],
+});
 // Store de profesores
 const profesores = useProfesorStore()
 
@@ -48,14 +59,14 @@ const totalUsers = computed(() => {
 // Valor computado que devuelve la cantidad de profesores con carga asignada
 const profsConCarga = computed(() => {
   if (profesores.data && profesoresLibres.data)
-    return profesores.data?.items.length - profesoresLibres.data.items.length
+  return profesores.data?.items.length - profesoresLibres.data.items.length
   else return 0
 })
 
 // Valor computado que devuelve la cantidad de secciones con carga asignada
 const seccionesConCarga = computed(() => {
   if (secciones.data && seccionesLibres.data)
-    return secciones.data?.items.length - seccionesLibres.data.items.length
+  return secciones.data?.items.length - seccionesLibres.data.items.length
   else return 0
 })
 
@@ -75,26 +86,26 @@ const totalActiveUsers = computed(() => {
 
 // Columnas de la tabla
 const theadColumns = reactive([
-  {
-    name: 'Nombre',
-    isAsc: false
+{
+  name: 'Nombre',
+  isAsc: false
+},
+{
+  name: 'Apellido',
+  isAsc: false
+},
+{
+  name: 'Cedula',
+  isAsc: false
+},
+{
+  name: 'Titulo',
+  isSingleRelation: {
+    name: 'titulo_id',
+    childName: 'nombre'
   },
-  {
-    name: 'Apellido',
-    isAsc: false
-  },
-  {
-    name: 'Cedula',
-    isAsc: false
-  },
-  {
-    name: 'Titulo',
-    isSingleRelation: {
-      name: 'titulo_id',
-      childName: 'nombre'
-    },
-    isAsc: false
-  },
+  isAsc: false
+},
 ])
 
 // Al inicializar el componente, hace fetch de tres módulos distintos
@@ -111,95 +122,120 @@ onMounted(async () => {
       <!-- Loading Circle -->
       <LoadingCircle :is-loaded="!(profesores.data && secciones.data && usuarios.data)" />
       <div
-        v-if="profesores.data && secciones.data && usuarios.data"
-        class="mb-16 w-full px-4 leading-normal text-gray-800 md:mt-8 md:px-0"
+      v-if="profesores.data && secciones.data && usuarios.data"
+      class="mb-16 w-full px-4 leading-normal text-gray-800 md:mt-8 md:px-0"
       >
-        <!--Console Content-->
-        <div class="flex flex-wrap">
-          <!-- Secciones Totales -->
-          <div class="w-full p-3 md:w-1/2 xl:w-1/3">
-            <MetricCard
-              title="Secciones con horas asignadas"
-              :amount="`${seccionesConCarga} / ${totalSecciones}`"
-              main-icon-color="green"
-              secondary-icon-color="green"
-            >
-              <template #main-icon>
-                <font-awesome-icon icon="user-group" class="fa-2x fa-fw fa-inverse" />
-              </template>
-            </MetricCard>
-          </div>
+      <!--Console Content-->
+      <div class="flex flex-wrap">
+        <!-- Secciones Totales -->
+        <div class="w-full p-3 md:w-1/2 xl:w-1/3">
+          <MetricCard
+          title="Secciones con horas asignadas"
+          :amount="`${seccionesConCarga} / ${totalSecciones}`"
+          main-icon-color="green"
+          secondary-icon-color="green"
+          >
+          <template #main-icon>
+            <font-awesome-icon icon="user-group" class="fa-2x fa-fw fa-inverse" />
+          </template>
+        </MetricCard>
+      </div>
+      
+      <!-- Profesores con materias -->
+      <div class="w-full p-3 md:w-1/2 xl:w-1/3">
+        <!--Metric Card-->
+        <MetricCard
+        title="Profesores con materias"
+        :amount="`${profsConMaterias} / ${totalProfs}`"
+        main-icon-color="green"
+        secondary-icon-color="green"
+        >
+        <template #main-icon>
+          <font-awesome-icon icon="chalkboard-teacher" class="fa-2x fa-fw fa-inverse" />
+        </template>
+      </MetricCard>
+      <!--/Metric Card-->
+    </div>
+    
+    <!-- Profesores con horas asignadas -->
+    <div class="w-full p-3 md:w-1/2 xl:w-1/3">
+      <!--Metric Card-->
+      <MetricCard
+      title="Profesores con horas asignadas"
+      :amount="`${profsConCarga} / ${totalProfs}`"
+      main-icon-color="green"
+      secondary-icon-color="green"
+      >
+      <template #main-icon>
+        <font-awesome-icon icon="chalkboard" class="fa-2x fa-fw fa-inverse" />
+      </template>
+    </MetricCard>
+    <!--/Metric Card-->
+  </div>
+  
+  <!-- Usuarios operadores activos -->
+  <div v-if="auth.user?.rol == 'Administrador'" class="w-full p-3 md:w-1/2 xl:w-1/3">
+    <!--Metric Card-->
+    <MetricCard
+    title="Operadores Activos"
+    :amount="`${totalActiveUsers} / ${totalUsers}`"
+    main-icon-color="green"
+    secondary-icon-color="green"
+    >
+    <template #main-icon>
+      <font-awesome-icon icon="user" class="fa-2x fa-fw fa-inverse" />
+    </template>
+  </MetricCard>
+  <!--/Metric Card-->
+</div>
+</div>
 
-          <!-- Profesores con materias -->
-          <div class="w-full p-3 md:w-1/2 xl:w-1/3">
-            <!--Metric Card-->
-            <MetricCard
-              title="Profesores con materias"
-              :amount="`${profsConMaterias} / ${totalProfs}`"
-              main-icon-color="green"
-              secondary-icon-color="green"
-            >
-              <template #main-icon>
-                <font-awesome-icon icon="chalkboard-teacher" class="fa-2x fa-fw fa-inverse" />
-              </template>
-            </MetricCard>
-            <!--/Metric Card-->
-          </div>
-
-          <!-- Profesores con horas asignadas -->
-          <div class="w-full p-3 md:w-1/2 xl:w-1/3">
-            <!--Metric Card-->
-            <MetricCard
-              title="Profesores con horas asignadas"
-              :amount="`${profsConCarga} / ${totalProfs}`"
-              main-icon-color="green"
-              secondary-icon-color="green"
-            >
-              <template #main-icon>
-                <font-awesome-icon icon="chalkboard" class="fa-2x fa-fw fa-inverse" />
-              </template>
-            </MetricCard>
-            <!--/Metric Card-->
-          </div>
-
-          <!-- Usuarios operadores activos -->
-          <div v-if="auth.user?.rol == 'Administrador'" class="w-full p-3 md:w-1/2 xl:w-1/3">
-            <!--Metric Card-->
-            <MetricCard
-              title="Operadores Activos"
-              :amount="`${totalActiveUsers} / ${totalUsers}`"
-              main-icon-color="green"
-              secondary-icon-color="green"
-            >
-              <template #main-icon>
-                <font-awesome-icon icon="user" class="fa-2x fa-fw fa-inverse" />
-              </template>
-            </MetricCard>
-            <!--/Metric Card-->
-          </div>
-        </div>
-
-        <!--Divider-->
-        <hr class="my-8 mx-4 border-b-2 border-gray-400" />
-
-        <!-- Tabla con los ultimos profesores asignados -->
-        <div class="mt-2 flex flex-grow flex-row flex-wrap">
-          <div class="w-full p-3">
-            <!--Table Card-->
-            <TableComponent
-              title="Ultimos profesores agregados"
-              :columns="theadColumns"
-              :filtered-data="profesores.filteredData"
-              :sortable="false"
-              :view-only="true"
-            />
-
-            <!--/table Card-->
-          </div>
-        </div>
-        <!--/ Console Content-->
+<!--Divider-->
+<hr class="my-8 mx-4 border-b-2 border-gray-400" />
+<div class="flex flex-row flex-wrap flex-grow mt-2">
+  
+  <div class="w-full md:w-1/2 p-3">
+    <div class="bg-white border rounded shadow">
+      <div class="border-b p-3">
+        <h5 class="font-bold uppercase text-gray-600">Profesores asignados</h5>
+      </div>
+      <div class="p-5">
+        <DoughnutChart :chartData="testData" />
       </div>
     </div>
-    <!--/container-->
-  </AuthLayout>
+  </div>
+  
+  <div class="w-full md:w-1/2 p-3">
+    <div class="bg-white border rounded shadow">
+      <div class="border-b p-3">
+        <h5 class="font-bold uppercase text-gray-600">Profesores asignados</h5>
+      </div>
+      <div class="p-5">
+        <DoughnutChart :chartData="testData" />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Tabla con los ultimos profesores asignados -->
+<div class="mt-2 flex flex-grow flex-row flex-wrap">
+  <div class="w-full p-3">
+    <!--Table Card-->
+    <TableComponent
+    title="Ultimos profesores agregados"
+    :columns="theadColumns"
+    :filtered-data="profesores.filteredData"
+    :sortable="false"
+    :view-only="true"
+    />
+    
+    <!--/table Card-->
+  </div>
+</div>
+<!--/ Console Content-->
+</div>
+</div>
+<!--/container-->
+</AuthLayout>
 </template>
