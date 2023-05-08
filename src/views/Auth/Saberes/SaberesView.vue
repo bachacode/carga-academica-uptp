@@ -15,7 +15,7 @@ const { searchQuery } = storeToRefs(store)
 // Columnas de la tabla
 const columns: theadColumnType[] = [
   {
-    name: 'Materia',
+    name: 'Saber',
     isAsc: false
   },
   {
@@ -25,8 +25,8 @@ const columns: theadColumnType[] = [
   {
     name: 'Profesores',
     relationTitle: 'Profesores que dan ',
-    noRelations: '¡Esta materia no tiene profesores asignados!',
-    fatherName: 'materia',
+    noRelations: '¡Esta saber no tiene profesores asignados!',
+    fatherName: 'saber',
     multipleData: [
       {
         name: 'Nombre'

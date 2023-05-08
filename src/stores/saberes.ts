@@ -3,7 +3,7 @@ import { createCrudStore } from './factory'
 import type { alertMessages } from './factory'
 
 export type saberType = {
-  materia: string
+  saber: string
   trayecto: number | null
 }
 

@@ -136,11 +136,6 @@ const router = createRouter({
           path: 'edit/:id',
           name: 'saberes.edit',
           component: () => import('@/views/Auth/Saberes/SaberesEdit.vue')
-        },
-        {
-          path: 'pensum',
-          name: 'saberes.pensum',
-          component: () => import('@/views/Auth/Saberes/PensumView.vue')
         }
       ]
     },

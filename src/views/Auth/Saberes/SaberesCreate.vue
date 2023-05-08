@@ -24,14 +24,14 @@ const isLoading = ref(false)
 
 // Variables reactivas del formulario
 const formData = reactive<saberType>({
-  materia: '',
+  saber: '',
   trayecto: null
 })
 
 // Reglas de validación
 const formRules = computed(() => {
   return {
-    materia: {
+    saber: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(80)
@@ -71,13 +71,13 @@ const submitData = async () => {
   <AuthLayout>
     <FormComponent submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
-        <!-- Materia -->
-        <InputField label="Materia" name="materia">
+        <!-- Saber -->
+        <InputField label="Saber" name="saber">
           <template #InputField
-            ><InputComponent name="materia" v-model="formData.materia"
+            ><InputComponent name="saber" v-model="formData.saber"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.materia.$error" :message="v$.materia.$errors[0]?.$message"
+            ><InputError v-if="v$.saber.$error" :message="v$.saber.$errors[0]?.$message"
           /></template>
         </InputField>
 
