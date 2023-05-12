@@ -62,7 +62,7 @@ export interface ICrudStoreOptions<IData> extends IViewStoreOptions<IData> {
  */
 export function createCrudStore<
   dataType extends {} | undefined,
-  IData extends Record & Object,
+  IData extends Record & dataType,
   uniqueKeysType = void
 >({
   storeId,
