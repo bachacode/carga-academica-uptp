@@ -24,6 +24,7 @@ const isLoading = ref(false)
 
 // Variables reactivas del formulario
 const formData = reactive<saberType>({
+  codigo: '',
   nombre: '',
   trayecto: null
 })
@@ -31,26 +32,31 @@ const formData = reactive<saberType>({
 // Reglas de validación
 const formRules = computed(() => {
   return {
+    codigo: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
     nombre: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(80)
+      maxLength: maxLengthValidation(40)
     },
     trayecto: {
       required: requiredValidation(),
       numeric: numericValidation(),
       minValue: minValueValidation(),
-      maxValue: maxValueValidation(4)
+      maxValue: maxValueValidation(1)
     }
   }
 })
 
 // Opciones del Select "Trayectos"
 const trayectoOptions = [
-  { value: 1, name: 'Trayecto 1' },
-  { value: 2, name: 'Trayecto 2' },
-  { value: 3, name: 'Trayecto 3' },
-  { value: 4, name: 'Trayecto 4' }
+{ value: 1, name: 'Trayecto 1' },
+{ value: 2, name: 'Trayecto 2' },
+{ value: 3, name: 'Trayecto 3' },
+{ value: 4, name: 'Trayecto 4' }
 ]
 
 // Validación
@@ -71,25 +77,34 @@ const submitData = async () => {
   <AuthLayout>
     <FormComponent submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
-        <!-- Saber -->
-        <InputField label="Saber" name="saber">
-          <template #InputField><InputComponent name="saber" v-model="formData.nombre" /></template>
+        
+        <!-- Codigo -->
+        <InputField label="Codigo del saber" name="saber">
+          <template #InputField><InputComponent name="saber" v-model="formData.codigo" /></template>
           <template #InputError
-            ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
+          ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
           /></template>
         </InputField>
-
+        
+        <!-- Saber -->
+        <InputField label="Nombre del saber" name="saber">
+          <template #InputField><InputComponent name="saber" v-model="formData.nombre" /></template>
+          <template #InputError
+          ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
+          /></template>
+        </InputField>
+        
         <!-- Trayecto -->
         <InputField label="Trayecto" name="trayecto">
           <template #InputField
-            ><InputSelect
-              :options="trayectoOptions"
-              placeholder="Seleccione un trayecto"
-              name="trayecto"
-              v-model="formData.trayecto"
+          ><InputSelect
+          :options="trayectoOptions"
+          placeholder="Seleccione un trayecto"
+          name="trayecto"
+          v-model="formData.trayecto"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+          ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
           /></template>
         </InputField>
       </template>

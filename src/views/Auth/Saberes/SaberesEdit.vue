@@ -28,6 +28,7 @@ const id = ref()
 
 // Variables reactivas del formulario
 const formData = reactive<saberType>({
+  codigo: '',
   nombre: '',
   trayecto: null
 })
@@ -35,16 +36,21 @@ const formData = reactive<saberType>({
 // Reglas de validación
 const formRules = computed(() => {
   return {
+    codigo: {
+      required: requiredValidation(),
+      minLength: minLengthValidation(),
+      maxLength: maxLengthValidation(40)
+    },
     nombre: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(80)
+      maxLength: maxLengthValidation(40)
     },
     trayecto: {
       required: requiredValidation(),
       numeric: numericValidation(),
       minValue: minValueValidation(),
-      maxValue: maxValueValidation(4)
+      maxValue: maxValueValidation(1)
     }
   }
 })
@@ -86,6 +92,15 @@ onMounted(async () => {
   <AuthLayout>
     <FormComponent submit-text="Editar Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
+
+        <!-- Codigo -->
+        <InputField label="Codigo del saber" name="saber">
+          <template #InputField><InputComponent name="saber" v-model="formData.codigo" /></template>
+          <template #InputError
+          ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
         <!-- Saber -->
         <InputField label="Saber" name="saber">
           <template #InputField><InputComponent name="saber" v-model="formData.nombre" /></template>
