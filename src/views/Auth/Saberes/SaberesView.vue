@@ -4,7 +4,7 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-import type { theadColumnType } from '@/types/moduleDataType'
+import type { theadColumnType } from '@/types/theadColumnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 // Store del módulo
 const store = useSaberStore()

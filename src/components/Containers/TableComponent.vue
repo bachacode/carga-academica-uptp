@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
 import LoadingCircle from '../LoadingCircle.vue'
-import type { theadColumnType } from '@/types/moduleDataType'
+import type { theadColumnType } from '@/types/theadColumnType'
 export interface Props {
   title: string
   placeholder?: string

@@ -3,7 +3,7 @@ import { useSeccionStore } from '@/stores/secciones'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import type { theadColumnType } from '@/types/moduleDataType'
+import type { theadColumnType } from '@/types/theadColumnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 // Store del módulo
 const store = useSeccionStore()

@@ -6,7 +6,7 @@ const store = useAuthStore()
 
 router.beforeEach(async (to) => {
   if (store.pb.authStore.isValid) {
-    store.pb.collection('users').authRefresh()
+    store.pb.collection('usuarios').authRefresh()
   }
   if (
     !store.pb.authStore.isValid &&

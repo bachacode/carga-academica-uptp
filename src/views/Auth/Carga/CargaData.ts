@@ -1,10 +1,9 @@
-import type { dataType } from '@/types/moduleDataType'
 import { reactive } from 'vue'
 import { computed } from 'vue'
 import { requiredValidation, numericValidation } from '@/helpers/validationHelpers'
 import type { claseType } from '@/stores/clases'
 
-export const data: dataType<claseType> = {
+export const data = {
   columns: [
     {
       name: 'Nombre',

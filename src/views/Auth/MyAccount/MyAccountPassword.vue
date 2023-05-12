@@ -45,11 +45,13 @@ async function submitData() {
   if (!v$.value.$error && auth.user?.id) {
     isLoading.value = true
     await auth.pb
-      .collection('users')
+      .collection('usuarios')
       .update(auth.user?.id, editPasswordForm)
       .then(async (data) => {
         v$.value.$reset()
-        await auth.pb.collection('users').authWithPassword(data.username, editPasswordForm.password)
+        await auth.pb
+          .collection('usuarios')
+          .authWithPassword(data.username, editPasswordForm.password)
         editPasswordForm.oldPassword = ''
         editPasswordForm.password = ''
         editPasswordForm.passwordConfirm = ''

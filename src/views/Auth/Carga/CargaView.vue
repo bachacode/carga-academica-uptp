@@ -7,7 +7,7 @@ import router from '@/router'
 import { storeToRefs } from 'pinia'
 import { daySelector } from './CargaData'
 import { ref, watchEffect } from 'vue'
-import type { theadColumnType } from '@/types/moduleDataType'
+import type { theadColumnType } from '@/types/theadColumnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 
 // Store del módulo

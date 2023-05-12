@@ -35,7 +35,7 @@ const sendEmail = async () => {
   if (!v$.value.$error) {
     isLoading.value = true
     await auth.pb
-      .collection('users')
+      .collection('usuarios')
       .requestEmailChange(form.email)
       .then(async () => {
         await alert.setSuccess({ message: '¡Se ha enviado el correo correctamente!' })

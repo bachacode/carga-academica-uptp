@@ -73,9 +73,7 @@ const submitData = async () => {
       <template #inputs>
         <!-- Saber -->
         <InputField label="Saber" name="saber">
-          <template #InputField
-            ><InputComponent name="saber" v-model="formData.saber"
-          /></template>
+          <template #InputField><InputComponent name="saber" v-model="formData.saber" /></template>
           <template #InputError
             ><InputError v-if="v$.saber.$error" :message="v$.saber.$errors[0]?.$message"
           /></template>

@@ -15,7 +15,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function login(username: string, password: string) {
     await pb
-      .collection('users')
+      .collection('usuarios')
       .authWithPassword(username, password)
       .then((data) => {
         if (data.record.estado == true) {
@@ -41,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function sendVerification() {
     await pb
-      .collection('users')
+      .collection('usuarios')
       .requestVerification(pb.authStore.model?.email)
       .then(async () =>
         alert.setSuccess({
@@ -52,16 +52,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function verifyEmail(token: string) {
-    await pb.collection('users').confirmVerification(token)
+    await pb.collection('usuarios').confirmVerification(token)
   }
 
   async function recoverPassword(email: string) {
-    await pb.collection('users').requestPasswordReset(email)
+    await pb.collection('usuarios').requestPasswordReset(email)
   }
 
   async function changePassword(token: string, password: string, confirmPassword: string) {
     await pb
-      .collection('users')
+      .collection('usuarios')
       .confirmPasswordReset(token, password, confirmPassword)
       .catch((error) => console.log(error))
   }

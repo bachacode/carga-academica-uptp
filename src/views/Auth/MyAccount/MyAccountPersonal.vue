@@ -85,7 +85,7 @@ async function submitData() {
   if (!v$.value.$error && auth.user?.id) {
     isLoading.value = true
     await auth.pb
-      .collection('users')
+      .collection('usuarios')
       .update(auth.user?.id, formData)
       .then(async () => {
         await alert.setSuccess({ message: '¡Se han actualizado sus datos correctamente!' })

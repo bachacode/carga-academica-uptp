@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useAlertStore } from '@/stores/alert'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { theadColumnType } from '@/types/moduleDataType'
+import type { theadColumnType } from '@/types/theadColumnType'
 
 // Store del módulo
 const store = useUsuarioStore()
@@ -24,7 +24,7 @@ const columns: theadColumnType[] = [
     name: 'Datos Personales',
     multipleData: [
       {
-        name: 'Nombre',
+        name: 'Nombre'
       },
       {
         name: 'Apellido'
@@ -89,7 +89,7 @@ const toggleStatus = async (id: string, column: string) => {
   await store.fetchOne(id)
   if (store.singleData)
     store.pb
-      .collection('users')
+      .collection('usuarios')
       .update(id, {
         [column]: !store.singleData[column]
       })
@@ -118,7 +118,7 @@ async function promoteUser(id: string | undefined) {
   if (id) {
     if (store.singleData)
       store.pb
-        .collection('users')
+        .collection('usuarios')
         .update(id, {
           rol: 'Administrador'
         })

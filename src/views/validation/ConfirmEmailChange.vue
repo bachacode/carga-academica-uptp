@@ -31,12 +31,14 @@ const submit = async () => {
   await v$.value.$validate()
   if (!v$.value.$error) {
     await auth.pb
-      .collection('users')
+      .collection('usuarios')
       .confirmEmailChange(formData.token, formData.password)
       .then(async () => {
         formSent.value = true
         if (auth.user?.username) {
-          await auth.pb.collection('users').authWithPassword(auth.user?.username, formData.password)
+          await auth.pb
+            .collection('usuarios')
+            .authWithPassword(auth.user?.username, formData.password)
         }
       })
       .catch(() => {

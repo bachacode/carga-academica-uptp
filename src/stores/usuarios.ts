@@ -61,7 +61,7 @@ const fetchAllQuery = {
 export const useUsuarioStore = createCrudStore<usuarioType, IUsuario, uniqueKeysType>({
   storeId: 'usuario',
   route: 'usuarios',
-  collectionName: 'users',
+  collectionName: 'usuarios',
   success: successMessages,
   error: errorMessages,
   uniqueKeys: ['username', 'email', 'cedula'],

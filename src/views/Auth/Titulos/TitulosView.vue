@@ -4,7 +4,7 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { theadColumnType } from '@/types/moduleDataType'
+import type { theadColumnType } from '@/types/theadColumnType'
 // Store del módulo
 const store = useTituloStore()
 
