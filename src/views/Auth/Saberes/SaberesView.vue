@@ -6,6 +6,7 @@ import router from '@/router'
 import { storeToRefs } from 'pinia'
 import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
+import { ref, watch } from 'vue'
 // Store del módulo
 const store = useSaberStore()
 
@@ -45,14 +46,20 @@ const columns: columnType[] = [
   }
 ]
 
-// Función para ordenar la tabla de forma ASC o DESC
-const sortTable = async (column: string) => {
-  await store.fetchAll(column)
-}
+// Variable que guarda el ordén actual de la tabla
+const sortedBy = ref('')
 
-// Función para ir a la vista de "pensum"
-async function pensum() {
-  await router.push('pensum.pdf')
+/*
+ * Observa a la variable sortedBy por cambios, si esta variable cambia
+ * Realizara un fetchAll con el orden de la tabla
+ */
+watch(sortedBy, async () => {
+  await store.fetchAll(sortedBy.value)
+})
+
+// Función para ordenar la tabla de forma ASC o DESC
+const sortTable = (column: string) => {
+  sortedBy.value = column
 }
 
 // Función para ir a la vista de "create"

@@ -117,7 +117,10 @@ export function createCrudStore<
      * @var expand recibe un string separado por comas con los nombres de las llaves foraneas
      * este lo recibe del parametro de configuración "relations"
      */
-    async function fetchAll(sortBy: string = '-created', filter: string = '') {
+    async function fetchAll(
+      sortBy: string = defaultFetchQuery.sortBy,
+      filter: string = defaultFetchQuery.filter
+    ) {
       data.value = await pb
         .collection(collectionName)
         .getList<IData>(actualPage.value, itemsPerPage.value, {
@@ -132,7 +135,7 @@ export function createCrudStore<
      * Realizara un fetchAll con el nuevo numero de pagina que se requiere
      */
     watch(actualPage, async () => {
-      await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
+      await fetchAll()
     })
 
     /*

@@ -6,6 +6,7 @@ import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useAlertStore } from '@/stores/alert'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 import type { columnType } from '@/types/columnType'
+import { ref, watch } from 'vue'
 
 // Store del módulo
 const store = useUsuarioStore()
@@ -49,9 +50,20 @@ const columns: columnType[] = [
   }
 ]
 
+// Variable que guarda el ordén actual de la tabla
+const sortedBy = ref('')
+
+/*
+ * Observa a la variable sortedBy por cambios, si esta variable cambia
+ * Realizara un fetchAll con el orden de la tabla
+ */
+watch(sortedBy, async () => {
+  await store.fetchAll(sortedBy.value)
+})
+
 // Función para ordenar la tabla de forma ASC o DESC
-const sortTable = async (column: string) => {
-  await store.fetchAll(column, `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`)
+const sortTable = (column: string) => {
+  sortedBy.value = column
 }
 
 // Función para ir a la vista de "create"
@@ -99,10 +111,7 @@ const toggleStatus = async (id: string, column: string) => {
         } else {
           await alert.setSuccess({ message: '¡Se ha activado al usuario correctamente!' })
         }
-        await store.fetchAll(
-          '-created',
-          `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`
-        )
+        await store.fetchAll(sortedBy.value)
       })
       .catch(async () => {
         if (store.singleData && store.singleData[column] == true) {
@@ -124,10 +133,7 @@ async function promoteUser(id: string | undefined) {
         })
         .then(async () => {
           await alert.setSuccess({ message: '¡Se ha promovido al usuario correctamente!' })
-          await store.fetchAll(
-            '-created',
-            `rol = "Operador" && id != "${store.pb.authStore.model?.id}"`
-          )
+          await store.fetchAll(sortedBy.value)
         })
         .catch(async () => {
           await alert.setError({ message: '¡Ha ocurrido un error al promover este usuario!' })

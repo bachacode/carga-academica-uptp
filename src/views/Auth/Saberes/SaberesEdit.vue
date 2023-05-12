@@ -92,12 +92,11 @@ onMounted(async () => {
   <AuthLayout>
     <FormComponent submit-text="Editar Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
-
         <!-- Codigo -->
         <InputField label="Codigo del saber" name="saber">
           <template #InputField><InputComponent name="saber" v-model="formData.codigo" /></template>
           <template #InputError
-          ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+            ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
           /></template>
         </InputField>
 

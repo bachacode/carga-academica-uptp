@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
+import { ref, watch } from 'vue'
 // Store del módulo
 const store = useSeccionStore()
 
@@ -27,9 +28,20 @@ const columns: columnType[] = [
   }
 ]
 
+// Variable que guarda el ordén actual de la tabla
+const sortedBy = ref('')
+
+/*
+ * Observa a la variable sortedBy por cambios, si esta variable cambia
+ * Realizara un fetchAll con el orden de la tabla
+ */
+watch(sortedBy, async () => {
+  await store.fetchAll(sortedBy.value)
+})
+
 // Función para ordenar la tabla de forma ASC o DESC
-const sortTable = async (column: string) => {
-  await store.fetchAll(column)
+const sortTable = (column: string) => {
+  sortedBy.value = column
 }
 
 // Función para ir a la vista de "create"

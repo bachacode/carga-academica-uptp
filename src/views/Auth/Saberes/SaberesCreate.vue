@@ -53,10 +53,10 @@ const formRules = computed(() => {
 
 // Opciones del Select "Trayectos"
 const trayectoOptions = [
-{ value: 1, name: 'Trayecto 1' },
-{ value: 2, name: 'Trayecto 2' },
-{ value: 3, name: 'Trayecto 3' },
-{ value: 4, name: 'Trayecto 4' }
+  { value: 1, name: 'Trayecto 1' },
+  { value: 2, name: 'Trayecto 2' },
+  { value: 3, name: 'Trayecto 3' },
+  { value: 4, name: 'Trayecto 4' }
 ]
 
 // Validación
@@ -77,34 +77,33 @@ const submitData = async () => {
   <AuthLayout>
     <FormComponent submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
-        
         <!-- Codigo -->
         <InputField label="Codigo del saber" name="saber">
           <template #InputField><InputComponent name="saber" v-model="formData.codigo" /></template>
           <template #InputError
-          ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
+            ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"
           /></template>
         </InputField>
-        
+
         <!-- Saber -->
         <InputField label="Nombre del saber" name="saber">
           <template #InputField><InputComponent name="saber" v-model="formData.nombre" /></template>
           <template #InputError
-          ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
+            ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
           /></template>
         </InputField>
-        
+
         <!-- Trayecto -->
         <InputField label="Trayecto" name="trayecto">
           <template #InputField
-          ><InputSelect
-          :options="trayectoOptions"
-          placeholder="Seleccione un trayecto"
-          name="trayecto"
-          v-model="formData.trayecto"
+            ><InputSelect
+              :options="trayectoOptions"
+              placeholder="Seleccione un trayecto"
+              name="trayecto"
+              v-model="formData.trayecto"
           /></template>
           <template #InputError
-          ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+            ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
           /></template>
         </InputField>
       </template>
