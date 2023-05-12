@@ -3,15 +3,11 @@ import { createCrudStore } from './factory'
 import type { alertMessages } from './factory'
 
 export type saberType = {
-  saber: string
+  nombre: string
   trayecto: number | null
 }
 
-export interface ISaber extends saberType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface ISaber extends saberType, Record {}
 
 const successMessages: alertMessages = {
   create: 'El saber se ha guardado correctamente',

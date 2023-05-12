@@ -8,11 +8,7 @@ export type seccionesLibresType = {
   saberes: Array<string>
 }
 
-export interface ISeccionesLibres extends seccionesLibresType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface ISeccionesLibres extends seccionesLibresType, Record {}
 
 export const useSeccionesLibresStore = createViewStore<ISeccionesLibres>({
   storeId: 'seccionesLibres',

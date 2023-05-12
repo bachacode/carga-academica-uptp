@@ -4,7 +4,7 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { theadColumnType } from '@/types/theadColumnType'
+import type { columnType } from '@/types/columnType'
 // Store del módulo
 const store = useTituloStore()
 
@@ -12,7 +12,7 @@ const store = useTituloStore()
 const { searchQuery } = storeToRefs(store)
 
 // Columnas de la tabla
-const columns: theadColumnType[] = [
+const columns: columnType[] = [
   {
     name: 'nombre',
     isAsc: false

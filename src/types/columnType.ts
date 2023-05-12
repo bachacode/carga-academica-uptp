@@ -1,4 +1,4 @@
-export type theadColumnType = {
+export type columnType = {
   name: string
   isAsc?: boolean
   isToggable?: boolean

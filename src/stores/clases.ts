@@ -9,11 +9,7 @@ export type claseType = {
   horas: number | string
 }
 
-export interface IClase extends claseType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface IClase extends claseType, Record {}
 
 const successMessages = {
   create: 'Se ha asignado la carga al profesor correctamente',

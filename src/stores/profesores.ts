@@ -12,11 +12,7 @@ export type profesorType = {
   correo: string
 }
 
-export interface IProfesor extends profesorType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface IProfesor extends profesorType, Record {}
 
 const successMessages = {
   create: 'El profesor se ha guardado correctamente',

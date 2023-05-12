@@ -9,11 +9,7 @@ export type cargaType = {
   horas: number
 }
 
-export interface ICarga extends cargaType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface ICarga extends cargaType, Record {}
 
 export const useCargaTotalStore = createViewStore<ICarga>({
   storeId: 'cargaTotal',

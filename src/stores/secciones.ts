@@ -7,11 +7,7 @@ export type seccionType = {
   estudiantes: string
 }
 
-export interface ISeccion extends seccionType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface ISeccion extends seccionType, Record {}
 
 export type uniqueKeysType = {
   codigo: Array<string>

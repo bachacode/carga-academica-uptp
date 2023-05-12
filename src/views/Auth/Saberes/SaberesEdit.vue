@@ -28,14 +28,14 @@ const id = ref()
 
 // Variables reactivas del formulario
 const formData = reactive<saberType>({
-  saber: '',
+  nombre: '',
   trayecto: null
 })
 
 // Reglas de validación
 const formRules = computed(() => {
   return {
-    saber: {
+    nombre: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(80)
@@ -88,9 +88,9 @@ onMounted(async () => {
       <template #inputs>
         <!-- Saber -->
         <InputField label="Saber" name="saber">
-          <template #InputField><InputComponent name="saber" v-model="formData.saber" /></template>
+          <template #InputField><InputComponent name="saber" v-model="formData.nombre" /></template>
           <template #InputError
-            ><InputError v-if="v$.saber.$error" :message="v$.saber.$errors[0]?.$message"
+            ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
           /></template>
         </InputField>
 

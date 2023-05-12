@@ -28,11 +28,7 @@ export type editUserType = {
   cargo: string
 }
 
-export interface IUsuario extends usuarioType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface IUsuario extends usuarioType, Record {}
 
 export type uniqueKeysType = {
   username: Array<string>

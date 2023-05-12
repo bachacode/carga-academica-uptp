@@ -11,11 +11,7 @@ export type cargaType = {
   correo: string
 }
 
-export interface ICarga extends cargaType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface ICarga extends cargaType, Record {}
 
 export const useCargaStore = createViewStore<ICarga>({
   storeId: 'carga',

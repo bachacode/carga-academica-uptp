@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useAlertStore } from '@/stores/alert'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { theadColumnType } from '@/types/theadColumnType'
+import type { columnType } from '@/types/columnType'
 
 // Store del módulo
 const store = useUsuarioStore()
@@ -14,7 +14,7 @@ const store = useUsuarioStore()
 const { searchQuery } = storeToRefs(store)
 
 // Columnas de la tabla
-const columns: theadColumnType[] = [
+const columns: columnType[] = [
   {
     name: 'username',
     nameAlias: 'Usuario',

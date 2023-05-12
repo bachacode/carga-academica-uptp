@@ -8,11 +8,7 @@ export type pensumType = {
   id_saber: string
 }
 
-export interface IPensum extends pensumType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface IPensum extends pensumType, Record {}
 
 export const usePensumStore = createViewStore<IPensum>({
   storeId: 'pensum',

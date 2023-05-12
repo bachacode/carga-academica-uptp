@@ -5,11 +5,7 @@ export type contratosType = {
   tipo: string
 }
 
-export interface IContratos extends contratosType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface IContratos extends contratosType, Record {}
 
 export const useContratoStore = createViewStore<IContratos>({
   storeId: 'contratos',

@@ -3,7 +3,7 @@ import { useSeccionStore } from '@/stores/secciones'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import type { theadColumnType } from '@/types/theadColumnType'
+import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 // Store del módulo
 const store = useSeccionStore()
@@ -12,7 +12,7 @@ const store = useSeccionStore()
 const { searchQuery } = storeToRefs(store)
 
 // Columnas de la tabla
-const columns: theadColumnType[] = [
+const columns: columnType[] = [
   {
     name: 'Codigo',
     isAsc: false

@@ -6,11 +6,7 @@ export type tituloType = {
   nombre: string
 }
 
-export interface ITitulo extends tituloType, Record {
-  id: string
-  created: string
-  updated: string
-}
+export interface ITitulo extends tituloType, Record {}
 
 const successMessages: alertMessages = {
   create: 'El titulo se ha guardado correctamente',

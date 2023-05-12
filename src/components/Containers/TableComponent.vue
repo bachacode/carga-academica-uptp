@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { defineProps, ref } from 'vue'
 import LoadingCircle from '../LoadingCircle.vue'
-import type { theadColumnType } from '@/types/theadColumnType'
+import type { columnType } from '@/types/columnType'
 export interface Props {
   title: string
   placeholder?: string
   modelValue?: any
   filteredData: any
-  columns: Array<theadColumnType>
+  columns: Array<columnType>
   viewOnly?: boolean
   sortable?: boolean
   totalPages?: number

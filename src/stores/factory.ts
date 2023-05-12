@@ -30,7 +30,7 @@ export type alertMessages = {
 export interface IViewStoreOptions<IData> {
   storeId: string
   collectionName: string
-  mapData?: (value: IData, index: number, array: IData[]) => unknown
+  mapData?: (value: IData, index: number, array: IData[]) => IData
   relations?: Array<string>
   autoFetch?: boolean
   defaultFetchQuery?: {
@@ -71,7 +71,7 @@ export function createCrudStore<
   success,
   error,
   uniqueKeys = [],
-  mapData = (record: any) => {
+  mapData = (record: IData) => {
     return record
   },
   relations,

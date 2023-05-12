@@ -7,7 +7,7 @@ import router from '@/router'
 import { storeToRefs } from 'pinia'
 import { daySelector } from './CargaData'
 import { ref, watchEffect } from 'vue'
-import type { theadColumnType } from '@/types/theadColumnType'
+import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 
 // Store del módulo
@@ -20,7 +20,7 @@ const clases = useClaseStore()
 const { searchQuery } = storeToRefs(store)
 
 // Columnas de la tabla
-const columns: theadColumnType[] = [
+const columns: columnType[] = [
   {
     name: 'Nombre',
     isAsc: false
