@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-.router-link-exact-active {
-  @apply text-indigo-600 lg:border-b-2 lg:border-indigo-500;
-}
-
 .router-link-exact-sidebar-active {
   @apply text-indigo-600 hover:text-indigo-700;
 }
