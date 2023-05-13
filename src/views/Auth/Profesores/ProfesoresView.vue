@@ -23,8 +23,20 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
-    name: 'Cedula',
-    isAsc: false
+    name: 'Datos Personales',
+    multipleData: [
+      {
+        name: 'Cedula',
+        nameAlias: 'Cédula'
+      },
+      {
+        name: 'Correo',
+      },
+      {
+        name: 'Telefono',
+        nameAlias:'Teléfono'
+      }
+    ]
   },
   {
     name: 'Titulo',
@@ -49,20 +61,15 @@ const columns: columnType[] = [
     fatherName: 'nombre',
     multipleData: [
       {
-        name: 'materia'
+        name:'codigo'
+      },
+      {
+        name: 'nombre'
       },
       {
         name: 'trayecto'
       }
     ]
-  },
-  {
-    name: 'Telefono',
-    isAsc: false
-  },
-  {
-    name: 'Correo',
-    isAsc: false
   }
 ]
 

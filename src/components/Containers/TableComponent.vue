@@ -293,7 +293,7 @@ const updateValue = (e: Event) => {
                 </td>
               </template>
 
-              <!-- Columnas Normales -->
+              <!-- Columnas relaciones uno a uno -->
               <template v-else-if="column.isSingleRelation">
                 <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
                   {{
