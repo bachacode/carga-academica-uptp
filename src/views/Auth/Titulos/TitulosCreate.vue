@@ -16,12 +16,17 @@ const isLoading = ref(false)
 
 // Variables reactivas del formulario
 const formData = reactive<tituloType>({
+  grado: '',
   nombre: ''
 })
 
 // Reglas de validación
 const formRules = computed(() => {
   return {
+    grado: {
+      required: requiredValidation(),
+      maxLength: maxLengthValidation(80)
+    },
     nombre: {
       required: requiredValidation(),
       maxLength: maxLengthValidation(80)
@@ -47,6 +52,16 @@ const submitData = async () => {
   <AuthLayout>
     <FormComponent submit-text="Registrar titulo" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
+        <!-- Grado -->
+        <InputField label="Grado del titulo" name="grado">
+          <template #InputField
+            ><InputComponent name="grado" v-model="formData.grado"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.grado.$error" :message="v$.grado.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
         <!-- Titulo -->
         <InputField label="Nombre del titulo" name="nombre">
           <template #InputField

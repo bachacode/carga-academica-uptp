@@ -3,6 +3,7 @@ import { createCrudStore } from './factory'
 import type { alertMessages } from './factory'
 
 export type tituloType = {
+  grado: string
   nombre: string
 }
 

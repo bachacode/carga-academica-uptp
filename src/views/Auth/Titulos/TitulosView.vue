@@ -15,6 +15,10 @@ const { searchQuery } = storeToRefs(store)
 // Columnas de la tabla
 const columns: columnType[] = [
   {
+    name: 'grado',
+    isAsc: false
+  },
+  {
     name: 'nombre',
     isAsc: false
   }
