@@ -148,7 +148,7 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="m-2 flex-grow">
-            <NavLink to="/titulos">
+            <NavLink to="/educacion/titulos">
               <font-awesome-icon icon="university" class="text-2xl" />
             </NavLink>
           </li>
@@ -192,7 +192,7 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/titulos" text="Titulos">
+            <NavLink to="/educacion/titulos" text="Educación">
               <font-awesome-icon icon="university" />
             </NavLink>
           </li>

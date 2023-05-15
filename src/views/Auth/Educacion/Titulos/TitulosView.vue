@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useTituloStore } from '@/stores/titulos'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
+import { useTituloStore } from '@/stores/titulos'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
@@ -75,26 +75,23 @@ const changePage = async (page: number) => {
     @destroy-item="destroyItem(store.singleData?.id)"
   />
   <!-- /Delete Modal -->
-
-  <AuthLayout>
-    <div class="w-full px-16 pb-8">
-      <button @click="create()" class="btn mb-3 ml-4 rounded-lg bg-indigo-700 text-white">
-        <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Titulo
-      </button>
-      <!--Table Card-->
-      <TableComponent
-        title="módulo Titulos"
-        v-model="searchQuery"
-        :columns="columns"
-        :filtered-data="store.filteredData"
-        @editButton="edit"
-        @deleteModal="selectItem"
-        @sorting="sortTable"
-        @change-page="changePage"
-        :total-pages="store.data?.totalPages"
-        :actual-page="store.actualPage"
-      />
-      <!--/table Card-->
-    </div>
-  </AuthLayout>
+  <div class="w-full px-16 pb-8">
+    <button @click="create()" class="btn mb-3 ml-4 rounded-lg bg-indigo-700 text-white">
+      <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Titulo
+    </button>
+    <!--Table Card-->
+    <TableComponent
+      title="módulo Titulos"
+      v-model="searchQuery"
+      :columns="columns"
+      :filtered-data="store.filteredData"
+      @editButton="edit"
+      @deleteModal="selectItem"
+      @sorting="sortTable"
+      @change-page="changePage"
+      :total-pages="store.data?.totalPages"
+      :actual-page="store.actualPage"
+    />
+    <!--/table Card-->
+  </div>
 </template>

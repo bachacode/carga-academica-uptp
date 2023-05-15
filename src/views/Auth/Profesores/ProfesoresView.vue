@@ -30,11 +30,11 @@ const columns: columnType[] = [
         nameAlias: 'Cédula'
       },
       {
-        name: 'Correo',
+        name: 'Correo'
       },
       {
         name: 'Telefono',
-        nameAlias:'Teléfono'
+        nameAlias: 'Teléfono'
       }
     ]
   },
@@ -61,7 +61,7 @@ const columns: columnType[] = [
     fatherName: 'nombre',
     multipleData: [
       {
-        name:'codigo'
+        name: 'codigo'
       },
       {
         name: 'nombre'

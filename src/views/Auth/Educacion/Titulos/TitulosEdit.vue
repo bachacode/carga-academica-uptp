@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AuthLayout from '../AuthLayout.vue'
+import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { ref, onMounted, reactive, computed } from 'vue'
 import { useTituloStore, type tituloType } from '@/stores/titulos'
@@ -64,29 +64,29 @@ onMounted(async () => {
 </script>
 
 <template>
-  <AuthLayout>
-    <FormComponent submit-text="Registrar titulo" @form-submit="submitData" :is-loading="isLoading">
-      <template #inputs>
-        <!-- Grado -->
-        <InputField label="Grado del titulo" name="grado">
-          <template #InputField
-            ><InputComponent name="grado" v-model="formData.grado"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.grado.$error" :message="v$.grado.$errors[0]?.$message"
-          /></template>
-        </InputField>
+  <FormComponent
+    class="flex-grow"
+    form-width="w-3/4"
+    submit-text="Registrar titulo"
+    @form-submit="submitData"
+    :is-loading="isLoading"
+  >
+    <template #inputs>
+      <!-- Grado -->
+      <InputField label="Grado del titulo" name="grado">
+        <template #InputField><InputComponent name="grado" v-model="formData.grado" /></template>
+        <template #InputError
+          ><InputError v-if="v$.grado.$error" :message="v$.grado.$errors[0]?.$message"
+        /></template>
+      </InputField>
 
-        <!-- Titulo -->
-        <InputField label="Nombre del titulo" name="nombre">
-          <template #InputField
-            ><InputComponent name="nombre" v-model="formData.nombre"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
-          /></template>
-        </InputField>
-      </template>
-    </FormComponent>
-  </AuthLayout>
+      <!-- Titulo -->
+      <InputField label="Nombre del titulo" name="nombre">
+        <template #InputField><InputComponent name="nombre" v-model="formData.nombre" /></template>
+        <template #InputError
+          ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
+        /></template>
+      </InputField>
+    </template>
+  </FormComponent>
 </template>

@@ -96,24 +96,30 @@ const router = createRouter({
       ]
     },
 
-    // Rutas Autenticadas - Secciones
+    // Rutas Autenticadas - Titulos
     {
-      path: '/titulos',
+      path: '/educacion',
+      component: () => import('@/views/Auth/Educacion/EducacionView.vue'),
       children: [
         {
-          path: '',
-          name: 'titulos',
-          component: () => import('@/views/Auth/Titulos/TitulosView.vue')
-        },
-        {
-          path: 'create',
-          name: 'titulos.create',
-          component: () => import('@/views/Auth/Titulos/TitulosCreate.vue')
-        },
-        {
-          path: 'edit/:id',
-          name: 'titulos.edit',
-          component: () => import('@/views/Auth/Titulos/TitulosEdit.vue')
+          path: 'titulos',
+          children: [
+            {
+              path: '',
+              name: 'titulos',
+              component: () => import('@/views/Auth/Educacion/Titulos/TitulosView.vue')
+            },
+            {
+              path: 'create',
+              name: 'titulos.create',
+              component: () => import('@/views/Auth/Educacion/Titulos/TitulosCreate.vue')
+            },
+            {
+              path: 'edit/:id',
+              name: 'titulos.edit',
+              component: () => import('@/views/Auth/Educacion/Titulos/TitulosEdit.vue')
+            }
+          ]
         }
       ]
     },
