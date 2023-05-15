@@ -19,7 +19,7 @@ const testData = reactive({
   datasets: [
     {
       data: [12, 2],
-      backgroundColor: ['#77CEFF', '#0079AF']
+      backgroundColor: ['#4ade80', '#f87171']
     }
   ]
 })

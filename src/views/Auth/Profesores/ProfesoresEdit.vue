@@ -108,7 +108,7 @@ const tags = computed<optionType[] | undefined>(() => {
   return saberes.filteredData?.map((record: any) => {
     {
       return {
-        name: record.materia + ' - ' + record.trayecto,
+        name: record.nombre + ' - ' + record.trayecto,
         value: record.id,
         isActive: formData.saberes.includes(record.id) ? true : false
       }

@@ -8,3 +8,9 @@
 - Mejorar módulo de usuarios
 - Correcciones de bugs menores
 - Mejorar diseño
+
+- Ruta por defecto, formulario de crear
+- Saberes columna de horas
+- Profesores que dan proyecto solo pueden asignarse a dos secciones
+- Contratos hardcoded en el sistema
+- Modulo de reportes (imprimir a PDF, secciones, profesores, carga academica)

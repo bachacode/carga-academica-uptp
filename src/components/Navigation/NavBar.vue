@@ -42,9 +42,7 @@ async function verifyEmail() {
           class="cursor-pointer text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
           @click="dashboard()"
         >
-          <font-awesome-icon icon="dashboard" class="pr-2 text-indigo-700" /><span
-            >Carga Academica UPTP</span
-          >
+          <span>Carga Academica UPTP</span>
         </button>
       </div>
       <div class="w-1/2 pr-0">
@@ -62,7 +60,7 @@ async function verifyEmail() {
             >
               <img
                 class="ml-2 h-8 w-8 rounded-full md:mr-3"
-                src="https://ui-avatars.com/api/?name=John+Doe"
+                :src="`https://ui-avatars.com/api/?name=${auth.user?.nombre}+${auth.user?.apellido}`"
                 alt="Avatar of User"
               />
               <span class="hidden md:inline-block">Hola, {{ username }}</span>
