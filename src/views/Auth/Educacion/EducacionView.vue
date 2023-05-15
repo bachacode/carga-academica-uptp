@@ -16,9 +16,9 @@ import { RouterLink } from 'vue-router'
             <!-- Datos personales -->
             <li>
               <router-link
-                exact-active-class="router-link-exact-sidebar-active"
                 :to="{ name: 'titulos' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
+                active-class="text-indigo-600 hover:text-indigo-700"
               >
                 <font-awesome-icon icon="user" />
                 <span class="ml-3">Titulos Universitarios</span>
@@ -28,7 +28,7 @@ import { RouterLink } from 'vue-router'
             <!-- Cambiar contraseña -->
             <li>
               <router-link
-                exact-active-class="router-link-exact-sidebar-active"
+                active-class="text-indigo-600 hover:text-indigo-700"
                 :to="{ name: 'titulos' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
@@ -40,7 +40,7 @@ import { RouterLink } from 'vue-router'
             <!-- Cambiar correo -->
             <li>
               <router-link
-                exact-active-class="router-link-exact-sidebar-active"
+                active-class="text-indigo-600 hover:text-indigo-700"
                 :to="{ name: 'titulos' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
