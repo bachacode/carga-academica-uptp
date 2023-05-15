@@ -276,7 +276,10 @@ export function createCrudStore<
           await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
           alert.setSuccess({ message: success.delete })
         })
-        .catch(async () => {
+        .catch(async (err) => {
+          if(err.data.code == 400){
+            alert.setError({ message: '¡Este registro esta relacionado con otro registro en una tabla distinta!' })
+          } else
           alert.setError({ message: error.delete })
         })
     }
