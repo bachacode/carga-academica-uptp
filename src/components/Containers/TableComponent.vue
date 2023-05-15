@@ -99,7 +99,7 @@ const updateValue = (e: Event) => {
           type="text"
           :value="modelValue"
           @input="updateValue"
-          name="search"
+          id="search"
           :placeholder="placeholder"
           class="rounded-lg border border-indigo-300 bg-indigo-50 py-1 pl-8 text-sm text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
         />
@@ -266,8 +266,7 @@ const updateValue = (e: Event) => {
               <!-- Activables -->
               <template v-else-if="column.isToggable">
                 <td>
-                  <label
-                    for="hey"
+                  <button
                     :class="`${
                       record[column.name.toLowerCase()]
                         ? 'bg-green-700 hover:bg-green-900'
@@ -276,7 +275,7 @@ const updateValue = (e: Event) => {
                     @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
                   >
                     {{ record[column.name.toLowerCase()] ? `Activo` : `Inactivo` }}
-                  </label>
+                  </button>
                 </td>
               </template>
 
