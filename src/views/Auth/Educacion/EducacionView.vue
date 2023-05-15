@@ -39,7 +39,7 @@ import { RouterLink } from 'vue-router'
             <li>
               <router-link
                 active-class="text-indigo-600 hover:text-indigo-700"
-                :to="{ name: 'titulos' }"
+                :to="{ name: 'lineas' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
                 <span class="ml-3">Lineas de Investigación</span>

@@ -42,7 +42,7 @@ const formRules = computed(() => {
 const gradoOptions = [
   { value: 'Maestría', name: 'Maestría' },
   { value: 'Magíster', name: 'Magíster' },
-  { value: 'Doctorado', name: 'Doctorado' },
+  { value: 'Doctorado', name: 'Doctorado' }
 ]
 
 // Objeto de validaciáon
