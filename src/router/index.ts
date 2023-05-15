@@ -215,6 +215,12 @@ const router = createRouter({
           component: () => import('@/views/Auth/Usuarios/UsuariosEdit.vue')
         }
       ]
+    },
+    // and finally the default route, when none of the above matches:
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/PageNotFound.vue')
     }
   ]
 })

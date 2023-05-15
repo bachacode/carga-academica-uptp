@@ -277,10 +277,11 @@ export function createCrudStore<
           alert.setSuccess({ message: success.delete })
         })
         .catch(async (err) => {
-          if(err.data.code == 400){
-            alert.setError({ message: '¡Este registro esta relacionado con otro registro en una tabla distinta!' })
-          } else
-          alert.setError({ message: error.delete })
+          if (err.data.code == 400) {
+            alert.setError({
+              message: '¡Este registro esta relacionado con otro registro en una tabla distinta!'
+            })
+          } else alert.setError({ message: error.delete })
         })
     }
 

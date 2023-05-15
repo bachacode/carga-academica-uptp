@@ -72,13 +72,13 @@ onMounted(async () => {
 
 <template>
   <FormComponent
-    class="flex-grow mt-14"
+    class="mt-14 flex-grow"
     form-width="w-3/4"
     submit-text="Registrar titulo"
     @form-submit="submitData"
     :is-loading="isLoading"
   >
-  <template #inputs>
+    <template #inputs>
       <div class="flex w-full items-center space-x-2 py-6">
         <!-- Grado -->
         <div class="w-1/3">

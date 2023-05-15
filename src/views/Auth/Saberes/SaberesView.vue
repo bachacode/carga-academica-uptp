@@ -2,7 +2,6 @@
 import { useSaberStore } from '@/stores/saberes'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import router from '@/router'
 import { storeToRefs } from 'pinia'
 import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'

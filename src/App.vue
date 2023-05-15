@@ -10,7 +10,13 @@ router.beforeEach(async (to) => {
   }
   if (
     !store.pb.authStore.isValid &&
-    !['login', 'recover-password', 'confirm-password-reset', 'confirm-verification'].includes(
+    ![
+      'login',
+      'recover-password',
+      'confirm-password-reset',
+      'confirm-verification',
+      'not-found'
+    ].includes(
       //@ts-ignore
       to.name
     )

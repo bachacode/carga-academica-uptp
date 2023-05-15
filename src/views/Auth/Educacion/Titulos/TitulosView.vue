@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import { useTituloStore } from '@/stores/titulos'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
