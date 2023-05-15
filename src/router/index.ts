@@ -103,11 +103,10 @@ const router = createRouter({
       children: [
         {
           path: 'titulos',
-          name: 'titulos',
           children: [
             {
               path: '',
-              name: 'view',
+              name: 'titulos',
               component: () => import('@/views/Auth/Educacion/Titulos/TitulosView.vue')
             },
             {

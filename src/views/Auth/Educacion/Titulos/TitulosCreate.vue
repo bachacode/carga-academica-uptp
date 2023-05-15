@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { computed, reactive, ref } from 'vue'
 import { useTituloStore, type tituloType } from '@/stores/titulos'
@@ -8,6 +7,7 @@ import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import { maxLengthValidation, requiredValidation } from '@/helpers/validationHelpers'
+import InputSelect from '@/components/InputSelect.vue'
 // Store del módulo
 const store = useTituloStore()
 
@@ -34,6 +34,13 @@ const formRules = computed(() => {
   }
 })
 
+// Opciones del Select "Grados"
+const gradoOptions = [
+  { value: 'Técnico', name: 'Técnico' },
+  { value: 'Ingeniero', name: 'Ingeniería' },
+  { value: 'Licenciado', name: 'Licenciatura' }
+]
+
 // Validación
 const v$ = useVuelidate(formRules, formData)
 
@@ -50,28 +57,40 @@ const submitData = async () => {
 
 <template>
   <FormComponent
-    class="flex-grow"
+    class="mt-14 flex-grow"
     form-width="w-3/4"
     submit-text="Registrar titulo"
     @form-submit="submitData"
     :is-loading="isLoading"
   >
     <template #inputs>
-      <!-- Grado -->
-      <InputField label="Grado del titulo" name="grado">
-        <template #InputField><InputComponent name="grado" v-model="formData.grado" /></template>
-        <template #InputError
-          ><InputError v-if="v$.grado.$error" :message="v$.grado.$errors[0]?.$message"
-        /></template>
-      </InputField>
-
-      <!-- Titulo -->
-      <InputField label="Nombre del titulo" name="nombre">
-        <template #InputField><InputComponent name="nombre" v-model="formData.nombre" /></template>
-        <template #InputError
-          ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
-        /></template>
-      </InputField>
+      <div class="flex w-full items-center space-x-2 py-6">
+        <!-- Grado -->
+        <div class="w-1/3">
+          <InputField label="Grado del titulo" name="grado">
+            <template #InputField
+              ><InputSelect
+                name="grado"
+                v-model="formData.grado"
+                :options="gradoOptions"
+                placeholder="Seleccione el grado"
+            /></template>
+            <template #InputError
+              ><InputError v-if="v$.grado.$error" :message="v$.grado.$errors[0]?.$message"
+            /></template>
+          </InputField>
+        </div>
+        <span class="px-1">en</span>
+        <!-- Titulo -->
+        <InputField label="Nombre del titulo" name="nombre">
+          <template #InputField
+            ><InputComponent name="nombre" v-model="formData.nombre"
+          /></template>
+          <template #InputError
+            ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
+          /></template>
+        </InputField>
+      </div>
     </template>
   </FormComponent>
 </template>

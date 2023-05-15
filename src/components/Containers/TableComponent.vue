@@ -305,9 +305,15 @@ const updateValue = (e: Event) => {
               </template>
 
               <!-- Columnas Normales -->
-              <template v-else>
+              <template v-else-if="record[column.name.toLowerCase()]">
                 <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
                   {{ record[column.name.toLowerCase()] }}
+                </td>
+              </template>
+
+              <template v-else>
+                <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                  No se encontró
                 </td>
               </template>
             </template>
