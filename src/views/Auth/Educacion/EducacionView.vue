@@ -20,7 +20,6 @@ import { RouterLink } from 'vue-router'
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
                 active-class="text-indigo-600 hover:text-indigo-700"
               >
-                <font-awesome-icon icon="user" />
                 <span class="ml-3">Titulos Universitarios</span>
               </router-link>
             </li>
@@ -29,10 +28,9 @@ import { RouterLink } from 'vue-router'
             <li>
               <router-link
                 active-class="text-indigo-600 hover:text-indigo-700"
-                :to="{ name: 'titulos' }"
+                :to="{ name: 'posgrados' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
-                <font-awesome-icon icon="lock" />
                 <span class="ml-3">Titulos de Posgrados</span>
               </router-link>
             </li>
@@ -44,7 +42,6 @@ import { RouterLink } from 'vue-router'
                 :to="{ name: 'titulos' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
-                <font-awesome-icon icon="envelope" />
                 <span class="ml-3">Lineas de Investigación</span>
               </router-link>
             </li>

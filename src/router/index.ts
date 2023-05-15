@@ -96,11 +96,13 @@ const router = createRouter({
       ]
     },
 
-    // Rutas Autenticadas - Titulos
+    // Rutas Autenticadas - Educación de los profesores
     {
       path: '/educacion',
       component: () => import('@/views/Auth/Educacion/EducacionView.vue'),
       children: [
+
+        // Rutas de Educación - Titulos
         {
           path: 'titulos',
           children: [
@@ -118,6 +120,27 @@ const router = createRouter({
               path: 'edit/:id',
               name: 'titulos.edit',
               component: () => import('@/views/Auth/Educacion/Titulos/TitulosEdit.vue')
+            }
+          ]
+        },
+        // Rutas de Educación - Posgrados
+        {
+          path: 'posgrados',
+          children: [
+            {
+              path: '',
+              name: 'posgrados',
+              component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosView.vue')
+            },
+            {
+              path: 'create',
+              name: 'posgrados.create',
+              component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosCreate.vue')
+            },
+            {
+              path: 'edit/:id',
+              name: 'posgrados.edit',
+              component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosEdit.vue')
             }
           ]
         }
@@ -168,7 +191,7 @@ const router = createRouter({
       ]
     },
 
-    // Rutas Autenticadas - Profesores
+    // Rutas Autenticadas - Carga Academica
     {
       path: '/carga',
       children: [
@@ -195,7 +218,7 @@ const router = createRouter({
       ]
     },
 
-    // Rutas Autenticadas - Profesores
+    // Rutas Autenticadas - Usuarios
     {
       path: '/usuarios',
       children: [
@@ -216,7 +239,7 @@ const router = createRouter({
         }
       ]
     },
-    // and finally the default route, when none of the above matches:
+    // En caso de que la ruta no exista se mostrara la vista de PageNotFound:
     {
       path: '/:pathMatch(.*)*',
       name: 'not-found',
