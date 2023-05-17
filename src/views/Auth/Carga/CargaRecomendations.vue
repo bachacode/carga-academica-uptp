@@ -16,7 +16,7 @@ const saberesOptions = computed(() => {
   return saberes.filteredData?.map((record: any) => {
     return {
       value: record.id,
-      name: record.materia + ' - ' + record.trayecto
+      name: record.nombre + ' - ' + record.trayecto
     }
   })
 })

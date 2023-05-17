@@ -47,11 +47,8 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
-    name: 'Contrato',
-    isSingleRelation: {
-      name: 'id_contrato',
-      childName: 'tipo'
-    },
+    name: 'contrato_id',
+    nameAlias: 'contrato',
     isAsc: false
   },
   {

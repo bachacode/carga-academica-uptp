@@ -10,7 +10,6 @@ import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import MultiSelect from '@/components/MultiSelect.vue'
 import type { optionType } from '@/components/MultiSelect.vue'
-import { useContratoStore } from '@/stores/contratos'
 import InputSelect from '@/components/InputSelect.vue'
 import { useTituloStore } from '@/stores/titulos'
 import {
@@ -19,6 +18,7 @@ import {
   minLengthValidation,
   requiredValidation
 } from '@/helpers/validationHelpers'
+import { contratos } from '@/assets/contratos'
 // Store del módulo
 const store = useProfesorStore()
 
@@ -27,9 +27,6 @@ const isLoading = ref(false)
 
 // Store de saberes
 const saberes = useSaberStore()
-
-// Store de contratos
-const contratos = useContratoStore()
 
 // Store de titulos
 const titulos = useTituloStore()
@@ -41,7 +38,7 @@ const formData = reactive<profesorType>({
   cedula: '',
   titulo_id: '',
   saberes: [],
-  id_contrato: '',
+  contrato_id: '',
   telefono: '',
   correo: ''
 })
@@ -69,7 +66,7 @@ const formRules = computed(() => {
       minLength: minLengthValidation()
     },
     saberes: {},
-    id_contrato: {
+    contrato_id: {
       required: requiredValidation()
     },
     telefono: {
@@ -106,10 +103,10 @@ const tags = computed<optionType[] | undefined>(() => {
 
 // Valor computado de contratos del select
 const contratosOptions = computed(() => {
-  return contratos.filteredData?.map((record: any) => {
+  return contratos.map((contrato) => {
     return {
-      value: record.id,
-      name: `${record.tipo} - ${record.horas_maximas} horas`
+      value: contrato.id,
+      name: `${contrato.nom_contrato} - ${contrato.horas} horas`
     }
   })
 })
@@ -215,12 +212,12 @@ const submitData = async () => {
               :options="contratosOptions ?? [{ value: '', name: 'No se han encontrado contratos' }]"
               placeholder="Seleccione un contrato"
               name="contratos"
-              v-model="formData.id_contrato"
+              v-model="formData.contrato_id"
           /></template>
           <template #InputError
             ><InputError
-              v-if="v$.id_contrato.$error"
-              :message="v$.id_contrato.$errors[0]?.$message"
+              v-if="v$.contrato_id.$error"
+              :message="v$.contrato_id.$errors[0]?.$message"
           /></template>
         </InputField>
 
