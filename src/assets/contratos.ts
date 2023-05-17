@@ -1,10 +1,6 @@
-type contratos = Array<{
-  id: number
-  nom_contrato: string
-  horas: number
-}>
+import type { contratosType } from "@/types/contratosType"
 
-export const contratos: contratos = [
+export const contratos: contratosType = [
   {
     id: 0,
     nom_contrato: 'Tiempo Completo',
