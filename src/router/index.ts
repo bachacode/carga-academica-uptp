@@ -179,11 +179,17 @@ const router = createRouter({
         {
           path: 'create',
           name: 'saberes.create',
+          beforeEnter: () => {
+            router.back()
+          },
           component: () => import('@/views/Auth/Saberes/SaberesCreate.vue')
         },
         {
           path: 'edit/:id',
           name: 'saberes.edit',
+          beforeEnter: () => {
+            router.back()
+          },
           component: () => import('@/views/Auth/Saberes/SaberesEdit.vue')
         }
       ]

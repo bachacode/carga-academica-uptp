@@ -25,7 +25,8 @@ const isLoading = ref(false)
 // Variables reactivas del formulario
 const formData = reactive<saberType>({
   nombre: '',
-  trayecto: ''
+  trayecto: '',
+  horas: ''
 })
 
 // Reglas de validación
@@ -41,6 +42,12 @@ const formRules = computed(() => {
       numeric: numericValidation(),
       minValue: minValueValidation(),
       maxValue: maxValueValidation(1)
+    },
+    horas: {
+      required: requiredValidation(),
+      numeric: numericValidation(),
+      minValue: minValueValidation(1),
+      maxValue: maxValueValidation(99)
     }
   }
 })
@@ -90,6 +97,14 @@ const submitData = async () => {
           /></template>
           <template #InputError
             ><InputError v-if="v$.trayecto.$error" :message="v$.trayecto.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
+        <!-- Horas -->
+        <InputField label="Horas" name="horas">
+          <template #InputField><InputComponent name="horas" v-model="formData.horas" /></template>
+          <template #InputError
+            ><InputError v-if="v$.horas.$error" :message="v$.horas.$errors[0]?.$message"
           /></template>
         </InputField>
       </template>

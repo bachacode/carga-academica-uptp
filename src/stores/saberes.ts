@@ -5,6 +5,7 @@ import type { alertMessages } from './factory'
 export type saberType = {
   nombre: string
   trayecto: number | string
+  horas: number | string
 }
 
 export interface ISaber extends saberType, Record {}
@@ -26,6 +27,9 @@ const appendWords = (record: ISaber) => {
     record.trayecto = `Inicial (PIU)`
   } else if (!record.trayecto.toString().startsWith('Trayecto')) {
     record.trayecto = `Trayecto ${record.trayecto}`
+  }
+  if (!record.horas.toString().endsWith('horas')) {
+    record.horas = `${record.horas} horas`
   }
   return record
 }

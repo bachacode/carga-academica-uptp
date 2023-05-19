@@ -24,6 +24,10 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
+    name: 'Horas',
+    isAsc: false
+  },
+  {
     name: 'Profesores',
     relationTitle: 'Profesores que dan ',
     noRelations: '¡Esta saber no tiene profesores asignados!',
@@ -62,9 +66,9 @@ const sortTable = (column: string) => {
 }
 
 // Función para ir a la vista de "create"
-async function create() {
-  await store.goToCreate()
-}
+// async function create() {
+//   await store.goToCreate()
+// }
 
 // Función para ir a la vista de "edit"
 const edit = async (id: string) => {
@@ -98,9 +102,6 @@ const changePage = async (page: number) => {
   <!-- /Delete Modal -->
   <AuthLayout>
     <div class="w-full px-16 pb-8">
-      <button @click="create()" class="btn mb-3 rounded-lg bg-indigo-700 text-white">
-        <font-awesome-icon icon="circle-plus" class="mr-2" />Crear Saber
-      </button>
       <a href="pensum.pdf" target="_blank" class="btn mb-3 ml-4 rounded-lg bg-blue-700 text-white">
         <font-awesome-icon icon="clipboard" class="mr-2" />Ver Pensum
       </a>
@@ -116,6 +117,7 @@ const changePage = async (page: number) => {
         @change-page="changePage"
         :total-pages="store.data?.totalPages"
         :actual-page="store.actualPage"
+        :view-only="true"
       />
       <!--/table Card-->
     </div>
