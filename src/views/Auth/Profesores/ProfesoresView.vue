@@ -47,15 +47,18 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
-    name: 'contrato_id',
-    nameAlias: 'contrato',
+    name: 'Contrato',
+    isSingleRelation: {
+      name: 'contrato_id',
+      childName: 'nombre'
+    },
     isAsc: false
   },
   {
     name: 'Saberes',
-    relationTitle: 'Saberes que ha dado el profesor ',
+    relationTitle: 'Saberes dados anteriormente por ',
     noRelations: '¡Este profesor no ha dado ningún saber anteriormente!',
-    fatherName: 'nombre',
+    fatherName: 'apellido',
     multipleData: [
       {
         name: 'nombre'

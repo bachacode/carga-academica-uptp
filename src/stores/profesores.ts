@@ -43,7 +43,7 @@ export const useProfesorStore = createCrudStore<profesorType, IProfesor>({
   collectionName: 'profesores',
   success: successMessages,
   error: errorMessages,
-  relations: ['saberes', 'titulo_id'],
+  relations: ['saberes', 'titulo_id', 'contrato_id'],
   manyToMany: ['saberes'],
   mapData: appendWords
 })

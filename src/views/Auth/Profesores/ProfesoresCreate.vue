@@ -12,15 +12,18 @@ import MultiSelect from '@/components/MultiSelect.vue'
 import type { optionType } from '@/components/MultiSelect.vue'
 import InputSelect from '@/components/InputSelect.vue'
 import { useTituloStore } from '@/stores/titulos'
+import { useContratoStore } from '@/stores/contratos'
 import {
   emailValidation,
   maxLengthValidation,
   minLengthValidation,
   requiredValidation
 } from '@/helpers/validationHelpers'
-import { contratos } from '@/assets/contratos'
 // Store del módulo
 const store = useProfesorStore()
+
+// Store de contratos
+const contratos = useContratoStore()
 
 // Booleano para el botón de submit
 const isLoading = ref(false)
@@ -103,10 +106,10 @@ const tags = computed<optionType[] | undefined>(() => {
 
 // Valor computado de contratos del select
 const contratosOptions = computed(() => {
-  return contratos.map((contrato) => {
+  return contratos.data?.items.map((contrato) => {
     return {
       value: contrato.id,
-      name: `${contrato.nom_contrato} - ${contrato.horas} horas`
+      name: `${contrato.nombre} - ${contrato.horas} horas`
     }
   })
 })
