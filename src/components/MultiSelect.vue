@@ -34,10 +34,6 @@ const toggle = () => {
   dropdown.value = !dropdown.value
 }
 
-const open = () => {
-  dropdown.value = true
-}
-
 const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relationsType) => {
   tag.isActive = !tag.isActive
   if (tag.isActive) {
@@ -65,9 +61,10 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
           :name="name"
           > -->
     <div class="relative">
+      <input :id="name" @click.stop="toggle" type="checkbox" class="modal-toggle" />
       <div
-        @click.stop="open"
-        class="flex min-h-[42px] w-full cursor-text items-center rounded-lg border border-indigo-300 bg-indigo-50 p-2.5 text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+        @click.stop="toggle"
+        class="flex min-h-[42px] w-full cursor-pointer items-center rounded-lg border border-indigo-300 bg-indigo-50 p-2.5 text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
       ></div>
       <div
         @click.stop="toggle"
@@ -76,7 +73,11 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
         <font-awesome-icon v-if="!dropdown" icon="chevron-down" class="text-indigo-500" />
         <font-awesome-icon v-else icon="chevron-up" class="text-indigo-500" />
       </div>
-      <div id="tags" class="absolute inset-y-2 left-0 flex h-auto space-x-2.5 pl-2">
+      <div
+        id="tags"
+        @click.stop="toggle"
+        class="absolute inset-y-2 left-0 flex h-auto cursor-pointer space-x-2.5 pl-2"
+      >
         {{
           `${
             selectedOptions

@@ -213,7 +213,7 @@ onMounted(async () => {
             <InputSelect
               :options="titulosOptions ?? [{ value: '', name: 'No se han encontrado titulos' }]"
               placeholder="Seleccione un titulo"
-              name="titulos"
+              name="titulo"
               v-model="formData.titulo_id"
           /></template>
           <template #InputError
@@ -242,7 +242,7 @@ onMounted(async () => {
             <InputSelect
               :options="contratosOptions ?? [{ value: '', name: 'No se han encontrado contratos' }]"
               placeholder="Seleccione un contrato"
-              name="contratos"
+              name="contrato"
               v-model="formData.contrato_id"
           /></template>
           <template #InputError
