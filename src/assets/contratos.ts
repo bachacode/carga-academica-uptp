@@ -1,4 +1,4 @@
-import type { contratosType } from "@/types/contratosType"
+import type { contratosType } from '@/types/contratosType'
 
 export const contratos: contratosType = [
   {

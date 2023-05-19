@@ -58,9 +58,6 @@ const columns: columnType[] = [
     fatherName: 'nombre',
     multipleData: [
       {
-        name: 'codigo'
-      },
-      {
         name: 'nombre'
       },
       {

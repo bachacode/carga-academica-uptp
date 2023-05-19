@@ -3,9 +3,8 @@ import { createCrudStore } from './factory'
 import type { alertMessages } from './factory'
 
 export type saberType = {
-  codigo: string
   nombre: string
-  trayecto: number | null
+  trayecto: number | string
 }
 
 export interface ISaber extends saberType, Record {}
@@ -22,9 +21,12 @@ const errorMessages: alertMessages = {
   delete: 'Ha ocurrido un error al borrar el saber'
 }
 
-const appendWords = (record: any) => {
-  if (!record.trayecto.toString().startsWith('Trayecto'))
+const appendWords = (record: ISaber) => {
+  if (record.trayecto == 0) {
+    record.trayecto = `Inicial (PIU)`
+  } else if (!record.trayecto.toString().startsWith('Trayecto')) {
     record.trayecto = `Trayecto ${record.trayecto}`
+  }
   return record
 }
 
