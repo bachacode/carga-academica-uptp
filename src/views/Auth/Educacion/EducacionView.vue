@@ -13,7 +13,7 @@ import { RouterLink } from 'vue-router'
       >
         <div class="h-full overflow-y-auto rounded-lg bg-gray-50 px-3 py-6 shadow-lg">
           <ul class="space-y-2 font-medium">
-            <!-- Datos personales -->
+            <!-- Titulos Universitarios -->
             <li>
               <router-link
                 :to="{ name: 'titulos' }"
@@ -24,7 +24,7 @@ import { RouterLink } from 'vue-router'
               </router-link>
             </li>
 
-            <!-- Cambiar contraseña -->
+            <!-- Titulos de posgrado -->
             <li>
               <router-link
                 active-class="text-indigo-600 hover:text-indigo-700"
@@ -32,17 +32,6 @@ import { RouterLink } from 'vue-router'
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
                 <span class="ml-3">Titulos de Posgrados</span>
-              </router-link>
-            </li>
-
-            <!-- Cambiar correo -->
-            <li>
-              <router-link
-                active-class="text-indigo-600 hover:text-indigo-700"
-                :to="{ name: 'lineas' }"
-                class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
-              >
-                <span class="ml-3">Lineas de Investigación</span>
               </router-link>
             </li>
           </ul>

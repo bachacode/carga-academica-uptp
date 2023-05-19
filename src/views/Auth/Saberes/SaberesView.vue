@@ -29,9 +29,9 @@ const columns: columnType[] = [
   },
   {
     name: 'Profesores',
-    relationTitle: 'Profesores que dan ',
+    relationTitle: 'Profesores que han dado ',
     noRelations: '¡Esta saber no tiene profesores asignados!',
-    fatherName: 'saber',
+    fatherName: 'nombre',
     multipleData: [
       {
         name: 'Nombre'

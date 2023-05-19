@@ -65,7 +65,7 @@ const changePage = async (page: number) => {
     <div class="w-full px-16 pb-8">
       <!--Table Card-->
       <TableComponent
-        title="módulo Saberes"
+        title="Historial de Usuarios"
         v-model="searchQuery"
         :columns="columns"
         :filtered-data="store.filteredData"

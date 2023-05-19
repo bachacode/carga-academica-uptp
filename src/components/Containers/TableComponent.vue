@@ -135,204 +135,212 @@ const updateValue = (e: Event) => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(record, key) in filteredData" :key="record.id">
-            <template v-for="column in columns" :key="column.name">
-              <!-- Relaciones -->
-              <template v-if="Array.isArray(record[column.name.toLowerCase()])">
-                <td>
-                  <label
-                    :for="record.id + column.name"
-                    class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
-                  >
-                    {{ `Ver ${column.name}` }}
-                  </label>
-                </td>
+          <template v-if="filteredData.length > 0">
+            <tr v-for="(record, key) in filteredData" :key="record.id">
+              <template v-for="column in columns" :key="column.name">
+                <!-- Relaciones -->
+                <template v-if="Array.isArray(record[column.name.toLowerCase()])">
+                  <td>
+                    <label
+                      :for="record.id + column.name"
+                      class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
+                    >
+                      {{ `Ver ${column.name}` }}
+                    </label>
+                  </td>
 
-                <!-- Custom Table Modal -->
-                <Teleport to="#modal">
-                  <input
-                    type="checkbox"
-                    @keydown.esc="closeModal(key)"
-                    :id="record.id + column.name"
-                    class="modal-toggle"
-                    :ref="(el) => setModal(el, key)"
-                  />
-                  <div class="modal" @keypress.esc="closeModal(key)">
-                    <div class="modal-box">
-                      <div class="flex justify-between">
-                        <h3 v-if="!column.fatherName" class="text-lg font-bold">
-                          {{ column.relationTitle ?? 'Datos' }}
-                        </h3>
-                        <h3 v-if="column.fatherName" class="text-lg font-bold">
-                          {{ column.relationTitle + record[column.fatherName] ?? 'Datos' }}
-                        </h3>
-                        <label
-                          class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-indigo-700"
-                          :for="record.id + column.name"
-                          ><font-awesome-icon icon="close"
-                        /></label>
-                      </div>
-                      <div v-if="!record.expand[column.name.toLowerCase()]">
-                        {{ column.noRelations ?? '¡Esta tabla esta vacia!' }}
-                      </div>
-                      <table
-                        v-if="record && record.expand[column.name.toLowerCase()]"
-                        class="mb-6 w-full border border-indigo-700"
-                      >
-                        <thead>
-                          <th
-                            v-for="relationColumn in column.multipleData"
-                            :key="relationColumn.name"
-                            class="bg-indigo-300 py-2 pl-2 uppercase"
-                          >
-                            {{ relationColumn.nameAlias ?? relationColumn.name }}
-                          </th>
-                        </thead>
-                        <tbody class="text-center">
-                          <tr
-                            class="bg-white odd:bg-gray-200"
-                            v-for="saber in record.expand[column.name.toLowerCase()]"
-                            :key="saber.id"
-                          >
-                            <td
+                  <!-- Custom Table Modal -->
+                  <Teleport to="#modal">
+                    <input
+                      type="checkbox"
+                      @keydown.esc="closeModal(key)"
+                      :id="record.id + column.name"
+                      class="modal-toggle"
+                      :ref="(el) => setModal(el, key)"
+                    />
+                    <div class="modal" @keypress.esc="closeModal(key)">
+                      <div class="modal-box">
+                        <div class="flex justify-between">
+                          <h3 v-if="!column.fatherName" class="text-lg font-bold">
+                            {{ column.relationTitle ?? 'Datos' }}
+                          </h3>
+                          <h3 v-if="column.fatherName" class="text-lg font-bold">
+                            {{ column.relationTitle + record[column.fatherName] ?? 'Datos' }}
+                          </h3>
+                          <label
+                            class="btn-outline mr-2 cursor-pointer rounded-xl pb-2 text-xl hover:bg-white hover:text-indigo-700"
+                            :for="record.id + column.name"
+                            ><font-awesome-icon icon="close"
+                          /></label>
+                        </div>
+                        <div v-if="!record.expand[column.name.toLowerCase()]">
+                          {{ column.noRelations ?? '¡Esta tabla esta vacia!' }}
+                        </div>
+                        <table
+                          v-if="record && record.expand[column.name.toLowerCase()]"
+                          class="mb-6 w-full border border-indigo-700"
+                        >
+                          <thead>
+                            <th
                               v-for="relationColumn in column.multipleData"
                               :key="relationColumn.name"
-                              class="w-min-content"
+                              class="bg-indigo-300 py-2 pl-2 uppercase"
                             >
-                              {{ saber[relationColumn.name.toLowerCase()] }}
+                              {{ relationColumn.nameAlias ?? relationColumn.name }}
+                            </th>
+                          </thead>
+                          <tbody class="text-center">
+                            <tr
+                              class="bg-white odd:bg-gray-200"
+                              v-for="saber in record.expand[column.name.toLowerCase()]"
+                              :key="saber.id"
+                            >
+                              <td
+                                v-for="relationColumn in column.multipleData"
+                                :key="relationColumn.name"
+                                class="w-min-content"
+                              >
+                                {{ saber[relationColumn.name.toLowerCase()] }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </Teleport>
+                  <!-- /Custom Table Modal -->
+                </template>
+
+                <!-- Conjuntos -->
+                <template v-else-if="column.multipleData">
+                  <td>
+                    <label
+                      :for="record.id + column.name"
+                      class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
+                    >
+                      {{ `Ver ${column.name}` }}
+                    </label>
+                  </td>
+
+                  <!-- Custom Modal -->
+                  <Teleport to="#modal">
+                    <input
+                      type="checkbox"
+                      :id="record.id + column.name"
+                      class="modal-toggle"
+                      @keydown.esc="closeModal(key)"
+                      :ref="(el) => setModal(el, key)"
+                    />
+                    <div class="modal">
+                      <div class="modal-box">
+                        <div class="flex justify-between">
+                          <h3 class="text-lg font-bold">Información</h3>
+                          <label
+                            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
+                            :for="record.id + column.name"
+                            >X</label
+                          >
+                        </div>
+                        <table class="mb-6 w-full text-center shadow-xl">
+                          <tr
+                            v-for="data in column.multipleData"
+                            :key="data.name"
+                            class="odd:bg-slate-200 even:bg-slate-300"
+                          >
+                            <th class="bg-indigo-700 py-2 pl-2 text-white">
+                              {{ data.nameAlias ?? data.name }}
+                            </th>
+                            <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                              {{ record[data.name.toLowerCase()] }}
                             </td>
                           </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </Teleport>
-                <!-- /Custom Table Modal -->
-              </template>
-
-              <!-- Conjuntos -->
-              <template v-else-if="column.multipleData">
-                <td>
-                  <label
-                    :for="record.id + column.name"
-                    class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
-                  >
-                    {{ `Ver ${column.name}` }}
-                  </label>
-                </td>
-
-                <!-- Custom Modal -->
-                <Teleport to="#modal">
-                  <input
-                    type="checkbox"
-                    :id="record.id + column.name"
-                    class="modal-toggle"
-                    @keydown.esc="closeModal(key)"
-                    :ref="(el) => setModal(el, key)"
-                  />
-                  <div class="modal">
-                    <div class="modal-box">
-                      <div class="flex justify-between">
-                        <h3 class="text-lg font-bold">Información</h3>
-                        <label
-                          class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
-                          :for="record.id + column.name"
-                          >X</label
-                        >
+                        </table>
                       </div>
-                      <table class="mb-6 w-full text-center shadow-xl">
-                        <tr
-                          v-for="data in column.multipleData"
-                          :key="data.name"
-                          class="odd:bg-slate-200 even:bg-slate-300"
-                        >
-                          <th class="bg-indigo-700 py-2 pl-2 text-white">
-                            {{ data.nameAlias ?? data.name }}
-                          </th>
-                          <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                            {{ record[data.name.toLowerCase()] }}
-                          </td>
-                        </tr>
-                      </table>
                     </div>
-                  </div>
-                </Teleport>
-                <!-- /Custom Modal -->
+                  </Teleport>
+                  <!-- /Custom Modal -->
+                </template>
+
+                <!-- Activables -->
+                <template v-else-if="column.isToggable">
+                  <td>
+                    <button
+                      :class="`${
+                        record[column.name.toLowerCase()]
+                          ? 'bg-green-700 hover:bg-green-900'
+                          : 'bg-red-700 hover:bg-red-900'
+                      } btn rounded-xl `"
+                      @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
+                    >
+                      {{ record[column.name.toLowerCase()] ? `Activo` : `Inactivo` }}
+                    </button>
+                  </td>
+                </template>
+
+                <!-- Acciones custom -->
+                <template v-else-if="column.hasAction">
+                  <td>
+                    <label
+                      :for="`my-action-` + column.name.toLowerCase()"
+                      class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
+                      @click="$emit('triggerAction', record.id)"
+                    >
+                      {{ column.nameAlias }}
+                    </label>
+                  </td>
+                </template>
+
+                <!-- Columnas relaciones uno a uno -->
+                <template v-else-if="column.isSingleRelation">
+                  <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                    {{
+                      record['expand'][column.isSingleRelation.name][
+                        column.isSingleRelation.childName
+                      ]
+                    }}
+                  </td>
+                </template>
+
+                <!-- Columnas Normales -->
+                <template v-else-if="record[column.name.toLowerCase()]">
+                  <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                    {{ record[column.name.toLowerCase()] }}
+                  </td>
+                </template>
+
+                <template v-else>
+                  <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                    No se encontró
+                  </td>
+                </template>
               </template>
 
-              <!-- Activables -->
-              <template v-else-if="column.isToggable">
-                <td>
-                  <button
-                    :class="`${
-                      record[column.name.toLowerCase()]
-                        ? 'bg-green-700 hover:bg-green-900'
-                        : 'bg-red-700 hover:bg-red-900'
-                    } btn rounded-xl `"
-                    @click="$emit('toggleColumn', record.id, column.name.toLowerCase())"
-                  >
-                    {{ record[column.name.toLowerCase()] ? `Activo` : `Inactivo` }}
-                  </button>
-                </td>
-              </template>
+              <!-- Acciones -->
+              <td v-if="!viewOnly" class="space-x-3">
+                <button
+                  :title="`Editar`"
+                  class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
+                  @click="$emit('editButton', record.id)"
+                >
+                  <font-awesome-icon icon="edit" />
+                </button>
+                <label
+                  :title="`Eliminar`"
+                  for="my-modal"
+                  class="btn rounded-xl bg-red-700 hover:bg-rose-900"
+                  @click="$emit('deleteModal', record.id)"
+                >
+                  <font-awesome-icon icon="trash" />
+                </label>
+              </td>
+            </tr>
+          </template>
 
-              <!-- Acciones custom -->
-              <template v-else-if="column.hasAction">
-                <td>
-                  <label
-                    :for="`my-action-` + column.name.toLowerCase()"
-                    class="btn rounded-xl bg-indigo-700 hover:bg-indigo-900"
-                    @click="$emit('triggerAction', record.id)"
-                  >
-                    {{ column.nameAlias }}
-                  </label>
-                </td>
-              </template>
-
-              <!-- Columnas relaciones uno a uno -->
-              <template v-else-if="column.isSingleRelation">
-                <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                  {{
-                    record['expand'][column.isSingleRelation.name][
-                      column.isSingleRelation.childName
-                    ]
-                  }}
-                </td>
-              </template>
-
-              <!-- Columnas Normales -->
-              <template v-else-if="record[column.name.toLowerCase()]">
-                <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                  {{ record[column.name.toLowerCase()] }}
-                </td>
-              </template>
-
-              <template v-else>
-                <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                  No se encontró
-                </td>
-              </template>
-            </template>
-
-            <!-- Acciones -->
-            <td v-if="!viewOnly" class="space-x-3">
-              <button
-                :title="`Editar`"
-                class="btn rounded-xl bg-blue-700 hover:bg-blue-900"
-                @click="$emit('editButton', record.id)"
-              >
-                <font-awesome-icon icon="edit" />
-              </button>
-              <label
-                :title="`Eliminar`"
-                for="my-modal"
-                class="btn rounded-xl bg-red-700 hover:bg-rose-900"
-                @click="$emit('deleteModal', record.id)"
-              >
-                <font-awesome-icon icon="trash" />
-              </label>
-            </td>
-          </tr>
+          <template v-else>
+            <tr class="text-center text-gray-600">
+              <td :colspan="columns.length + 1">¡Esta tabla no tiene elementos registrados!</td>
+            </tr>
+          </template>
 
           <!-- Delete Modal
   <Teleport to="#modal">

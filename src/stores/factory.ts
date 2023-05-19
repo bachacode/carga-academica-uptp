@@ -119,14 +119,16 @@ export function createCrudStore<
      */
     async function fetchAll(
       sortBy: string = defaultFetchQuery.sortBy,
-      filter: string = defaultFetchQuery.filter
+      filter: string = defaultFetchQuery.filter,
+      autoCancel: boolean = true
     ) {
       data.value = await pb
         .collection(collectionName)
         .getList<IData>(actualPage.value, itemsPerPage.value, {
           sort: sortBy,
           expand: relations?.toString(),
-          filter: filter
+          filter: filter,
+          $autoCancel: autoCancel
         })
     }
 
@@ -289,6 +291,7 @@ export function createCrudStore<
         .delete(id)
         .then(async () => {
           await saveToLog('delete')
+          await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter, false)
           alert.setSuccess({ message: success.delete })
         })
         .catch(async (err) => {
@@ -357,8 +360,9 @@ export function createCrudStore<
       }
     })
 
-    pb.collection(collectionName).subscribe('*', async function () {
-      await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
+    pb.collection(collectionName).subscribe('*', async function (e) {
+      await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter, false)
+      console.log(e)
     })
 
     /*

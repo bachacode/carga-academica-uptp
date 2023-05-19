@@ -98,7 +98,7 @@ const router = createRouter({
 
     // Rutas Autenticadas - Educación de los profesores
     {
-      path: '/educacion',
+      path: '/titulos',
       component: () => import('@/views/Auth/Educacion/EducacionView.vue'),
       children: [
         // Rutas de Educación - Titulos
@@ -140,27 +140,6 @@ const router = createRouter({
               path: 'edit/:id',
               name: 'posgrados.edit',
               component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosEdit.vue')
-            }
-          ]
-        },
-        // Rutas de Educación - Lineas de Investigación
-        {
-          path: 'lineas',
-          children: [
-            {
-              path: '',
-              name: 'lineas',
-              component: () => import('@/views/Auth/Educacion/Lineas/LineasView.vue')
-            },
-            {
-              path: 'create',
-              name: 'lineas.create',
-              component: () => import('@/views/Auth/Educacion/Lineas/LineasCreate.vue')
-            },
-            {
-              path: 'edit/:id',
-              name: 'lineas.edit',
-              component: () => import('@/views/Auth/Educacion/Lineas/LineasEdit.vue')
             }
           ]
         }
