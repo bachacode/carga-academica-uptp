@@ -35,7 +35,8 @@ import {
   faCaretDown,
   faSortUp,
   faSortDown,
-  faUniversity
+  faUniversity,
+  faList
 } from '@fortawesome/free-solid-svg-icons'
 library.add(
   faChalkboard,
@@ -68,7 +69,8 @@ library.add(
   faDashboard,
   faSortUp,
   faSortDown,
-  faUniversity
+  faUniversity,
+  faList
 )
 import './assets/main.css'
 const pinia = createPinia()

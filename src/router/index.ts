@@ -265,6 +265,12 @@ const router = createRouter({
         }
       ]
     },
+    // Rutas Autenticadas - Historial
+    {
+      path: '/historial',
+      name: 'historial',
+      component: () => import('@/views/Auth/Historial/HistorialView.vue')
+    },
     // En caso de que la ruta no exista se mostrara la vista de PageNotFound:
     {
       path: '/:pathMatch(.*)*',

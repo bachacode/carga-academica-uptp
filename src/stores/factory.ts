@@ -172,7 +172,7 @@ export function createCrudStore<
           if (manyToMany) {
             await sync(data)
           }
-          await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
+          await saveToLog('create')
           await router.push({ name: route })
           alert.setSuccess({ message: success.create })
         })
@@ -204,6 +204,21 @@ export function createCrudStore<
           }
         })
       })
+    }
+
+    async function saveToLog(action: string) {
+      await pb
+        .collection('historial')
+        .create({
+          usuario_id: pb.authStore.model?.id,
+          tabla: collectionName,
+          accion: action
+        })
+        .then(async () => {
+          await pb.collection('historial').getList(1, 20, {
+            sort: '-created'
+          })
+        })
     }
 
     /*
@@ -249,7 +264,7 @@ export function createCrudStore<
           if (manyToMany) {
             await sync(data)
           }
-          await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
+          await saveToLog('update')
           await router.push({ name: route })
           alert.setSuccess({ message: success.update })
         })
@@ -273,7 +288,7 @@ export function createCrudStore<
         .collection(collectionName)
         .delete(id)
         .then(async () => {
-          await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
+          await saveToLog('delete')
           alert.setSuccess({ message: success.delete })
         })
         .catch(async (err) => {
@@ -340,6 +355,10 @@ export function createCrudStore<
       if (autoFetch == true) {
         await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
       }
+    })
+
+    pb.collection(collectionName).subscribe('*', async function () {
+      await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter)
     })
 
     /*
