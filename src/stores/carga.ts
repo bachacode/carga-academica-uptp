@@ -1,21 +1,33 @@
 import type { Record } from 'pocketbase'
-import { createViewStore } from './factory'
+import { createCrudStore } from './factory'
 
 export type cargaType = {
-  nombre: string
-  apellido: string
-  cedula: string
-  titulo: string
-  saberes: Array<string>
-  telefono: string
-  correo: string
+  seccion_id: string
+  profesor_id: string
+  saber_id: string
+  horas: number | string
+  dia: 'Lunes' | 'Martes' | 'Miercoles' | 'Jueves' | 'Viernes' | ''
 }
 
 export interface ICarga extends cargaType, Record {}
 
-export const useCargaStore = createViewStore<ICarga>({
-  storeId: 'carga',
-  collectionName: 'carga',
-  relations: ['saberes'],
+const successMessages = {
+  create: 'Se ha asignado la carga al profesor correctamente',
+  update: 'Se ha actualizado la carga del profesor correctamente',
+  delete: 'Se ha borrado la carga del profesor correctamente'
+}
+
+const errorMessages = {
+  create: 'Ha ocurrido un error al asignarle la carga al profesor',
+  update: 'Ha ocurrido un error al actualizar la carga del profesor',
+  delete: 'Ha ocurrido un error al borrar la carga del profesor'
+}
+
+export const useCargaStore = createCrudStore<cargaType, ICarga>({
+  storeId: 'cargas',
+  route: 'carga',
+  collectionName: 'cargas',
+  success: successMessages,
+  error: errorMessages,
   autoFetch: false
 })

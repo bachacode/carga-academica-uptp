@@ -5,7 +5,6 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-import { daySelector } from './CargaData'
 import { ref, watchEffect } from 'vue'
 import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
@@ -39,36 +38,39 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
-    name: 'Materia',
+    name: 'Saber',
     isAsc: false
   }
 ]
 
+// Arreglo para el selector de dias
+const daySelector = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'all']
+
 // Función para ordenar la tabla de forma ASC o DESC
 const sortTable = async (column: string) => {
-  await store.fetchAll(column)
+  await clases.fetchAll(column)
 }
 
 // Función para ir a la vista de "create"
 async function create() {
-  await clases.goToCreate()
+  await store.goToCreate()
 }
 
 // Función para ir a la vista de "edit"
 const edit = async (id: string) => {
-  await clases.goToEdit(id)
+  await store.goToEdit(id)
 }
 
 // Función para seleccionar un item del módulo
 const selectItem = async (id: string) => {
-  await clases.fetchOne(id)
+  await store.fetchOne(id)
 }
 
 // Función para borrar un item del módulo
 async function destroyItem(id: string | undefined) {
   if (id) {
-    await clases.destroy(id).then(async () => {
-      await store.fetchAll('-horas', `dia = "${activeDay.value}"`)
+    await store.destroy(id).then(async () => {
+      await clases.fetchAll('-horas', `dia = "${activeDay.value}"`)
     })
   }
 }
@@ -84,8 +86,8 @@ const activeDay = ref('Lunes')
 // WatchEffect qeu vigila el "activeDay", en caso de cambios, realiza fetch a la BD con el nuevo dia
 watchEffect(async () => {
   if (activeDay.value == 'all') {
-    store.data = await store.pb.collection('carga_total').getList(1, 50)
-  } else await store.fetchAll('-horas', `dia = "${activeDay.value}"`)
+    clases.data = await clases.pb.collection('carga_total').getList(1, 50)
+  } else await clases.fetchAll('-horas', `dia = "${activeDay.value}"`)
 })
 </script>
 
@@ -123,7 +125,7 @@ watchEffect(async () => {
         title="Carga Academica"
         v-model="searchQuery"
         :columns="columns"
-        :filtered-data="store.filteredData"
+        :filtered-data="clases.filteredData"
         @editButton="edit"
         @deleteModal="selectItem"
         @sorting="sortTable"

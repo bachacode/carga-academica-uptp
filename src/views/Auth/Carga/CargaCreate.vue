@@ -1,39 +1,64 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
-import { data } from './CargaData'
 import InputSelect from '@/components/InputSelect.vue'
 import { useSeccionStore } from '@/stores/secciones'
-import { useClaseStore } from '@/stores/clases'
-const store = useClaseStore()
-const profesores = useProfesorStore()
-const saberes = useSaberStore()
-const secciones = useSeccionStore()
-const { save } = store
-const { formData, formRules } = data
+import { useCargaStore, type cargaType } from '@/stores/carga'
+import { numericValidation, requiredValidation } from '@/helpers/validationHelpers'
+// Store del módulo
+const store = useCargaStore()
 
+// Store de profesores
+const profesores = useProfesorStore()
+
+// Store de saberes
+const saberes = useSaberStore()
+
+// Store de secciones
+const secciones = useSeccionStore()
+
+// Booleano para el botón de submit
 const isLoading = ref(false)
 
-const v$ = useVuelidate(formRules, formData)
+// Variables reactivas del formulario
+const formData = reactive<cargaType>({
+  seccion_id: '',
+  profesor_id: '',
+  saber_id: '',
+  dia: '',
+  horas: ''
+})
 
-const submitData = async () => {
-  isLoading.value = true
-  await v$.value
-    .$validate()
-    .then(() => (isLoading.value = false))
-    .catch(() => (isLoading.value = false))
-  if (!v$.value.$error) {
-    save(formData)
+// Reglas de validación
+const formRules = computed(() => {
+  return {
+    seccion_id: {
+      required: requiredValidation()
+    },
+    profesor_id: {
+      required: requiredValidation()
+    },
+    saber_id: {
+      required: requiredValidation()
+    },
+    dia: {
+      required: requiredValidation()
+    },
+    horas: {
+      required: requiredValidation(),
+      numeric: numericValidation()
+    }
   }
-}
+})
 
+// Opciones del Select "Secciones"
 const seccionesOptions = computed(() => {
   return secciones.filteredData?.map((record: any) => {
     return {
@@ -43,24 +68,27 @@ const seccionesOptions = computed(() => {
   })
 })
 
+// Opciones del Select "Profesores"
 const profesoresOptions = computed(() => {
   return profesores.filteredData?.map((record: any) => {
     return {
       value: record.id,
-      name: record.nombre + ' ' + record.apellido + ' - ' + record.titulo
+      name: record.nombre + ' ' + record.apellido
     }
   })
 })
 
+// Opciones del Select "Saberes"
 const saberesOptions = computed(() => {
   return saberes.filteredData?.map((record: any) => {
     return {
       value: record.id,
-      name: record.materia + ' - ' + record.trayecto
+      name: record.nombre + ' - ' + record.trayecto
     }
   })
 })
 
+// Opciones del Select "Dia"
 const diasOptions = [
   { value: 'Lunes', name: 'Lunes' },
   { value: 'Martes', name: 'Martes' },
@@ -69,15 +97,18 @@ const diasOptions = [
   { value: 'Viernes', name: 'Viernes' }
 ]
 
-onUnmounted(() => {
-  Object.assign(formData, {
-    id_seccion: '',
-    id_profesor: '',
-    id_saber: '',
-    dia: '',
-    horas: ''
-  })
-})
+// Validación
+const v$ = useVuelidate(formRules, formData)
+
+// Función para enviar el formulario
+const submitData = async () => {
+  await v$.value.$validate()
+  if (!v$.value.$error) {
+    isLoading.value = true
+    await store.save(formData)
+    isLoading.value = false
+  }
+}
 </script>
 
 <template>
@@ -101,10 +132,10 @@ onUnmounted(() => {
               :options="seccionesOptions ?? [{ value: '', name: 'No se han encontrado secciones' }]"
               placeholder="Seleccione una sección"
               name="seccion"
-              v-model="formData.id_seccion"
+              v-model="formData.seccion_id"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.id_seccion.$error" :message="v$.id_seccion.$errors[0]?.$message"
+            ><InputError v-if="v$.seccion_id.$error" :message="v$.seccion_id.$errors[0]?.$message"
           /></template>
         </InputField>
 
@@ -117,12 +148,12 @@ onUnmounted(() => {
               "
               placeholder="Seleccione un profesor"
               name="profesor"
-              v-model="formData.id_profesor"
+              v-model="formData.profesor_id"
           /></template>
           <template #InputError
             ><InputError
-              v-if="v$.id_profesor.$error"
-              :message="v$.id_profesor.$errors[0]?.$message"
+              v-if="v$.profesor_id.$error"
+              :message="v$.profesor_id.$errors[0]?.$message"
           /></template>
         </InputField>
 
@@ -133,10 +164,10 @@ onUnmounted(() => {
               :options="saberesOptions ?? [{ value: '', name: 'No se han encontrado saberes' }]"
               placeholder="Seleccione un saber"
               name="saberes"
-              v-model="formData.id_saber"
+              v-model="formData.saber_id"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.id_saber.$error" :message="v$.id_saber.$errors[0]?.$message"
+            ><InputError v-if="v$.saber_id.$error" :message="v$.saber_id.$errors[0]?.$message"
           /></template>
         </InputField>
 
