@@ -5,24 +5,15 @@ import { useProfesorStore } from '@/stores/profesores'
 import { useUsuarioStore } from '@/stores/usuarios'
 import { useSeccionStore } from '@/stores/secciones'
 import { useAuthStore } from '@/stores/auth'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { reactive } from 'vue'
 import LoadingCircle from '@/components/LoadingCircle.vue'
 import { useProfesoresLibresStore } from '@/stores/profesoresLibres'
 import { useSeccionesLibresStore } from '@/stores/seccionesLibres'
 import { Chart, registerables } from 'chart.js'
-import { DoughnutChart } from 'vue-chart-3'
+import { PieChart } from 'vue-chart-3'
 Chart.register(...registerables)
-const testData = reactive({
-  labels: ['Asignados', 'No Asignados'],
-  datasets: [
-    {
-      data: [12, 2],
-      backgroundColor: ['#4ade80', '#f87171']
-    }
-  ]
-})
 // Store de profesores
 const profesores = useProfesorStore()
 
@@ -79,34 +70,78 @@ const profsConMaterias = computed(() => {
 
 // Valor computado que devuelve la cantidad total de usuarios activos en el sistema
 const totalActiveUsers = computed(() => {
-  return usuarios.data?.items.filter((usuario) => {
-    return usuario.estado == true
-  }).length
+  if (usuarios.data)
+    return usuarios.data?.items.filter((usuario) => {
+      return usuario.estado == true
+    }).length
+  else return 0
 })
 
-// Columnas de la tabla
-const theadColumns = reactive([
-  {
-    name: 'Nombre',
-    isAsc: false
-  },
-  {
-    name: 'Apellido',
-    isAsc: false
-  },
-  {
-    name: 'Cedula',
-    isAsc: false
-  },
-  {
-    name: 'Titulo',
-    isSingleRelation: {
-      name: 'titulo_id',
-      childName: 'nombre'
-    },
-    isAsc: false
-  }
-])
+// Valor computado que devuelve la cantidad total de usuarios inactivos en el sistema
+const totalInactiveUsers = computed(() => {
+  if (usuarios.data)
+    return usuarios.data.items.filter((usuario) => {
+      return usuario.estado == false
+    }).length
+  else return 0
+})
+
+// Valor computado que devuelve la cantidad de profesores sin carga asignada
+const profsSinCarga = computed(() => {
+  if (profesoresLibres.data) return profesoresLibres.data.items.length
+  else return 0
+})
+
+// Valor computado que devuelve la cantidad de secciones sin carga asignada
+const seccionesSinCarga = computed(() => {
+  if (seccionesLibres.data) return seccionesLibres.data.items.length
+  else return 0
+})
+
+// Datos de la grafica "Profesores Asignados"
+const dataSetProfesores = computed(() => {
+  return [profsConCarga.value, profsSinCarga.value]
+})
+
+const profsAsignadosChart = computed(() => ({
+  labels: ['Asignados', 'No Asignados'],
+  datasets: [
+    {
+      data: dataSetProfesores.value,
+      backgroundColor: ['#4ade80', '#f87171']
+    }
+  ]
+}))
+
+//Datos de la grafica "Secciones Asignadas"
+const dataSetSecciones = computed(() => {
+  return [seccionesConCarga.value, seccionesSinCarga.value]
+})
+
+const seccionesAsignadasChart = computed(() => ({
+  labels: ['Asignados', 'No Asignados'],
+  datasets: [
+    {
+      data: dataSetSecciones.value,
+      backgroundColor: ['#4ade80', '#f87171']
+    }
+  ]
+}))
+
+//Datos de la grafica "Operadores Activos"
+const dataSetOperadores = computed(() => {
+  return [totalActiveUsers.value, totalInactiveUsers.value]
+})
+
+const operadoresActivosChart = computed(() => ({
+  labels: ['Activos', 'Desactivados'],
+  datasets: [
+    {
+      data: dataSetOperadores.value,
+      backgroundColor: ['#4ade80', '#f87171']
+    }
+  ]
+}))
 
 // Al inicializar el componente, hace fetch de tres módulos distintos
 onMounted(async () => {
@@ -191,47 +226,45 @@ onMounted(async () => {
         </div>
 
         <!--Divider-->
+
+        <!-- Grafica de profesores asignados -->
         <hr class="my-8 mx-4 border-b-2 border-gray-400" />
         <div class="mt-2 flex flex-grow flex-row flex-wrap">
-          <div class="w-full p-3 md:w-1/2">
+          <div class="w-full p-3 md:w-1/3">
             <div class="rounded border bg-white shadow">
               <div class="border-b p-3">
                 <h5 class="font-bold uppercase text-gray-600">Profesores asignados</h5>
               </div>
               <div class="p-5">
-                <DoughnutChart :chartData="testData" />
+                <PieChart :chartData="profsAsignadosChart" />
               </div>
             </div>
           </div>
 
-          <div class="w-full p-3 md:w-1/2">
+          <!-- Grafica de Secciones asignadas -->
+          <div class="w-full p-3 md:w-1/3">
             <div class="rounded border bg-white shadow">
               <div class="border-b p-3">
-                <h5 class="font-bold uppercase text-gray-600">Profesores asignados</h5>
+                <h5 class="font-bold uppercase text-gray-600">Secciones Asignadas</h5>
               </div>
               <div class="p-5">
-                <DoughnutChart :chartData="testData" />
+                <PieChart :chartData="seccionesAsignadasChart" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Grafica de Operadores Activos -->
+          <div class="w-full p-3 md:w-1/3">
+            <div class="rounded border bg-white shadow">
+              <div class="border-b p-3">
+                <h5 class="font-bold uppercase text-gray-600">Operadores Activos</h5>
+              </div>
+              <div class="p-5">
+                <PieChart :chartData="operadoresActivosChart" />
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Tabla con los ultimos profesores asignados -->
-        <div class="mt-2 flex flex-grow flex-row flex-wrap">
-          <div class="w-full p-3">
-            <!--Table Card-->
-            <TableComponent
-              title="Ultimos profesores agregados"
-              :columns="theadColumns"
-              :filtered-data="profesores.filteredData"
-              :sortable="false"
-              :view-only="true"
-            />
-
-            <!--/table Card-->
-          </div>
-        </div>
-        <!--/ Console Content-->
       </div>
     </div>
     <!--/container-->
