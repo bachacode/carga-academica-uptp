@@ -90,9 +90,9 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
     <div
       v-show="dropdown"
       v-on-click-outside.bubble="dropdownHandler"
-      class="block w-full rounded-b-lg border border-indigo-300 bg-indigo-50 p-2.5 text-sm text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
+      class="block max-h-60 w-full overflow-auto rounded-b-lg border border-indigo-300 bg-indigo-50 p-2.5 text-sm text-indigo-900 shadow-sm focus:border-gray-500 focus:ring-gray-500"
     >
-      <ul class="relative max-h-40 overflow-auto" v-for="tag in tags" :key="tag.value">
+      <ul class="relative" v-for="tag in tags" :key="tag.value">
         <li
           :class="`${
             !tag.isActive ? 'hover:bg-indigo-300' : 'hover:bg-red-300'

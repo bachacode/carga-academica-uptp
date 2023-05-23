@@ -92,6 +92,9 @@ export function createCrudStore<
     // Variable en la que se guarda una lista de items de un módulo a través de "getList"
     const data = ref<ListResult<IData>>()
 
+    // Variable en la que se guarda la lista completa de items de un módulo a través de "getFullList"
+    const fullData = ref<IData[]>()
+
     // Variable en la que se guarda un solo item de un módulo a través de "getOne"
     const singleData = ref<IData>()
 
@@ -130,6 +133,26 @@ export function createCrudStore<
           filter: filter,
           $autoCancel: autoCancel
         })
+    }
+    /*
+     * Esta función devuelve la lista completa de items de un módulo y la guarda en la variable "fullData"
+     * @var collectionName el nombre de la colección de pocketbase que se quiere usar
+     * @param sortBy cambia si el orden es ASC o DESC y por cual columna se ordena, default "-created"
+     * @param filter cambia que filtros tiene que cumplir la query, actua como un WHERE en SQL, no default
+     * @var expand recibe un string separado por comas con los nombres de las llaves foraneas
+     * este lo recibe del parametro de configuración "relations"
+     */
+    async function fetchFullList(
+      sortBy: string = defaultFetchQuery.sortBy,
+      filter: string = defaultFetchQuery.filter,
+      autoCancel: boolean = true
+    ) {
+      fullData.value = await pb.collection(collectionName).getFullList<IData>({
+        sort: sortBy,
+        expand: relations?.toString(),
+        filter: filter,
+        $autoCancel: autoCancel
+      })
     }
 
     /*
@@ -319,7 +342,7 @@ export function createCrudStore<
      */
     const filteredData = computed(() => {
       return data.value?.items
-        ?.filter((record) => {
+        ?.filter((record: any) => {
           const keys = Object.keys(record).filter((el) => !defaultRecordKeys.includes(el))
           const testArray = keys.map((key) => {
             return record[key].toString().toLowerCase()
@@ -371,6 +394,7 @@ export function createCrudStore<
 
     return {
       data,
+      fullData,
       pb,
       singleData,
       actualPage,
@@ -386,7 +410,8 @@ export function createCrudStore<
       sync,
       deSync,
       goToCreate,
-      goToEdit
+      goToEdit,
+      fetchFullList
     }
   })
 }

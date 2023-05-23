@@ -105,10 +105,10 @@ const removeTag = (tag: optionType) => {
 
 // Valor computado de las opciones del multiselect
 const tags = computed<optionType[] | undefined>(() => {
-  return saberes.filteredData?.map((record: any) => {
+  return saberes.fullData?.map((record: any) => {
     {
       return {
-        name: record.nombre + ' - ' + record.trayecto,
+        name: `${record.nombre} - trayecto ${record.trayecto}`,
         value: record.id,
         isActive: formData.saberes.includes(record.id) ? true : false
       }
@@ -152,6 +152,7 @@ const submitData = async () => {
 
 // Al inicializar el componente, asigna el id de la ruta a una variable reactiva de vue
 onMounted(async () => {
+  await saberes.fetchFullList()
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await store.fetchOne(router.currentRoute.value.params.id)

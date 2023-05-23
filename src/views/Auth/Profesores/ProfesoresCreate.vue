@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { computed, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref } from 'vue'
 import { useProfesorStore, type profesorType } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
@@ -93,10 +93,10 @@ const removeTag = (tag: optionType) => {
 
 // Valor computado de las opciones del multiselect
 const tags = computed<optionType[] | undefined>(() => {
-  return saberes.filteredData?.map((record: any) => {
+  return saberes.fullData?.map((record: any) => {
     {
       return {
-        name: record.nombre + ' - ' + record.trayecto,
+        name: `${record.nombre} - trayecto ${record.trayecto}`,
         value: record.id,
         isActive: formData.saberes.includes(record.id) ? true : false
       }
@@ -136,6 +136,10 @@ const submitData = async () => {
     isLoading.value = false
   }
 }
+
+onMounted(async () => {
+  await saberes.fetchFullList()
+})
 </script>
 
 <template>
