@@ -84,10 +84,10 @@ const profesoresOptions = computed(() => {
 
 // Opciones del Select "Saberes"
 const saberesOptions = computed(() => {
-  return saberes.filteredData?.map((record: any) => {
+  return saberes.fullData?.map((record: any) => {
     return {
       value: record.id,
-      name: record.nombre + ' - ' + record.trayecto
+      name: `${record.nombre} - trayecto ${record.trayecto}`
     }
   })
 })
@@ -116,6 +116,7 @@ const submitData = async () => {
 
 // Al inicializar el componente, asigna el id de la ruta a una variable reactiva de vue
 onMounted(async () => {
+  await saberes.fetchFullList()
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await store.fetchOne(router.currentRoute.value.params.id)
