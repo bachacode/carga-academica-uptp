@@ -1,0 +1,1008 @@
+[
+  {
+    "id": "p8h5q5rlzaixqic",
+    "name": "secciones",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "vaye9fy2",
+        "name": "codigo",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "i41sqqhl",
+        "name": "trayecto",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      },
+      {
+        "id": "g2bayguf",
+        "name": "estudiantes",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "_pb_users_auth_",
+    "name": "usuarios",
+    "type": "auth",
+    "system": false,
+    "schema": [
+      {
+        "id": "users_name",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "pikrhvdf",
+        "name": "apellido",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ikijbd1h",
+        "name": "cedula",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "1wujj3qa",
+        "name": "telefono",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "usn2d3os",
+        "name": "cargo",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "gkcyuf3p",
+        "name": "estado",
+        "type": "bool",
+        "system": false,
+        "required": false,
+        "options": {}
+      },
+      {
+        "id": "nezxdsjb",
+        "name": "rol",
+        "type": "select",
+        "system": false,
+        "required": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "Administrador",
+            "Operador"
+          ]
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "id = @request.auth.id || @request.auth.rol = 'Administrador'",
+    "viewRule": "id = @request.auth.id || @request.auth.rol = 'Administrador'",
+    "createRule": "@request.auth.rol = 'Administrador'",
+    "updateRule": "id = @request.auth.id || @request.auth.rol = 'Administrador'",
+    "deleteRule": "id = @request.auth.id || @request.auth.rol = 'Administrador'",
+    "options": {
+      "allowEmailAuth": true,
+      "allowOAuth2Auth": true,
+      "allowUsernameAuth": true,
+      "exceptEmailDomains": null,
+      "manageRule": "@request.auth.rol = 'Administrador'",
+      "minPasswordLength": 8,
+      "onlyEmailDomains": null,
+      "requireEmail": false
+    }
+  },
+  {
+    "id": "y7x8y8ed9uav78d",
+    "name": "titulos",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "rjwdvuxc",
+        "name": "grado",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "efv5jzch",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "ujz7f207aubbp4q",
+    "name": "posgrados",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "85h1ogwg",
+        "name": "grado",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ntb2sdw6",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "ccprx5s71hyf6cb",
+    "name": "lineas_de_investigacion",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "3ez3srzu",
+        "name": "grado",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "0qzz87lb",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "p8gan5gbxzqpiwe",
+    "name": "saberes",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "ewtfpyf7",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": 80,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "mffg50td",
+        "name": "trayecto",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": 0,
+          "max": 4
+        }
+      },
+      {
+        "id": "nmje1hbi",
+        "name": "horas",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": 1,
+          "max": 99
+        }
+      },
+      {
+        "id": "rjzlhetu",
+        "name": "profesores",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "jyjq1goyyopi2bd",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": []
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "hueadjlvs1rgsqi",
+    "name": "contratos",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "rrdrv6ce",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": 80,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "fzoi1rzy",
+        "name": "horas",
+        "type": "number",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": 1,
+          "max": 99
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "srcv3lbmxyn2e0j",
+    "name": "historial",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "xesht2ab",
+        "name": "usuario_id",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "_pb_users_auth_",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "m9tfxye0",
+        "name": "tabla",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": 40,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ytymkfd9",
+        "name": "accion",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": 1,
+          "max": 40,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "ixh7mcaq6dwzjqi",
+    "name": "historial_ver",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "468zqglf",
+        "name": "username",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "flu4bvtp",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "q2cf9hyf",
+        "name": "apellido",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "paqllbu5",
+        "name": "tabla",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": 40,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "rcrsnfyx",
+        "name": "accion",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": 1,
+          "max": 40,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT\n  usuarios.id as id,\n  usuarios.username as username,\n  usuarios.nombre as nombre,\n  usuarios.apellido as apellido,\n  historial.tabla as tabla,\n  historial.accion as accion,\n  historial.created as created\nFROM historial\nLEFT JOIN usuarios ON historial.usuario_id = usuarios.id\n"
+    }
+  },
+  {
+    "id": "ldne88wmcixodpf",
+    "name": "cargas",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "djdpzl31",
+        "name": "seccion_id",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "p8h5q5rlzaixqic",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "u8zonivq",
+        "name": "profesor_id",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "jyjq1goyyopi2bd",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "wefogrhy",
+        "name": "saber_id",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "p8gan5gbxzqpiwe",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "myoliuzr",
+        "name": "horas",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      },
+      {
+        "id": "obdaprfb",
+        "name": "dia",
+        "type": "select",
+        "system": false,
+        "required": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "Lunes",
+            "Martes",
+            "Miercoles",
+            "Jueves",
+            "Viernes"
+          ]
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  },
+  {
+    "id": "pdlk3hji2vij4qy",
+    "name": "secciones_libres",
+    "type": "view",
+    "system": false,
+    "schema": [],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT\nsecciones.id,\nsecciones.created\nFROM secciones\nLEFT JOIN cargas ON secciones.id = cargas.seccion_id\nWHERE cargas.id IS NULL"
+    }
+  },
+  {
+    "id": "n8utcgt35dfjwdm",
+    "name": "profesores_libres",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "clet8wba",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "fx5ewtng",
+        "name": "apellido",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "5fn1xnap",
+        "name": "titulo",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "y2kaijuv",
+        "name": "saberes",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "p8gan5gbxzqpiwe",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": []
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT\n  profesores.id as id,\n  profesores.nombre,\n  profesores.apellido,\n  titulos.nombre as titulo,\n  profesores.saberes,\n  profesores.created\nFROM profesores\nLEFT JOIN cargas ON profesores.id = cargas.profesor_id\nLEFT JOIN titulos ON profesores.titulo_id = titulos.id\nWHERE cargas.profesor_id is NULL\n"
+    }
+  },
+  {
+    "id": "j98cl1pbdso84pr",
+    "name": "carga_total",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "dspgncif",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "dnce4dgg",
+        "name": "titulo",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "j0ejxknm",
+        "name": "saberes",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "p8gan5gbxzqpiwe",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "7uhxghop",
+        "name": "horas",
+        "type": "json",
+        "system": false,
+        "required": false,
+        "options": {}
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT\n  profesores.id as id,\n  profesores.nombre,\n  titulos.nombre as titulo,\n  profesores.saberes,\n  SUM(cargas.horas) as horas\nFROM cargas\nLEFT JOIN profesores ON profesores.id = cargas.profesor_id\nLEFT JOIN secciones ON secciones.id = cargas.seccion_id\nLEFT JOIN titulos ON profesores.titulo_id = titulos.id"
+    }
+  },
+  {
+    "id": "wwhcgdtgtqavh6k",
+    "name": "carga_profesores",
+    "type": "view",
+    "system": false,
+    "schema": [
+      {
+        "id": "qdlsihsb",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ceyqmltn",
+        "name": "apellido",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "ng9whqou",
+        "name": "cedula",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "jrkqh5sr",
+        "name": "titulo",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "lnkgiyr2",
+        "name": "saberes",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "p8gan5gbxzqpiwe",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "bjzgwuhv",
+        "name": "telefono",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "mzsptfrv",
+        "name": "correo",
+        "type": "email",
+        "system": false,
+        "required": false,
+        "options": {
+          "exceptDomains": null,
+          "onlyDomains": null
+        }
+      },
+      {
+        "id": "pmj0mtfd",
+        "name": "horas",
+        "type": "number",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null
+        }
+      },
+      {
+        "id": "dh8giy6a",
+        "name": "dia",
+        "type": "select",
+        "system": false,
+        "required": false,
+        "options": {
+          "maxSelect": 1,
+          "values": [
+            "Lunes",
+            "Martes",
+            "Miercoles",
+            "Jueves",
+            "Viernes"
+          ]
+        }
+      },
+      {
+        "id": "ffvmsdyf",
+        "name": "saber",
+        "type": "text",
+        "system": false,
+        "required": true,
+        "options": {
+          "min": null,
+          "max": 80,
+          "pattern": ""
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null,
+    "options": {
+      "query": "SELECT\n  profesores.id as id,\n  profesores.nombre,\n  profesores.apellido,\n  profesores.cedula,\n  titulos.nombre as titulo,\n  profesores.saberes,\n  profesores.telefono,\n  profesores.correo,\n  cargas.horas,\n  cargas.dia,\n  saberes.nombre as saber\nFROM cargas\nLEFT JOIN profesores ON profesores.id = cargas.profesor_id\nLEFT JOIN secciones ON secciones.id = cargas.seccion_id\nLEFT JOIN titulos ON profesores.titulo_id = titulos.id\nLEFT JOIN saberes ON cargas.saber_id = saberes.id"
+    }
+  },
+  {
+    "id": "jyjq1goyyopi2bd",
+    "name": "profesores",
+    "type": "base",
+    "system": false,
+    "schema": [
+      {
+        "id": "h0skyldp",
+        "name": "titulo_id",
+        "type": "relation",
+        "system": false,
+        "required": true,
+        "options": {
+          "collectionId": "y7x8y8ed9uav78d",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "ptrta0s5",
+        "name": "posgrado_id",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "ujz7f207aubbp4q",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "xdtra2om",
+        "name": "contrato_id",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "hueadjlvs1rgsqi",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": 1,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "3bn5rrtn",
+        "name": "nombre",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "nf6f3jgz",
+        "name": "apellido",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "nyeveaxc",
+        "name": "cedula",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "gbtowdrp",
+        "name": "saberes",
+        "type": "relation",
+        "system": false,
+        "required": false,
+        "options": {
+          "collectionId": "p8gan5gbxzqpiwe",
+          "cascadeDelete": false,
+          "minSelect": null,
+          "maxSelect": null,
+          "displayFields": []
+        }
+      },
+      {
+        "id": "fqqsrh1i",
+        "name": "telefono",
+        "type": "text",
+        "system": false,
+        "required": false,
+        "options": {
+          "min": null,
+          "max": null,
+          "pattern": ""
+        }
+      },
+      {
+        "id": "q2vyuptj",
+        "name": "correo",
+        "type": "email",
+        "system": false,
+        "required": false,
+        "options": {
+          "exceptDomains": null,
+          "onlyDomains": null
+        }
+      }
+    ],
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
+    "options": {}
+  }
+]
