@@ -154,7 +154,7 @@ onMounted(async () => {
         <template #InputField
           ><InputComponent
             v-maska
-            data-maska="V-##.###.###"
+            data-maska="########"
             data-maska-tokens="'0':/[0-9]/:M"
             name="cedula"
             v-model="formData.cedula"
@@ -169,7 +169,7 @@ onMounted(async () => {
         <template #InputField
           ><InputComponent
             v-maska
-            data-maska="### ###-##-##"
+            data-maska="###########"
             name="telefono"
             v-model="formData.telefono"
         /></template>
