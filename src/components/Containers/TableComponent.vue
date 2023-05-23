@@ -250,7 +250,24 @@ const updateValue = (e: Event) => {
                             <th class="bg-indigo-700 py-2 pl-2 text-white">
                               {{ data.nameAlias ?? data.name }}
                             </th>
-                            <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                            <td
+                              v-if="
+                                data.isSingleRelation && data.childName && record.expand[data.name]
+                              "
+                              class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+                            >
+                              {{ record['expand'][data.name][data.childName] }}
+                            </td>
+                            <td
+                              v-else-if="data.isSingleRelation && !record.expand[data.name]"
+                              class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+                            >
+                              {{ '¡No tiene!' }}
+                            </td>
+                            <td
+                              v-else
+                              class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+                            >
                               {{ record[data.name.toLowerCase()] }}
                             </td>
                           </tr>
@@ -293,11 +310,7 @@ const updateValue = (e: Event) => {
                 <!-- Columnas relaciones uno a uno -->
                 <template v-else-if="column.isSingleRelation">
                   <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                    {{
-                      record['expand'][column.isSingleRelation.name][
-                        column.isSingleRelation.childName
-                      ]
-                    }}
+                    {{ record['expand'][column.name][column.childName ?? ''] }}
                   </td>
                 </template>
 

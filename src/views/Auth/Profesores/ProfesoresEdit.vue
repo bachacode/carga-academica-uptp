@@ -21,14 +21,12 @@ import {
   minLengthValidation,
   requiredValidation
 } from '@/helpers/validationHelpers'
+import { usePosgradoStore } from '@/stores/posgrados'
 // Store del módulo
 const store = useProfesorStore()
 
 // Store de contratos
 const contratos = useContratoStore()
-
-// Booleano para el botón de submit
-const isLoading = ref(false)
 
 // Id del item a editar
 const id = ref()
@@ -38,6 +36,12 @@ const saberes = useSaberStore()
 
 // Store de titulos
 const titulos = useTituloStore()
+
+// Store de posgrados
+const posgrados = usePosgradoStore()
+
+// Booleano para el botón de submit
+const isLoading = ref(false)
 
 // Variable reactiva con las relaciones a remover del item
 const relations = reactive<relationsType>({
@@ -52,6 +56,7 @@ const formData = reactive<profesorType>({
   apellido: '',
   cedula: '',
   titulo_id: '',
+  posgrado_id: '',
   saberes: [],
   contrato_id: '',
   telefono: '',
@@ -80,6 +85,7 @@ const formRules = computed(() => {
       required: requiredValidation(),
       minLength: minLengthValidation()
     },
+    posgrado_id: {},
     saberes: {},
     contrato_id: {
       required: requiredValidation()
@@ -128,10 +134,20 @@ const contratosOptions = computed(() => {
 
 // Valor computado de titulos del select
 const titulosOptions = computed(() => {
-  return titulos.filteredData?.map((record: any) => {
+  return titulos.filteredData?.map((record) => {
     return {
       value: record.id,
-      name: `${record.nombre}`
+      name: `${record.grado} en ${record.nombre}`
+    }
+  })
+})
+
+// Valor computado de posgrados del select
+const posgradosOptions = computed(() => {
+  return posgrados.filteredData?.map((record) => {
+    return {
+      value: record.id,
+      name: `${record.grado} en ${record.nombre}`
     }
   })
 })
@@ -219,6 +235,23 @@ onMounted(async () => {
           /></template>
           <template #InputError
             ><InputError v-if="v$.titulo_id.$error" :message="v$.titulo_id.$errors[0]?.$message"
+          /></template>
+        </InputField>
+
+        <!-- Posgrado -->
+        <InputField label="Posgrado" name="posgrado" helper-text="Este campo es opcional">
+          <template #InputField>
+            <InputSelect
+              :options="posgradosOptions ?? [{ value: '', name: 'No se han encontrado posgrados' }]"
+              placeholder="No tiene posgrado"
+              name="posgrado"
+              :disable-placeholder="false"
+              v-model="formData.posgrado_id"
+          /></template>
+          <template #InputError
+            ><InputError
+              v-if="v$.posgrado_id.$error"
+              :message="v$.posgrado_id.$errors[0]?.$message"
           /></template>
         </InputField>
 

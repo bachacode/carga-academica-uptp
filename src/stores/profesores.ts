@@ -1,13 +1,13 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
-import { contratos } from '@/assets/contratos'
 export type profesorType = {
   nombre: string
   apellido: string
   cedula: string
   titulo_id: string
   saberes: Array<string>
-  contrato_id: number | string
+  contrato_id: string
+  posgrado_id: string | null
   telefono: string
   correo: string
 }
@@ -27,12 +27,15 @@ const errorMessages = {
 }
 
 const appendWords = (record: IProfesor) => {
-  if (record.contrato_id == 0) {
-    record.contrato_id = `${contratos[0].nom_contrato} - ${contratos[0].horas} horas`
-  } else if (record.contrato_id == 1) {
-    record.contrato_id = `${contratos[1].nom_contrato} - ${contratos[1].horas} horas`
-  } else if (record.contrato_id == 2) {
-    record.contrato_id = `${contratos[2].nom_contrato} - ${contratos[2].horas} horas`
+  //@ts-ignore
+  record.expand.contrato_id.nombre = `${record.expand.contrato_id.nombre} - ${record.expand.contrato_id.horas} horas`
+  if (record.expand.titulo_id) {
+    //@ts-ignore
+    record.expand.titulo_id.nombre = `${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre}`
+  }
+  if (record.expand.posgrado_id) {
+    //@ts-ignore
+    record.expand.posgrado_id.nombre = `${record.expand.posgrado_id.grado} en ${record.expand.posgrado_id.nombre}`
   }
   return record
 }
@@ -43,7 +46,7 @@ export const useProfesorStore = createCrudStore<profesorType, IProfesor>({
   collectionName: 'profesores',
   success: successMessages,
   error: errorMessages,
-  relations: ['saberes', 'titulo_id', 'contrato_id'],
+  relations: ['saberes', 'titulo_id', 'contrato_id', 'posgrado_id'],
   manyToMany: ['saberes'],
   mapData: appendWords
 })

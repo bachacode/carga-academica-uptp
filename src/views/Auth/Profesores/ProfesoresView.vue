@@ -39,19 +39,27 @@ const columns: columnType[] = [
     ]
   },
   {
-    name: 'Titulo',
-    isSingleRelation: {
-      name: 'titulo_id',
-      childName: 'nombre'
-    },
-    isAsc: false
+    name: 'Titulos',
+    multipleData: [
+      {
+        name: 'titulo_id',
+        nameAlias: 'Titulo',
+        childName: 'nombre',
+        isSingleRelation: true
+      },
+      {
+        name: 'posgrado_id',
+        nameAlias: 'Posgrado',
+        childName: 'nombre',
+        isSingleRelation: true
+      }
+    ]
   },
   {
-    name: 'Contrato',
-    isSingleRelation: {
-      name: 'contrato_id',
-      childName: 'nombre'
-    },
+    name: 'contrato_id',
+    nameAlias: 'Contrato',
+    childName: 'nombre',
+    isSingleRelation: true,
     isAsc: false
   },
   {

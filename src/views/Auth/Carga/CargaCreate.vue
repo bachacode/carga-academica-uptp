@@ -109,9 +109,9 @@ const submitData = async () => {
     isLoading.value = false
   }
 }
-onMounted(async() => {
+onMounted(async () => {
   await saberes.fetchFullList()
-}) 
+})
 </script>
 
 <template>
