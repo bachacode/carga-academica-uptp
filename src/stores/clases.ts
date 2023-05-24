@@ -9,13 +9,23 @@ export type claseType = {
   saberes: Array<string>
   telefono: string
   correo: string
+  horas: string
 }
 
 export interface IClase extends claseType, Record {}
+
+const appendWords = (record: IClase) => {
+  //@ts-ignore
+  if (!record.horas.toString().endsWith('horas')) {
+    record.horas = `${record.horas} horas`
+  }
+  return record
+}
 
 export const useClaseStore = createViewStore<IClase>({
   storeId: 'clases',
   collectionName: 'carga_profesores',
   relations: ['saberes'],
-  autoFetch: false
+  autoFetch: false,
+  mapData: appendWords
 })

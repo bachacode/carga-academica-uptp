@@ -28,12 +28,31 @@ const errorMessages = {
 
 const appendWords = (record: IProfesor) => {
   //@ts-ignore
-  record.expand.contrato_id.nombre = `${record.expand.contrato_id.nombre} - ${record.expand.contrato_id.horas} horas`
-  if (record.expand.titulo_id) {
+  if (!record.expand.contrato_id.nombre.toString().endsWith('horas')) {
+    //@ts-ignore
+    record.expand.contrato_id.nombre = `${record.expand.contrato_id.nombre} - ${record.expand.contrato_id.horas} horas`
+  }
+  if (
+    record.expand.titulo_id &&
+    //@ts-ignore
+    !record.expand.titulo_id.nombre.toString().startsWith('Ing') &&
+    //@ts-ignore
+    !record.expand.titulo_id.nombre.toString().startsWith('Tec') &&
+    //@ts-ignore
+    !record.expand.titulo_id.nombre.toString().startsWith('Lic')
+  ) {
     //@ts-ignore
     record.expand.titulo_id.nombre = `${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre}`
   }
-  if (record.expand.posgrado_id) {
+  if (
+    record.expand.posgrado_id &&
+    //@ts-ignore
+    !record.expand.posgrado_id.nombre.toString().startsWith('Maes') &&
+    //@ts-ignore
+    !record.expand.posgrado_id.nombre.toString().startsWith('Mag') &&
+    //@ts-ignore
+    !record.expand.posgrado_id.nombre.toString().startsWith('Doc')
+  ) {
     //@ts-ignore
     record.expand.posgrado_id.nombre = `${record.expand.posgrado_id.grado} en ${record.expand.posgrado_id.nombre}`
   }

@@ -33,12 +33,11 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
-    name: 'Horas',
-    nameAlias: 'Horas Totales',
+    name: 'Saber',
     isAsc: false
   },
   {
-    name: 'Saber',
+    name: 'Horas',
     isAsc: false
   }
 ]

@@ -26,8 +26,8 @@ const errorMessages = {
 }
 
 const appendShit = (record: any) => {
-  if (!record.trayecto.toString().startsWith('trayecto'))
-    record.trayecto = `trayecto ${record.trayecto}`
+  if (!record.trayecto.toString().startsWith('Trayecto'))
+    record.trayecto = `Trayecto ${record.trayecto}`
   if (!record.estudiantes.toString().endsWith('estudiantes'))
     record.estudiantes = `${record.estudiantes} estudiantes`
   return record
