@@ -408,7 +408,7 @@ export function createCrudStore<
       goToCreate,
       goToEdit,
       fetchFullList,
-      
+      defaultFetchQuery
     }
   })
 }

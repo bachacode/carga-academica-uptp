@@ -120,27 +120,27 @@ const toggleStatus = async (selectedId: string, column: string) => {
   selectedId
   await store.fetchOne(selectedId).then((data) => {
     Object.assign(singleData, data)
-  if (singleData)
-    store.pb
-      .collection('usuarios')
-      .update(selectedId, {
-        [column]: !singleData.estado
-      })
-      .then(async () => {
-        if (singleData && singleData.estado == true) {
-          await alert.setSuccess({ message: '¡Se ha desactivado al usuario correctamente!' })
-        } else {
-          await alert.setSuccess({ message: '¡Se ha activado al usuario correctamente!' })
-        }
-        await store.fetchAll()
-      })
-      .catch(async () => {
-        if (singleData && singleData.estado == true) {
-          await alert.setSuccess({ message: '¡Ha ocurrido un error al desactivar este usuario!' })
-        } else {
-          await alert.setSuccess({ message: '¡Ha ocurrido un error al activar este usuario!' })
-        }
-      })
+    if (singleData)
+      store.pb
+        .collection('usuarios')
+        .update(selectedId, {
+          [column]: !singleData.estado
+        })
+        .then(async () => {
+          if (singleData && singleData.estado == true) {
+            await alert.setSuccess({ message: '¡Se ha desactivado al usuario correctamente!' })
+          } else {
+            await alert.setSuccess({ message: '¡Se ha activado al usuario correctamente!' })
+          }
+          await store.fetchAll()
+        })
+        .catch(async () => {
+          if (singleData && singleData.estado == true) {
+            await alert.setSuccess({ message: '¡Ha ocurrido un error al desactivar este usuario!' })
+          } else {
+            await alert.setSuccess({ message: '¡Ha ocurrido un error al activar este usuario!' })
+          }
+        })
   })
 }
 
@@ -166,10 +166,7 @@ async function promoteUser(id: string | undefined) {
 
 <template>
   <!-- Delete Modal -->
-  <DeleteModal
-    :modal-text="`al usuario ${singleData?.username}`"
-    @destroy-item="destroyItem(id)"
-  />
+  <DeleteModal :modal-text="`al usuario ${singleData?.username}`" @destroy-item="destroyItem(id)" />
   <!-- /Delete Modal -->
 
   <!-- Promote Modal -->
@@ -194,11 +191,7 @@ async function promoteUser(id: string | undefined) {
             class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
             >¡No!</label
           >
-          <label
-            for="my-action-rol"
-            class="btn rounded-xl bg-indigo-700"
-            @click="promoteUser(id)"
-          >
+          <label for="my-action-rol" class="btn rounded-xl bg-indigo-700" @click="promoteUser(id)">
             ¡Promover!
           </label>
         </div>

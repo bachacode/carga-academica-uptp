@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, onMounted, reactive, computed } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useSaberStore, type saberType } from '@/stores/saberes'
-import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
@@ -78,15 +77,15 @@ const submitData = async () => {
 }
 
 // Al inicializar el componente, asigna el id de la ruta a una variable reactiva de vue
-onMounted(async () => {
-  if (!(router.currentRoute.value.params.id instanceof Array)) {
-    id.value = router.currentRoute.value.params.id
-    await store.fetchOne(router.currentRoute.value.params.id)
-    if (store.singleData) {
-      Object.assign(formData, store.singleData)
-    }
-  }
-})
+// onMounted(async () => {
+//   if (!(router.currentRoute.value.params.id instanceof Array)) {
+//     id.value = router.currentRoute.value.params.id
+//     await store.fetchOne(router.currentRoute.value.params.id)
+//     if (store.singleData) {
+//       Object.assign(formData, store.singleData)
+//     }
+//   }
+// })
 </script>
 
 <template>

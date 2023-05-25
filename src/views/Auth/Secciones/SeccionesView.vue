@@ -86,10 +86,7 @@ const changePage = async (page: number) => {
 </script>
 <template>
   <!-- Delete Modal -->
-  <DeleteModal
-    :modal-text="`la sección ${singleData?.codigo}`"
-    @destroy-item="destroyItem(id)"
-  />
+  <DeleteModal :modal-text="`la sección ${singleData?.codigo}`" @destroy-item="destroyItem(id)" />
   <!-- /Delete Modal -->
 
   <AuthLayout>

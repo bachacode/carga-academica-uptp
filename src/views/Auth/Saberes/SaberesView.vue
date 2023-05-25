@@ -4,7 +4,6 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import type { columnType } from '@/types/columnType'
-import DeleteModal from '@/components/Containers/DeleteModal.vue'
 import { onMounted, ref, watch } from 'vue'
 // Store del módulo
 const store = useSaberStore()
@@ -81,11 +80,11 @@ const selectItem = async (id: string) => {
 }
 
 // Función para borrar un item del módulo
-async function destroyItem(id: string | undefined) {
-  if (id) {
-    await store.destroy(id)
-  }
-}
+// async function destroyItem(id: string | undefined) {
+//   if (id) {
+//     await store.destroy(id)
+//   }
+// }
 
 // Función para cambiar pagina de la tabla
 const changePage = async (page: number) => {

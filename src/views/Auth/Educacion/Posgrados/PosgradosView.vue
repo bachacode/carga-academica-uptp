@@ -20,7 +20,6 @@ const singleData = reactive<posgradoType>({
   nombre: ''
 })
 
-
 // Columnas de la tabla
 const columns: columnType[] = [
   {
@@ -82,10 +81,7 @@ const changePage = async (page: number) => {
 
 <template>
   <!-- Delete Modal -->
-  <DeleteModal
-    :modal-text="`El posgrado ${singleData?.nombre}`"
-    @destroy-item="destroyItem(id)"
-  />
+  <DeleteModal :modal-text="`El posgrado ${singleData?.nombre}`" @destroy-item="destroyItem(id)" />
   <!-- /Delete Modal -->
   <div class="w-3/4 px-16 pb-8">
     <button @click="create()" class="btn mb-3 ml-4 rounded-lg bg-indigo-700 text-white">

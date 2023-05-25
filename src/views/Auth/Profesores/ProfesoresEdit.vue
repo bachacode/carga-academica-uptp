@@ -21,7 +21,7 @@ import {
   maxLengthValidation,
   minLengthValidation,
   requiredValidation,
-uniqueValidation
+  uniqueValidation
 } from '@/helpers/validationHelpers'
 import { usePosgradoStore } from '@/stores/posgrados'
 // Store del módulo

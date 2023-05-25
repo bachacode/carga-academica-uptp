@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCargaStore, type cargaType } from '@/stores/carga'
+import { useCargaStore } from '@/stores/carga'
 import { useClaseStore, type claseType } from '@/stores/clases'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'

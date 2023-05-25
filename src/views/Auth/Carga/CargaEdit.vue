@@ -31,6 +31,15 @@ const isLoading = ref(false)
 // Id del item a editar
 const id = ref()
 
+// Datos del registro a editar
+const singleData = reactive<cargaType>({
+  seccion_id: '',
+  profesor_id: '',
+  saber_id: '',
+  dia: '',
+  horas: ''
+})
+
 // Variables reactivas del formulario
 const formData = reactive<cargaType>({
   seccion_id: '',
@@ -116,13 +125,12 @@ const submitData = async () => {
 
 // Al inicializar el componente, asigna el id de la ruta a una variable reactiva de vue
 onMounted(async () => {
-  await saberes.fetchFullList()
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await store.fetchOne(router.currentRoute.value.params.id)
-    if (store.singleData) {
-      Object.assign(formData, store.singleData)
-    }
+    await store.fetchOne(id.value).then((data) => {
+      Object.assign(singleData, data)
+      Object.assign(formData, data)
+    })
   }
 })
 </script>
