@@ -125,6 +125,7 @@ const submitData = async () => {
 
 // Al inicializar el componente, asigna el id de la ruta a una variable reactiva de vue
 onMounted(async () => {
+  saberes.fetchFullList()
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await store.fetchOne(id.value).then((data) => {
