@@ -68,7 +68,7 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
       ></div>
       <div
         @click.stop="toggle"
-        class="absolute inset-y-0 right-0 z-10 flex cursor-pointer items-center pr-2"
+        class="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-2"
       >
         <font-awesome-icon v-if="!dropdown" icon="chevron-down" class="text-indigo-500" />
         <font-awesome-icon v-else icon="chevron-up" class="text-indigo-500" />
@@ -95,7 +95,7 @@ const toggleTag = (tag: optionType, selectedOptions: any, modelRelations?: relat
       <ul class="relative" v-for="tag in tags" :key="tag.value">
         <li
           :class="`${
-            !tag.isActive ? 'hover:bg-indigo-300' : 'hover:bg-red-300'
+            !tag.isActive ? 'hover:bg-green-300' : 'hover:bg-red-300'
           } cursor-pointer rounded-md py-1 px-2`"
           @click.stop="toggleTag(tag, selectedOptions, modelRelations)"
         >
