@@ -29,7 +29,8 @@ const columns: columnType[] = [
     isAsc: false
   },
   {
-    name: 'Titulo',
+    name: 'Cedula',
+    nameAlias: 'Cédula',
     isAsc: false
   },
   {
