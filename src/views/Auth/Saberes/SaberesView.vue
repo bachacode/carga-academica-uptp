@@ -5,7 +5,7 @@ import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 // Store del módulo
 const store = useSaberStore()
 
@@ -91,15 +91,13 @@ async function destroyItem(id: string | undefined) {
 const changePage = async (page: number) => {
   store.actualPage = page
 }
+
+onMounted(() => {
+  store.fetchAll()
+})
 </script>
 
 <template>
-  <!-- Delete Modal -->
-  <DeleteModal
-    :modal-text="`el saber ${store.singleData?.materia}`"
-    @destroy-item="destroyItem(store.singleData?.id)"
-  />
-  <!-- /Delete Modal -->
   <AuthLayout>
     <div class="w-full px-16 pb-8">
       <a href="pensum.pdf" target="_blank" class="btn mb-3 ml-4 rounded-lg bg-blue-700 text-white">
