@@ -95,9 +95,6 @@ export function createCrudStore<
     // Variable en la que se guarda la lista completa de items de un módulo a través de "getFullList"
     const fullData = ref<IData[]>()
 
-    // Variable en la que se guarda un solo item de un módulo a través de "getOne"
-    const singleData = ref<IData>()
-
     // Variable que guarda la query de busqueda de una tabla de un módulo
     const searchQuery = ref<string>('')
 
@@ -171,7 +168,7 @@ export function createCrudStore<
      * este lo recibe del parametro de configuración "relations"
      */
     async function fetchOne(id: string) {
-      singleData.value = await pb.collection(collectionName).getOne<IData>(id, {
+      return await pb.collection(collectionName).getOne<IData>(id, {
         expand: relations?.toString()
       })
     }
@@ -396,7 +393,6 @@ export function createCrudStore<
       data,
       fullData,
       pb,
-      singleData,
       actualPage,
       save,
       update,
@@ -411,7 +407,8 @@ export function createCrudStore<
       deSync,
       goToCreate,
       goToEdit,
-      fetchFullList
+      fetchFullList,
+      
     }
   })
 }

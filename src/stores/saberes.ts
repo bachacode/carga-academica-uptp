@@ -42,5 +42,6 @@ export const useSaberStore = createCrudStore<saberType, ISaber>({
   error: errorMessages,
   mapData: appendWords,
   relations: ['profesores'],
-  manyToMany: ['profesores']
+  manyToMany: ['profesores'],
+  autoFetch: false
 })

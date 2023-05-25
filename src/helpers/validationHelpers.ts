@@ -13,13 +13,17 @@ import {
 
 type uniqueStoreType = {
   uniqueKeysList: any
-  singleData: any
 }
 // Validación Unica
-export const isUnique = (store: uniqueStoreType, key: any) => (value: never) => {
+export const isUnique = (store: uniqueStoreType, key: any, currentValue?: any) => (value: never) => {
+  if(!currentValue) {
+  return (
+      !store.uniqueKeysList[key].includes(value)
+    )
+  } else
   return (
     !store.uniqueKeysList[key].includes(value) ||
-    (store.singleData && store.singleData[key] == value)
+    (currentValue[key] == value)
   )
 }
 const errorMessages = ref({

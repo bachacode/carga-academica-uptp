@@ -6,13 +6,32 @@ import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useAlertStore } from '@/stores/alert'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 import type { columnType } from '@/types/columnType'
-import { ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 // Store del módulo
 const store = useUsuarioStore()
 
 // Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
+
+// Id del item a editar
+const id = ref()
+
+// Datos del registro a editar
+const singleData = reactive({
+  username: '',
+  email: '',
+  emailVisibility: true,
+  password: '',
+  passwordConfirm: '',
+  nombre: '',
+  apellido: '',
+  cedula: '',
+  telefono: '',
+  cargo: '',
+  rol: 'Operador',
+  estado: true
+})
 
 // Columnas de la tabla
 const columns: columnType[] = [
@@ -50,20 +69,17 @@ const columns: columnType[] = [
   }
 ]
 
-// Variable que guarda el ordén actual de la tabla
-const sortedBy = ref('')
-
 /*
  * Observa a la variable sortedBy por cambios, si esta variable cambia
  * Realizara un fetchAll con el orden de la tabla
  */
-watch(sortedBy, async () => {
-  await store.fetchAll(sortedBy.value)
+watch(store.defaultFetchQuery, async () => {
+  await store.fetchAll()
 })
 
 // Función para ordenar la tabla de forma ASC o DESC
 const sortTable = (column: string) => {
-  sortedBy.value = column
+  store.defaultFetchQuery.sortBy = column
 }
 
 // Función para ir a la vista de "create"
@@ -77,8 +93,11 @@ const edit = async (id: string) => {
 }
 
 // Función para seleccionar un item del módulo
-const selectItem = async (id: string) => {
-  await store.fetchOne(id)
+const selectItem = async (selectedId: string) => {
+  id.value = selectedId
+  await store.fetchOne(id.value).then((data) => {
+    Object.assign(singleData, data)
+  })
 }
 
 // Función para borrar un item del módulo
@@ -97,35 +116,38 @@ const changePage = async (page: number) => {
 const alert = useAlertStore()
 
 // Función para activar o desactivar a un usuario operador
-const toggleStatus = async (id: string, column: string) => {
-  await store.fetchOne(id)
-  if (store.singleData)
+const toggleStatus = async (selectedId: string, column: string) => {
+  selectedId
+  await store.fetchOne(selectedId).then((data) => {
+    Object.assign(singleData, data)
+  if (singleData)
     store.pb
       .collection('usuarios')
-      .update(id, {
-        [column]: !store.singleData[column]
+      .update(selectedId, {
+        [column]: !singleData.estado
       })
       .then(async () => {
-        if (store.singleData && store.singleData[column] == true) {
+        if (singleData && singleData.estado == true) {
           await alert.setSuccess({ message: '¡Se ha desactivado al usuario correctamente!' })
         } else {
           await alert.setSuccess({ message: '¡Se ha activado al usuario correctamente!' })
         }
-        await store.fetchAll(sortedBy.value)
+        await store.fetchAll()
       })
       .catch(async () => {
-        if (store.singleData && store.singleData[column] == true) {
+        if (singleData && singleData.estado == true) {
           await alert.setSuccess({ message: '¡Ha ocurrido un error al desactivar este usuario!' })
         } else {
           await alert.setSuccess({ message: '¡Ha ocurrido un error al activar este usuario!' })
         }
       })
+  })
 }
 
 // Función para promover a un usuario operador al rol de administrador
 async function promoteUser(id: string | undefined) {
   if (id) {
-    if (store.singleData)
+    if (singleData)
       store.pb
         .collection('usuarios')
         .update(id, {
@@ -133,7 +155,7 @@ async function promoteUser(id: string | undefined) {
         })
         .then(async () => {
           await alert.setSuccess({ message: '¡Se ha promovido al usuario correctamente!' })
-          await store.fetchAll(sortedBy.value)
+          await store.fetchAll()
         })
         .catch(async () => {
           await alert.setError({ message: '¡Ha ocurrido un error al promover este usuario!' })
@@ -145,8 +167,8 @@ async function promoteUser(id: string | undefined) {
 <template>
   <!-- Delete Modal -->
   <DeleteModal
-    :modal-text="`al usuario ${store.singleData?.username}`"
-    @destroy-item="destroyItem(store.singleData?.id)"
+    :modal-text="`al usuario ${singleData?.username}`"
+    @destroy-item="destroyItem(id)"
   />
   <!-- /Delete Modal -->
 
@@ -158,7 +180,7 @@ async function promoteUser(id: string | undefined) {
         <h3 class="text-lg font-bold">¡Cuidado!</h3>
         <p class="py-4">
           Estas a punto de promover al usuario
-          <span class="font-bold">{{ store.singleData?.username }}</span> al rol de 'Administrador'.
+          <span class="font-bold">{{ singleData?.username }}</span> al rol de 'Administrador'.
           <span class="font-bold"
             >¡Ya no podrás modificar, desactivar o eliminar a este usuario si realizas esta
             acción!</span
@@ -175,7 +197,7 @@ async function promoteUser(id: string | undefined) {
           <label
             for="my-action-rol"
             class="btn rounded-xl bg-indigo-700"
-            @click="promoteUser(store.singleData?.id)"
+            @click="promoteUser(id)"
           >
             ¡Promover!
           </label>

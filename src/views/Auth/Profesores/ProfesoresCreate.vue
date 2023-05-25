@@ -15,9 +15,11 @@ import { useTituloStore } from '@/stores/titulos'
 import { useContratoStore } from '@/stores/contratos'
 import {
   emailValidation,
+  isUnique,
   maxLengthValidation,
   minLengthValidation,
-  requiredValidation
+  requiredValidation,
+  uniqueValidation
 } from '@/helpers/validationHelpers'
 import { usePosgradoStore } from '@/stores/posgrados'
 // Store del módulo
@@ -51,6 +53,12 @@ const formData = reactive<profesorType>({
   correo: ''
 })
 
+// Validación Unica
+const isCedulaTaken = isUnique(store, 'cedula')
+
+// Validación Unica
+const isCorreoTaken = isUnique(store, 'correo')
+
 // Reglas de la validación
 const formRules = computed(() => {
   return {
@@ -67,7 +75,8 @@ const formRules = computed(() => {
     cedula: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('cedula', 'profesores', isCedulaTaken, formData.cedula)
     },
     titulo_id: {
       required: requiredValidation(),
@@ -87,7 +96,8 @@ const formRules = computed(() => {
       required: requiredValidation(),
       email: emailValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('correo', 'profesores', isCorreoTaken, formData.correo)
     }
   }
 })
@@ -146,6 +156,7 @@ const v$ = useVuelidate(formRules, formData)
 // Función para enviar el formulario
 const submitData = async () => {
   await v$.value.$validate()
+  console.log(v$.value.cedula)
   if (!v$.value.$error) {
     isLoading.value = true
     await store.save(formData)

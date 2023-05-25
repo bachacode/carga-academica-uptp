@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useCargaStore } from '@/stores/carga'
-import { useClaseStore } from '@/stores/clases'
+import { useCargaStore, type cargaType } from '@/stores/carga'
+import { useClaseStore, type claseType } from '@/stores/clases'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
-import { ref, watchEffect } from 'vue'
+import { reactive, ref, watchEffect } from 'vue'
 import type { columnType } from '@/types/columnType'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 
@@ -17,6 +17,19 @@ const clases = useClaseStore()
 
 // Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
+
+// Id del item a eliminar
+const id = ref()
+
+// Datos del registro seleccionado
+const singleData = reactive<claseType>({
+  nombre: '',
+  apellido: '',
+  cedula: '',
+  horas: '',
+  dia: '',
+  saber: ''
+})
 
 // Columnas de la tabla
 const columns: columnType[] = [
@@ -62,8 +75,11 @@ const edit = async (id: string) => {
 }
 
 // Función para seleccionar un item del módulo
-const selectItem = async (id: string) => {
-  await store.fetchOne(id)
+const selectItem = async (selectedId: string) => {
+  id.value = selectedId
+  await store.fetchOne(id.value).then((data) => {
+    Object.assign(singleData, data)
+  })
 }
 
 // Función para borrar un item del módulo
@@ -94,8 +110,8 @@ watchEffect(async () => {
 <template>
   <!-- Delete Modal -->
   <DeleteModal
-    :modal-text="`la carga academica del profesor ${store.singleData?.nombre} ${store.singleData?.apellido}`"
-    @destroy-item="destroyItem(store.singleData?.id)"
+    :modal-text="`la carga academica del profesor ${singleData?.nombre} ${singleData?.apellido}`"
+    @destroy-item="destroyItem(id)"
   />
   <!-- /Delete Modal -->
   <AuthLayout>

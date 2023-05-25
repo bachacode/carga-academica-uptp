@@ -1,15 +1,24 @@
 <script setup lang="ts">
-import { useTituloStore } from '@/stores/titulos'
+import { useTituloStore, type tituloType } from '@/stores/titulos'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 import type { columnType } from '@/types/columnType'
-import { ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 // Store del módulo
 const store = useTituloStore()
 
 // Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
+
+// Id del item a eliminar
+const id = ref()
+
+// Datos del registro seleccionado
+const singleData = reactive<tituloType>({
+  grado: '',
+  nombre: ''
+})
 
 // Columnas de la tabla
 const columns: columnType[] = [
@@ -50,8 +59,11 @@ const edit = async (id: string) => {
 }
 
 // Función para seleccionar un item del módulo
-const selectItem = async (id: string) => {
-  await store.fetchOne(id)
+const selectItem = async (selectedId: string) => {
+  id.value = selectedId
+  await store.fetchOne(id.value).then((data) => {
+    Object.assign(singleData, data)
+  })
 }
 
 // Función para borrar un item del módulo
@@ -70,8 +82,8 @@ const changePage = async (page: number) => {
 <template>
   <!-- Delete Modal -->
   <DeleteModal
-    :modal-text="`El titulo ${store.singleData?.nombre}`"
-    @destroy-item="destroyItem(store.singleData?.id)"
+    :modal-text="`El titulo ${singleData?.nombre}`"
+    @destroy-item="destroyItem(id)"
   />
   <!-- /Delete Modal -->
   <div class="w-3/4 px-16 pb-8">

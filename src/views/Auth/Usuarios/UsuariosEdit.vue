@@ -30,6 +30,22 @@ const isLoading = ref(false)
 // Id del item a editar
 const id = ref()
 
+// Datos del registro a editar
+const singleData = reactive({
+  username: '',
+  email: '',
+  emailVisibility: true,
+  password: '',
+  passwordConfirm: '',
+  nombre: '',
+  apellido: '',
+  cedula: '',
+  telefono: '',
+  cargo: '',
+  rol: 'Operador',
+  estado: true
+})
+
 // Variables reactivas del formulario
 const formData = reactive({
   username: '',
@@ -47,9 +63,9 @@ const formData = reactive({
 })
 
 // Validaciones unicas
-const isUsernameTaken = isUnique(store, 'username')
-const isEmailTaken = isUnique(store, 'email')
-const isCedulaTaken = isUnique(store, 'cedula')
+const isUsernameTaken = isUnique(store, 'username', singleData)
+const isEmailTaken = isUnique(store, 'email', singleData)
+const isCedulaTaken = isUnique(store, 'cedula', singleData)
 
 // Reglas de validación
 const formRules = computed(() => {
@@ -133,10 +149,10 @@ const changePersonal = () => {
 onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await store.fetchOne(router.currentRoute.value.params.id)
-    if (store.singleData) {
-      Object.assign(formData, store.singleData)
-    }
+    await store.fetchOne(id.value).then((data) => {
+      Object.assign(singleData, data)
+      Object.assign(formData, data)
+    })
   }
 })
 </script>

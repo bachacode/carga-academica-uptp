@@ -28,6 +28,13 @@ const isLoading = ref(false)
 // Id del item a editar
 const id = ref()
 
+// Datos del registro a editar
+const singleData = reactive<seccionType>({
+  codigo: '',
+  trayecto: '',
+  estudiantes: ''
+})
+
 // Variables reactivas del formulario
 const formData = reactive<seccionType>({
   codigo: '',
@@ -36,7 +43,7 @@ const formData = reactive<seccionType>({
 })
 
 // Validación Unica
-const isCodigoTaken = isUnique(store, 'codigo')
+const isCodigoTaken = isUnique(store, 'codigo', singleData)
 
 // Reglas de validación
 const formRules = computed(() => {
@@ -88,10 +95,10 @@ const submitData = async () => {
 onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await store.fetchOne(router.currentRoute.value.params.id)
-    if (store.singleData) {
-      Object.assign(formData, store.singleData)
-    }
+    await store.fetchOne(id.value).then((data) => {
+      Object.assign(singleData, data)
+      Object.assign(formData, data)
+    })
   }
 })
 </script>

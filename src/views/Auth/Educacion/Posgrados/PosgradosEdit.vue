@@ -18,6 +18,12 @@ const isLoading = ref(false)
 // Id del item a editar
 const id = ref()
 
+// Datos del registro a editar
+const singleData = reactive<posgradoType>({
+  grado: '',
+  nombre: ''
+})
+
 // Variables reactivas del formulario
 const formData = reactive<posgradoType>({
   grado: '',
@@ -62,10 +68,10 @@ const submitData = async () => {
 onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await store.fetchOne(router.currentRoute.value.params.id)
-    if (store.singleData) {
-      Object.assign(formData, store.singleData)
-    }
+    await store.fetchOne(id.value).then((data) => {
+      Object.assign(singleData, data)
+      Object.assign(formData, data)
+    })
   }
 })
 </script>

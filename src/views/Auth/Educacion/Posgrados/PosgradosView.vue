@@ -1,15 +1,25 @@
 <script setup lang="ts">
-import { usePosgradoStore } from '@/stores/posgrados'
+import { usePosgradoStore, type posgradoType } from '@/stores/posgrados'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 import type { columnType } from '@/types/columnType'
-import { ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 // Store del módulo
 const store = usePosgradoStore()
 
 // Query de filtrado de la tabla
 const { searchQuery } = storeToRefs(store)
+
+// Id del item a eliminar
+const id = ref()
+
+// Datos del registro seleccionado
+const singleData = reactive<posgradoType>({
+  grado: '',
+  nombre: ''
+})
+
 
 // Columnas de la tabla
 const columns: columnType[] = [
@@ -50,8 +60,11 @@ const edit = async (id: string) => {
 }
 
 // Función para seleccionar un item del módulo
-const selectItem = async (id: string) => {
-  await store.fetchOne(id)
+const selectItem = async (selectedId: string) => {
+  id.value = selectedId
+  await store.fetchOne(id.value).then((data) => {
+    Object.assign(singleData, data)
+  })
 }
 
 // Función para borrar un item del módulo
@@ -70,8 +83,8 @@ const changePage = async (page: number) => {
 <template>
   <!-- Delete Modal -->
   <DeleteModal
-    :modal-text="`El posgrado ${store.singleData?.nombre}`"
-    @destroy-item="destroyItem(store.singleData?.id)"
+    :modal-text="`El posgrado ${singleData?.nombre}`"
+    @destroy-item="destroyItem(id)"
   />
   <!-- /Delete Modal -->
   <div class="w-3/4 px-16 pb-8">

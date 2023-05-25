@@ -17,9 +17,11 @@ import { useTituloStore } from '@/stores/titulos'
 import { useContratoStore } from '@/stores/contratos'
 import {
   emailValidation,
+  isUnique,
   maxLengthValidation,
   minLengthValidation,
-  requiredValidation
+  requiredValidation,
+uniqueValidation
 } from '@/helpers/validationHelpers'
 import { usePosgradoStore } from '@/stores/posgrados'
 // Store del módulo
@@ -30,6 +32,19 @@ const contratos = useContratoStore()
 
 // Id del item a editar
 const id = ref()
+
+// Datos del registro a editar
+const singleData = reactive<profesorType>({
+  nombre: '',
+  apellido: '',
+  cedula: '',
+  titulo_id: '',
+  posgrado_id: '',
+  saberes: [],
+  contrato_id: '',
+  telefono: '',
+  correo: ''
+})
 
 // Store de saberes
 const saberes = useSaberStore()
@@ -63,6 +78,12 @@ const formData = reactive<profesorType>({
   correo: ''
 })
 
+// Validación Unica
+const isCedulaTaken = isUnique(store, 'cedula', singleData)
+
+// Validación Unica
+const isCorreoTaken = isUnique(store, 'correo', singleData)
+
 // Reglas de la validación
 const formRules = computed(() => {
   return {
@@ -79,7 +100,8 @@ const formRules = computed(() => {
     cedula: {
       required: requiredValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('cedula', 'profesores', isCedulaTaken, formData.cedula)
     },
     titulo_id: {
       required: requiredValidation(),
@@ -99,7 +121,8 @@ const formRules = computed(() => {
       required: requiredValidation(),
       email: emailValidation(),
       minLength: minLengthValidation(),
-      maxLength: maxLengthValidation(40)
+      maxLength: maxLengthValidation(40),
+      unique: uniqueValidation('correo', 'profesores', isCorreoTaken, formData.correo)
     }
   }
 })
@@ -171,13 +194,13 @@ onMounted(async () => {
   await saberes.fetchFullList()
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
-    await store.fetchOne(router.currentRoute.value.params.id)
-    if (store.singleData) {
-      Object.assign(formData, store.singleData)
+    await store.fetchOne(id.value).then((data) => {
+      Object.assign(singleData, data)
+      Object.assign(formData, data)
       formData.saberes?.forEach((saber) => {
         relations.stored.push(saber)
       })
-    }
+    })
   }
 })
 </script>
