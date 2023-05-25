@@ -9,7 +9,7 @@ export interface Props {
     value: any
     name: any
   }[]
-  disablePlaceholder: boolean
+  disablePlaceholder?: boolean
 }
 
 withDefaults(defineProps<Props>(), {
