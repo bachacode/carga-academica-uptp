@@ -60,30 +60,31 @@ const formRules = computed(() => {
 
 // Opciones del Select "Secciones"
 const seccionesOptions = computed(() => {
-  return secciones.filteredData?.map((record: any) => {
+  return secciones.fullData?.map((record) => {
     return {
       value: record.id,
-      name: record.codigo + ' - ' + record.trayecto + ' - ' + record.estudiantes
+      name: `${record.codigo} - Trayecto ${record.trayecto} - ${record.estudiantes} estudiantes`
     }
   })
 })
 
 // Opciones del Select "Profesores"
 const profesoresOptions = computed(() => {
-  return profesores.filteredData?.map((record: any) => {
+  return profesores.fullData?.map((record) => {
     return {
       value: record.id,
-      name: record.nombre + ' ' + record.apellido
+      //@ts-ignore
+      name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre}`
     }
   })
 })
 
 // Opciones del Select "Saberes"
 const saberesOptions = computed(() => {
-  return saberes.fullData?.map((record: any) => {
+  return saberes.fullData?.map((record) => {
     return {
       value: record.id,
-      name: `${record.nombre} - trayecto ${record.trayecto}`
+      name: `${record.nombre} - Trayecto ${record.trayecto}`
     }
   })
 })
@@ -111,6 +112,8 @@ const submitData = async () => {
 }
 onMounted(async () => {
   await saberes.fetchFullList()
+  await profesores.fetchFullList()
+  await secciones.fetchFullList()
 })
 </script>
 
@@ -166,7 +169,7 @@ onMounted(async () => {
             <InputSelect
               :options="saberesOptions ?? [{ value: '', name: 'No se han encontrado saberes' }]"
               placeholder="Seleccione un saber"
-              name="saberes"
+              name="saber"
               v-model="formData.saber_id"
           /></template>
           <template #InputError
