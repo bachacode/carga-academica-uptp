@@ -29,5 +29,6 @@ export const useCargaStore = createCrudStore<cargaType, ICarga>({
   collectionName: 'cargas',
   success: successMessages,
   error: errorMessages,
-  autoFetch: false
+  autoFetch: false,
+  relations: ['saber_id']
 })

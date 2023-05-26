@@ -28,7 +28,8 @@ const singleData = reactive<claseType>({
   cedula: '',
   horas: '',
   dia: '',
-  saber: ''
+  saber: '',
+  seccion: ''
 })
 
 // Columnas de la tabla
@@ -44,6 +45,11 @@ const columns: columnType[] = [
   {
     name: 'Cedula',
     nameAlias: 'Cédula',
+    isAsc: false
+  },
+  {
+    name: 'seccion',
+    nameAlias: 'Sección',
     isAsc: false
   },
   {

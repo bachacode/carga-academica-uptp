@@ -12,6 +12,8 @@ import InputSelect from '@/components/InputSelect.vue'
 import { useSeccionStore } from '@/stores/secciones'
 import { useCargaStore, type cargaType } from '@/stores/carga'
 import { numericValidation, requiredValidation } from '@/helpers/validationHelpers'
+import { helpers } from '@vuelidate/validators'
+import type { Record } from 'pocketbase'
 // Store del módulo
 const store = useCargaStore()
 
@@ -27,6 +29,9 @@ const secciones = useSeccionStore()
 // Booleano para el botón de submit
 const isLoading = ref(false)
 
+// Lista de profesores con proyecto asignado para la validacion
+const profs_proyecto = ref<Record[]>()
+
 // Variables reactivas del formulario
 const formData = reactive<cargaType>({
   seccion_id: '',
@@ -36,6 +41,37 @@ const formData = reactive<cargaType>({
   horas: ''
 })
 
+// Esto es una solución horrible, pero no sabía como hacerlo mejor, si explota lo advertí
+const tieneDosProyectos = (value: string) => {
+  // Si no estan definidas las tres columnas retorna true
+  if (!(formData.profesor_id && formData.seccion_id && formData.saber_id)) {
+    return true
+  }
+  // Si las listas necesarias no estan definidas, retorna true
+  if (!(saberes.fullData && profs_proyecto.value)) {
+    return true
+  }
+  // Consigue los datos del saber
+  let saber = saberes.fullData.filter((record) => {
+    return record.id == value
+  })
+  // Si no es una materia de proyecto retorna true
+  if (!(saber[0].nombre.startsWith('Proyecto') || saber[0].nombre.startsWith('proyecto'))) {
+    return true
+  }
+  // Filtra los records y solo cuenta los que cumplan la condición
+  let total = profs_proyecto.value.filter((record) => {
+    return (
+      record.id != formData.seccion_id &&
+      record.profesor == formData.profesor_id &&
+      saber[0].nombre.startsWith('Proyecto')
+    )
+  }).length
+  //Retorna false si total es igual o mayor a dos, de lo contrario retorna true
+  return !(total >= 2)
+}
+
+const dosProyectos = helpers.withAsync(tieneDosProyectos, () => formData.saber_id)
 // Reglas de validación
 const formRules = computed(() => {
   return {
@@ -46,7 +82,11 @@ const formRules = computed(() => {
       required: requiredValidation()
     },
     saber_id: {
-      required: requiredValidation()
+      required: requiredValidation(),
+      dosProyectos: helpers.withMessage(
+        'El profesor seleccionado no puede dar proyecto a mas secciones',
+        dosProyectos
+      )
     },
     dia: {
       required: requiredValidation()
@@ -111,9 +151,16 @@ const submitData = async () => {
   }
 }
 onMounted(async () => {
+  await store.fetchFullList()
   await saberes.fetchFullList()
   await profesores.fetchFullList()
   await secciones.fetchFullList()
+  store.pb
+    .collection('profs_proyecto')
+    .getFullList()
+    .then((data) => {
+      profs_proyecto.value = data
+    })
 })
 </script>
 
