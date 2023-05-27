@@ -13,6 +13,8 @@ import { useSeccionStore } from '@/stores/secciones'
 import InputSelect from '@/components/InputSelect.vue'
 import { useCargaStore, type cargaType } from '@/stores/carga'
 import { numericValidation, requiredValidation } from '@/helpers/validationHelpers'
+import { helpers } from '@vuelidate/validators'
+import type { Record } from 'pocketbase'
 // Store del módulo
 const store = useCargaStore()
 
@@ -24,6 +26,9 @@ const saberes = useSaberStore()
 
 // Store de secciones
 const secciones = useSeccionStore()
+
+// Lista de profesores con proyecto asignado para la validacion
+const profs_proyecto = ref<Record[]>()
 
 // Booleano para el botón de submit
 const isLoading = ref(false)
@@ -49,6 +54,37 @@ const formData = reactive<cargaType>({
   horas: ''
 })
 
+// Esto es una solución horrible, pero no sabía como hacerlo mejor, si explota lo advertí
+const tieneDosProyectos = (value: string) => {
+  // Si no estan definidas las tres columnas retorna true
+  if (!(formData.profesor_id && formData.seccion_id && formData.saber_id)) {
+    return true
+  }
+  // Si las listas necesarias no estan definidas, retorna true
+  if (!(saberes.fullData && profs_proyecto.value)) {
+    return true
+  }
+  // Consigue los datos del saber
+  let saber = saberes.fullData.filter((record) => {
+    return record.id == value
+  })
+  // Si no es una materia de proyecto retorna true
+  if (!(saber[0].nombre.startsWith('Proyecto') || saber[0].nombre.startsWith('proyecto'))) {
+    return true
+  }
+  // Filtra los records y solo cuenta los que cumplan la condición
+  let total = profs_proyecto.value.filter((record) => {
+    return (
+      record.id != formData.seccion_id &&
+      record.profesor == formData.profesor_id &&
+      saber[0].nombre.startsWith('Proyecto')
+    )
+  }).length
+  //Retorna false si total es igual o mayor a dos, de lo contrario retorna true
+  return !(total >= 2)
+}
+
+const dosProyectos = helpers.withAsync(tieneDosProyectos, () => formData.saber_id)
 // Reglas de validación
 const formRules = computed(() => {
   return {
@@ -59,7 +95,11 @@ const formRules = computed(() => {
       required: requiredValidation()
     },
     saber_id: {
-      required: requiredValidation()
+      required: requiredValidation(),
+      dosProyectos: helpers.withMessage(
+        'El profesor seleccionado no puede dar proyecto a mas secciones',
+        dosProyectos
+      )
     },
     dia: {
       required: requiredValidation()
@@ -73,30 +113,31 @@ const formRules = computed(() => {
 
 // Opciones del Select "Secciones"
 const seccionesOptions = computed(() => {
-  return secciones.filteredData?.map((record: any) => {
+  return secciones.fullData?.map((record) => {
     return {
       value: record.id,
-      name: record.codigo + ' - ' + record.trayecto + ' - ' + record.estudiantes
+      name: `${record.codigo} - Trayecto ${record.trayecto} - ${record.estudiantes} estudiantes`
     }
   })
 })
 
 // Opciones del Select "Profesores"
 const profesoresOptions = computed(() => {
-  return profesores.filteredData?.map((record: any) => {
+  return profesores.fullData?.map((record) => {
     return {
       value: record.id,
-      name: record.nombre + ' ' + record.apellido
+      //@ts-ignore
+      name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre}`
     }
   })
 })
 
 // Opciones del Select "Saberes"
 const saberesOptions = computed(() => {
-  return saberes.fullData?.map((record: any) => {
+  return saberes.fullData?.map((record) => {
     return {
       value: record.id,
-      name: `${record.nombre} - trayecto ${record.trayecto}`
+      name: `${record.nombre} - Trayecto ${record.trayecto}`
     }
   })
 })
@@ -125,7 +166,16 @@ const submitData = async () => {
 
 // Al inicializar el componente, asigna el id de la ruta a una variable reactiva de vue
 onMounted(async () => {
-  saberes.fetchFullList()
+  await store.fetchFullList()
+  await saberes.fetchFullList()
+  await profesores.fetchFullList()
+  await secciones.fetchFullList()
+  store.pb
+    .collection('profs_proyecto')
+    .getFullList()
+    .then((data) => {
+      profs_proyecto.value = data
+    })
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await store.fetchOne(id.value).then((data) => {
