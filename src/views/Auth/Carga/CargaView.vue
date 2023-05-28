@@ -16,7 +16,7 @@ const store = useCargaStore()
 const clases = useClaseStore()
 
 // Query de filtrado de la tabla
-const { searchQuery } = storeToRefs(store)
+const { searchQuery } = storeToRefs(clases)
 
 // Id del item a eliminar
 const id = ref()
