@@ -14,6 +14,7 @@ import { useCargaStore, type cargaType } from '@/stores/carga'
 import { numericValidation, requiredValidation } from '@/helpers/validationHelpers'
 import { helpers } from '@vuelidate/validators'
 import type { Record } from 'pocketbase'
+import { useCargaTotalStore } from '@/stores/cargaTotal'
 // Store del módulo
 const store = useCargaStore()
 
@@ -25,6 +26,9 @@ const saberes = useSaberStore()
 
 // Store de secciones
 const secciones = useSeccionStore()
+
+// Store de carga total
+const cargaTotal = useCargaTotalStore()
 
 // Booleano para el botón de submit
 const isLoading = ref(false)
@@ -48,23 +52,27 @@ const tieneDosProyectos = (value: string) => {
     return true
   }
   // Si las listas necesarias no estan definidas, retorna true
-  if (!(saberes.fullData && profs_proyecto.value)) {
+  if (!saberes.fullData || !profs_proyecto.value) {
     return true
   }
   // Consigue los datos del saber
-  let saber = saberes.fullData.filter((record) => {
+  let saber = saberes.fullData.find((record) => {
     return record.id == value
   })
+  if (!saber) {
+    return false
+  }
+  saber.nombre.toLowerCase()
   // Si no es una materia de proyecto retorna true
-  if (!(saber[0].nombre.startsWith('Proyecto') || saber[0].nombre.startsWith('proyecto'))) {
+  if (!saber.nombre.startsWith('proyecto')) {
     return true
   }
   // Filtra los records y solo cuenta los que cumplan la condición
-  let total = profs_proyecto.value.filter((record) => {
+  let total: number = profs_proyecto.value.filter((record) => {
     return (
       record.id != formData.seccion_id &&
       record.profesor == formData.profesor_id &&
-      saber[0].nombre.startsWith('Proyecto')
+      saber?.nombre.startsWith('proyecto')
     )
   }).length
   //Retorna false si total es igual o mayor a dos, de lo contrario retorna true
@@ -82,15 +90,40 @@ const sonDelMismoTrayecto = (value: string) => {
     return true
   }
   // Consigue los datos del saber
-  let saber = saberes.fullData.filter((record) => {
+  let saber = saberes.fullData.find((record) => {
     return record.id == value
   })
   // Consigue los datos de la sección
-  let seccion = secciones.fullData.filter((record) => {
+  let seccion = secciones.fullData.find((record) => {
     return record.id == formData.seccion_id
   })
+
+  if (!saber || !seccion) {
+    return false
+  }
   //Retorna true si el trayecto del saber y la sección son iguales, de lo contrario retorna false
-  return (saber[0].trayecto == seccion[0].trayecto)
+  return saber.trayecto == seccion.trayecto
+}
+
+// Condicional para saber si las horas asignadas exceden el limite semanal del profesor
+const excedeContrato = (value: string) => {
+  // Si no estan definidas las dos columnas retorna true
+  if (!(formData.profesor_id && formData.horas)) {
+    return true
+  }
+  // Si las listas necesarias no estan definidas, retorna true
+  if (!cargaTotal.fullData) {
+    return true
+  }
+  // Consigue la
+  let profesor = cargaTotal.fullData.find((record) => {
+    return record.id == formData.profesor_id
+  })
+  if (!profesor) {
+    return false
+  }
+  let horasRestantes = profesor.contrato_horas - profesor.horas
+  return !(horasRestantes > parseInt(value))
 }
 
 // Condicional asincrono de "sonDelMismoTrayecto"
@@ -99,6 +132,8 @@ const mismoTrayecto = helpers.withAsync(sonDelMismoTrayecto, () => formData.sabe
 // Condicional asincrono de "tieneDosProyectos"
 const dosProyectos = helpers.withAsync(tieneDosProyectos, () => formData.saber_id)
 
+// Condcional asincrono de "excedeContrato"
+const excedeContratoAsync = helpers.withAsync(excedeContrato, () => formData.horas)
 // Reglas de validación
 const formRules = computed(() => {
   return {
@@ -124,7 +159,11 @@ const formRules = computed(() => {
     },
     horas: {
       required: requiredValidation(),
-      numeric: numericValidation()
+      numeric: numericValidation(),
+      excedeContrato: helpers.withMessage(
+        'Las horas asignadas exceden la carga total semanal del profesor seleccionado',
+        excedeContratoAsync
+      )
     }
   }
 })
@@ -145,7 +184,7 @@ const profesoresOptions = computed(() => {
     return {
       value: record.id,
       //@ts-ignore
-      name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre}`
+      name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - ${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas`
     }
   })
 })
@@ -186,6 +225,7 @@ onMounted(async () => {
   await saberes.fetchFullList()
   await profesores.fetchFullList()
   await secciones.fetchFullList()
+  await cargaTotal.fetchFullList()
   store.pb
     .collection('profs_proyecto')
     .getFullList()
