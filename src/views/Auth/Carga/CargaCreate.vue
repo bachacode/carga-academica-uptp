@@ -71,7 +71,34 @@ const tieneDosProyectos = (value: string) => {
   return !(total >= 2)
 }
 
+// Condicional para comparar el trayecto de la sección y el saber
+const sonDelMismoTrayecto = (value: string) => {
+  // Si no estan definidas las dos columnas retorna true
+  if (!(formData.seccion_id && formData.saber_id)) {
+    return true
+  }
+  // Si las listas necesarias no estan definidas, retorna true
+  if (!(saberes.fullData && secciones.fullData)) {
+    return true
+  }
+  // Consigue los datos del saber
+  let saber = saberes.fullData.filter((record) => {
+    return record.id == value
+  })
+  // Consigue los datos de la sección
+  let seccion = secciones.fullData.filter((record) => {
+    return record.id == formData.seccion_id
+  })
+  //Retorna true si el trayecto del saber y la sección son iguales, de lo contrario retorna false
+  return (saber[0].trayecto == seccion[0].trayecto)
+}
+
+// Condicional asincrono de "sonDelMismoTrayecto"
+const mismoTrayecto = helpers.withAsync(sonDelMismoTrayecto, () => formData.saber_id)
+
+// Condicional asincrono de "tieneDosProyectos"
 const dosProyectos = helpers.withAsync(tieneDosProyectos, () => formData.saber_id)
+
 // Reglas de validación
 const formRules = computed(() => {
   return {
@@ -86,6 +113,10 @@ const formRules = computed(() => {
       dosProyectos: helpers.withMessage(
         'El profesor seleccionado no puede dar proyecto a mas secciones',
         dosProyectos
+      ),
+      mismoTrayecto: helpers.withMessage(
+        'La sección seleccionada es de un trayecto distinto al saber',
+        mismoTrayecto
       )
     },
     dia: {
@@ -124,7 +155,7 @@ const saberesOptions = computed(() => {
   return saberes.fullData?.map((record) => {
     return {
       value: record.id,
-      name: `${record.nombre} - Trayecto ${record.trayecto}`
+      name: `${record.nombre} - Trayecto ${record.trayecto} - ${record.horas} horas maximas`
     }
   })
 })
