@@ -4,21 +4,80 @@ import LoadingCircle from '@/components/LoadingCircle.vue'
 import { useSaberStore } from '@/stores/saberes'
 import InputSelect from '@/components/InputSelect.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import AuthLayout from '../AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import { useProfesoresLibresStore } from '@/stores/profesoresLibres'
+import { useProfesoresRecomendadosStore } from '@/stores/profesoresRecomendados'
+import type { columnType } from '@/types/columnType'
 const saberes = useSaberStore()
 const selectedSaber = ref()
 const selectedDia = ref()
-const profesoresLibres = useProfesoresLibresStore()
+const profesoresRecomendados = useProfesoresRecomendadosStore()
+// Opciones del Select "Saberes"
 const saberesOptions = computed(() => {
-  return saberes.filteredData?.map((record: any) => {
+  return saberes.fullData?.map((record) => {
     return {
       value: record.id,
-      name: record.nombre + ' - ' + record.trayecto
+      name: `${record.nombre} - Trayecto ${record.trayecto} - ${record.horas} horas maximas`,
+      trayecto: record.trayecto
     }
   })
+})
+// Asignacion de puntos por titulo adecuado
+let trayectoSaber = computed(() => {
+  return saberesOptions.value?.find((saber) => {
+    return saber.value == selectedSaber.value
+  })
+})
+const filteredData = computed(() => {
+  return profesoresRecomendados.fullData
+    ?.map((record) => {
+      // Puntos Iniciales
+      record.puntos = 100
+
+      // Asignacion de puntos por dia libre
+      if (record.dia != selectedDia.value || record.dia == null) {
+        record.dia = '¡Si!'
+        record.puntos += 20
+      } else if (record.dia == selectedDia.value) {
+        record.dia = '¡No!'
+        let puntosPorHora = record.horas * 2
+        record.puntos -= puntosPorHora
+      }
+
+      // Asignacion de puntos por saber dado anteriormente
+      let haDadoElSaber = record.saberes.some((saber) => {
+        return saber == selectedSaber.value
+      })
+
+      if (haDadoElSaber) {
+        record.saber = '¡Si!'
+        record.puntos += 20
+      } else if (!haDadoElSaber) {
+        record.saber = '¡No!'
+        record.puntos -= 20
+      }
+
+      // Asignacion de puntos por titulo adecuado
+      if (
+        (record.titulo_grado.toLowerCase() == 'técnico' ||
+          record.titulo_grado.toLowerCase() == 'licenciado') &&
+        (trayectoSaber.value?.trayecto == 1 || trayectoSaber.value?.trayecto == 2)
+      ) {
+        record.titulo_grado = '¡Si!'
+      } else if (
+        (record.titulo_grado.toLowerCase() == 'ingeniero' || record.posgrado_grado) &&
+        (trayectoSaber.value?.trayecto == 3 || trayectoSaber.value?.trayecto == 4)
+      ) {
+        record.titulo_grado = '¡Si!'
+      } else {
+        record.titulo_grado = '¡No!'
+      }
+
+      // Retorna el profesor y ordena el arreglo en forma descendente por puntos
+      return record
+    })
+    .sort((a, b) => a.puntos + b.puntos)
 })
 const diasOptions = [
   { value: 'Lunes', name: 'Lunes' },
@@ -28,7 +87,7 @@ const diasOptions = [
   { value: 'Viernes', name: 'Viernes' }
 ]
 
-const columnsLibres = reactive([
+const columnsLibres: columnType[] = [
   {
     name: 'Nombre',
     isAsc: false
@@ -38,24 +97,35 @@ const columnsLibres = reactive([
     isAsc: false
   },
   {
-    name: 'Titulo',
+    name: 'Cedula',
     isAsc: false
   },
   {
-    name: 'Saberes',
-    relationTitle: 'Saberes que ha dado este profesor anteriormente ',
-    noRelations: '¡Este profesor no tiene saberes asignados!',
-    fatherName: 'nombre',
-    multipleData: [
-      {
-        name: 'codigo'
-      },
-      {
-        name: 'materia'
-      }
-    ]
+    name: 'Dia',
+    nameAlias: '¿Tiene ese dia libre?',
+    isAsc: false
+  },
+  {
+    name: 'Saber',
+    nameAlias: '¿Ha dado el saber anteriormente?',
+    isAsc: false
+  },
+  {
+    name: 'titulo_grado',
+    nameAlias: '¿Tiene un titulo adecuado para el saber?',
+    isAsc: false
+  },
+  {
+    name: 'Puntos',
+    nameAlias: 'Puntaje',
+    isAsc: false
   }
-])
+]
+
+onMounted(async () => {
+  await profesoresRecomendados.fetchFullList()
+  await saberes.fetchFullList()
+})
 </script>
 
 <template>
@@ -71,9 +141,9 @@ const columnsLibres = reactive([
       </div>
     </div>
     <!-- Botones para elegir formulario -->
-    <CardContainer card-width="w-full mt-10">
-      <LoadingCircle :is-loaded="!saberes.data" />
-      <div v-if="saberes.data" class="flex h-44 flex-col space-y-3 p-6">
+    <CardContainer card-width="w-full my-10">
+      <LoadingCircle :is-loaded="!saberes.fullData" />
+      <div v-if="saberes.fullData" class="flex h-44 flex-col space-y-3 p-6">
         <!-- saber -->
         <InputField label="Elija el saber para el que necesita un profesor" name="saber">
           <template #InputField>
@@ -100,27 +170,15 @@ const columnsLibres = reactive([
       </div>
 
       <template v-if="selectedSaber && selectedDia">
-        <div class="mb-10 flex w-full flex-col xl:flex-row">
-          <!-- Tabla de profesores Libres -->
-          <div class="mx-3 pt-20">
-            <TableComponent
-              title="¡Profesores sin carga asignada!"
-              :columns="columnsLibres"
-              :view-only="true"
-              :filtered-data="profesoresLibres.filteredData"
-            >
-            </TableComponent>
-          </div>
-          <div class="mx-3 pt-20">
-            <TableComponent
-              title="Profesores que han dado ese saber"
-              :columns="columnsLibres"
-              :view-only="true"
-              :filtered-data="profesoresLibres.filteredData"
-            >
-            </TableComponent>
-          </div>
-        </div>
+        <TableComponent
+          class="mt-10"
+          title="Mejores Profesores para dar esa materia"
+          :columns="columnsLibres"
+          :view-only="true"
+          :filtered-data="filteredData"
+        >
+        </TableComponent>
+
         <!--/table Card-->
       </template>
     </CardContainer>
