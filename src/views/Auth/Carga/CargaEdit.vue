@@ -124,19 +124,25 @@ const excedeContrato = (value: string) => {
   if (!(formData.profesor_id && formData.horas)) {
     return true
   }
+  
   // Si las listas necesarias no estan definidas, retorna true
   if (!cargaTotal.fullData) {
     return true
   }
-  // Consigue la
+
+  // Consigue la información del profesor
   let profesor = cargaTotal.fullData.find((record) => {
     return record.id == formData.profesor_id
   })
+
+  // Comprueba si el profesor existe
   if (!profesor) {
     return false
   }
-  let horasRestantes = profesor.contrato_horas - profesor.horas
-  return horasRestantes > parseInt(value)
+
+  // Comprueba si las horas restantes son positivas o negativas
+  let horasRestantes = profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
+  return horasRestantes >= 0
 }
 
 // Condicional asincrono de "sonDelMismoTrayecto"
