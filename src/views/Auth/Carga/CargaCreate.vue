@@ -126,9 +126,10 @@ const excedeContrato = (value: string) => {
   if (!profesor) {
     return false
   }
-  
+
   // Comprueba si las horas restantes son positivas o negativas
-  let horasRestantes = profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
+  let horasRestantes =
+    profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
   return horasRestantes >= 0
 }
 

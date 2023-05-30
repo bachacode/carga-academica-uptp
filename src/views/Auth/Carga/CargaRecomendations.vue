@@ -4,15 +4,17 @@ import LoadingCircle from '@/components/LoadingCircle.vue'
 import { useSaberStore } from '@/stores/saberes'
 import InputSelect from '@/components/InputSelect.vue'
 import InputField from '@/components/InputField.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, reactive } from 'vue'
 import AuthLayout from '../AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useProfesoresRecomendadosStore } from '@/stores/profesoresRecomendados'
 import type { columnType } from '@/types/columnType'
+import { useCargaStore } from '@/stores/carga'
 const saberes = useSaberStore()
 const selectedSaber = ref()
 const selectedDia = ref()
 const profesoresRecomendados = useProfesoresRecomendadosStore()
+const cargas = useCargaStore()
 // Opciones del Select "Saberes"
 const saberesOptions = computed(() => {
   return saberes.fullData?.map((record) => {
@@ -23,26 +25,44 @@ const saberesOptions = computed(() => {
     }
   })
 })
-// Asignacion de puntos por titulo adecuado
-let trayectoSaber = computed(() => {
+// Datos del trayecto Seleccionado
+const trayectoSaber = computed(() => {
   return saberesOptions.value?.find((saber) => {
     return saber.value == selectedSaber.value
   })
 })
+//
+const puntos = reactive({
+  iniciales: 100,
+  porDiaLibre: 20,
+  porSaberDado: 20,
+  porTituloCorrecto: 20
+})
 const filteredData = computed(() => {
   return profesoresRecomendados.fullData
-    ?.map((record) => {
-      // Puntos Iniciales
-      record.puntos = 100
+    ?.filter((record) => {
+      return record.contrato_horas - record.horas <= 0 || record.horas == null
+    })
+    .map((record) => {
+      if (record.contrato_horas)
+        // Puntos Iniciales
+        record.puntos = puntos.iniciales
 
+      // Comprueba si el profesor tiene un registro en Carga Academica con el dia seleccionado
+      let diaOcupado = cargas.fullData
+        ?.filter((profesor) => {
+          return record.id == profesor.profesor_id
+        })
+        .some((profesor) => {
+          return profesor.dia == selectedDia.value
+        })
       // Asignacion de puntos por dia libre
-      if (record.dia != selectedDia.value || record.dia == null) {
+      if (!diaOcupado) {
         record.dia = '¡Si!'
-        record.puntos += 20
-      } else if (record.dia == selectedDia.value) {
+        record.puntos += puntos.porDiaLibre
+      } else {
         record.dia = '¡No!'
-        let puntosPorHora = record.horas * 2
-        record.puntos -= puntosPorHora
+        record.puntos -= puntos.porDiaLibre
       }
 
       // Asignacion de puntos por saber dado anteriormente
@@ -52,10 +72,10 @@ const filteredData = computed(() => {
 
       if (haDadoElSaber) {
         record.saber = '¡Si!'
-        record.puntos += 20
-      } else if (!haDadoElSaber) {
+        record.puntos += puntos.porSaberDado
+      } else {
         record.saber = '¡No!'
-        record.puntos -= 20
+        record.puntos -= puntos.porSaberDado
       }
 
       // Asignacion de puntos por titulo adecuado
@@ -65,19 +85,21 @@ const filteredData = computed(() => {
         (trayectoSaber.value?.trayecto == 1 || trayectoSaber.value?.trayecto == 2)
       ) {
         record.titulo_grado = '¡Si!'
+        record.puntos += puntos.porTituloCorrecto
       } else if (
         (record.titulo_grado.toLowerCase() == 'ingeniero' || record.posgrado_grado) &&
         (trayectoSaber.value?.trayecto == 3 || trayectoSaber.value?.trayecto == 4)
       ) {
         record.titulo_grado = '¡Si!'
+        record.puntos += puntos.porTituloCorrecto
       } else {
         record.titulo_grado = '¡No!'
+        record.puntos -= puntos.porTituloCorrecto
       }
-
       // Retorna el profesor y ordena el arreglo en forma descendente por puntos
       return record
     })
-    .sort((a, b) => a.puntos + b.puntos)
+    .sort((a, b) => (a.puntos - b.puntos) * -1)
 })
 const diasOptions = [
   { value: 'Lunes', name: 'Lunes' },
@@ -125,6 +147,7 @@ const columnsLibres: columnType[] = [
 onMounted(async () => {
   await profesoresRecomendados.fetchFullList()
   await saberes.fetchFullList()
+  await cargas.fetchFullList()
 })
 </script>
 
@@ -176,6 +199,7 @@ onMounted(async () => {
           :columns="columnsLibres"
           :view-only="true"
           :filtered-data="filteredData"
+          :sortable="false"
         >
         </TableComponent>
 

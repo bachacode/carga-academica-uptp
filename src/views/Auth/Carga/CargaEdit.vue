@@ -124,7 +124,7 @@ const excedeContrato = (value: string) => {
   if (!(formData.profesor_id && formData.horas)) {
     return true
   }
-  
+
   // Si las listas necesarias no estan definidas, retorna true
   if (!cargaTotal.fullData) {
     return true
@@ -141,7 +141,8 @@ const excedeContrato = (value: string) => {
   }
 
   // Comprueba si las horas restantes son positivas o negativas
-  let horasRestantes = profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
+  let horasRestantes =
+    profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
   return horasRestantes >= 0
 }
 
