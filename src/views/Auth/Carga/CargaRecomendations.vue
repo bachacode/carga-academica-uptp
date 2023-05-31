@@ -153,16 +153,6 @@ onMounted(async () => {
 
 <template>
   <AuthLayout>
-    <!-- ALERTA DE DESARROLLO -->
-    <div :class="`alert alert-error mb-10 w-full py-4 font-semibold shadow-lg`">
-      <div class="flex">
-        <font-awesome-icon icon="circle-xmark" class="fa-fw" />
-        <span
-          >Este módulo todavia esta en desarrollo, algunas cosas pueden no funcionar
-          correctamente</span
-        >
-      </div>
-    </div>
     <!-- Botones para elegir formulario -->
     <CardContainer card-width="w-full my-10">
       <LoadingCircle :is-loaded="!saberes.fullData" />

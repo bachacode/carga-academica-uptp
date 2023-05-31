@@ -121,17 +121,6 @@ watchEffect(async () => {
   />
   <!-- /Delete Modal -->
   <AuthLayout>
-    <!-- ALERTA DE DESARROLLO -->
-    <div :class="`alert alert-error mb-10 w-full py-4 font-semibold shadow-lg`">
-      <div class="flex">
-        <font-awesome-icon icon="circle-xmark" class="fa-fw" />
-        <span
-          >Este módulo todavia esta en desarrollo, algunas cosas pueden no funcionar
-          correctamente</span
-        >
-      </div>
-    </div>
-
     <div class="w-full space-x-3 px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-indigo-700 text-white">
         <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Horas Academicas
