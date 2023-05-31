@@ -5,74 +5,10 @@ import router from '@/router'
 import { vMaska } from 'maska'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import {
-  faChalkboard,
-  faHome,
-  faUserGroup,
-  faChalkboardTeacher,
-  faWallet,
-  faCaretUp,
-  faFontAwesome,
-  faCircleCheck,
-  faCircleXmark,
-  faUser,
-  faChevronDown,
-  faChevronUp,
-  faCheck,
-  faCircleExclamation,
-  faClose,
-  faLock,
-  faEnvelope,
-  faClipboard,
-  faCirclePlus,
-  faArrowLeft,
-  faPrint,
-  faEdit,
-  faTrash,
-  faStar,
-  faClock,
-  faDashboard,
-  faCaretDown,
-  faSortUp,
-  faSortDown,
-  faUniversity,
-  faList
-} from '@fortawesome/free-solid-svg-icons'
-library.add(
-  faChalkboard,
-  faHome,
-  faUserGroup,
-  faChalkboard,
-  faChalkboardTeacher,
-  faWallet,
-  faCaretUp,
-  faCaretDown,
-  faFontAwesome,
-  faCircleCheck,
-  faCircleXmark,
-  faUser,
-  faChevronDown,
-  faChevronUp,
-  faCheck,
-  faCircleExclamation,
-  faClose,
-  faLock,
-  faEnvelope,
-  faClipboard,
-  faCirclePlus,
-  faArrowLeft,
-  faPrint,
-  faEdit,
-  faTrash,
-  faStar,
-  faClock,
-  faDashboard,
-  faSortUp,
-  faSortDown,
-  faUniversity,
-  faList
-)
+import * as icons from '@/assets/icons'
 import './assets/main.css'
+
+library.add(icons)
 const pinia = createPinia()
 const app = createApp(App).use(router).use(pinia).component('font-awesome-icon', FontAwesomeIcon)
 app.directive('maska', vMaska)
