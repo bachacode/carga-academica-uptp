@@ -160,6 +160,11 @@ async function verifyEmail() {
               <font-awesome-icon icon="clock" class="text-2xl" />
             </NavLink>
           </li>
+          <li class="m-2 flex-grow">
+            <NavLink to="/reportes">
+              <font-awesome-icon icon="clipboard-list" class="text-2xl" />
+            </NavLink>
+          </li>
           <li v-if="auth.user?.rol == 'Administrador'" class="m-2 flex-grow">
             <NavLink class="text-cyan-600" to="/usuarios">
               <font-awesome-icon icon="user" class="text-2xl" />
@@ -217,6 +222,11 @@ async function verifyEmail() {
           <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
             <NavLink class="text-cyan-600" to="/historial" text="Historial">
               <font-awesome-icon icon="list" />
+            </NavLink>
+          </li>
+          <li class="my-2 mr-6 md:my-0">
+            <NavLink to="/reportes" text="Imprimir Reportes">
+              <font-awesome-icon icon="clipboard-list" />
             </NavLink>
           </li>
         </ul>

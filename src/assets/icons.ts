@@ -29,5 +29,6 @@ export {
   faSortUp,
   faSortDown,
   faUniversity,
-  faList
+  faList,
+  faClipboardList
 } from '@fortawesome/free-solid-svg-icons'
