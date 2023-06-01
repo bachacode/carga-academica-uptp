@@ -12,7 +12,8 @@ import useVuelidate from '@vuelidate/core'
 import { useAuthStore } from '@/stores/auth'
 import type { Record } from 'pocketbase'
 import type { columnType } from '@/types/columnType'
-
+import { secciones } from './SeccionesReporte'
+import { saberes } from './SaberesReporte'
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
 
@@ -43,7 +44,7 @@ const formRules = computed(() => {
 // Opciones del Select "Modulos"
 const moduloOptions = [
   { value: 'secciones', name: 'Secciones' },
-  { value: 2, name: 'Trayecto 2' },
+  { value: 'saberes', name: 'Saberes' },
   { value: 3, name: 'Trayecto 3' },
   { value: 4, name: 'Trayecto 4' }
 ]
@@ -58,21 +59,14 @@ watch(formData, async () => {
       data.items = records
     })
   if (formData.modulo == 'secciones') {
-    data.columns = [
-      {
-        name: 'Codigo',
-        isAsc: false
-      },
-      {
-        name: 'Trayecto',
-        isAsc: false
-      },
-      {
-        name: 'Estudiantes',
-        isAsc: false
-      }
-    ]
-    data.pdfName = 'secciones.pdf'
+    data.items.map(secciones.mapData)
+    data.columns = secciones.columns
+    data.pdfName = secciones.pdfName
+  }
+  if (formData.modulo == 'saberes') {
+    data.items.map(saberes.mapData)
+    data.columns = saberes.columns
+    data.pdfName = saberes.pdfName
   }
 })
 
