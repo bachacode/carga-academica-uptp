@@ -14,6 +14,7 @@ import type { Record } from 'pocketbase'
 import type { columnType } from '@/types/columnType'
 import { secciones } from './SeccionesReporte'
 import { saberes } from './SaberesReporte'
+import { titulos } from './TitulosReporte'
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
 
@@ -45,7 +46,7 @@ const formRules = computed(() => {
 const moduloOptions = [
   { value: 'secciones', name: 'Secciones' },
   { value: 'saberes', name: 'Saberes' },
-  { value: 3, name: 'Trayecto 3' },
+  { value: 'titulos', name: 'Titulos' },
   { value: 4, name: 'Trayecto 4' }
 ]
 
@@ -67,6 +68,11 @@ watch(formData, async () => {
     data.items.map(saberes.mapData)
     data.columns = saberes.columns
     data.pdfName = saberes.pdfName
+  }
+  if (formData.modulo == 'titulos') {
+    data.items.map(titulos.mapData)
+    data.columns = titulos.columns
+    data.pdfName = titulos.pdfName
   }
 })
 
