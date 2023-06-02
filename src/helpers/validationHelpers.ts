@@ -14,12 +14,11 @@ type Store = {
   uniqueKeysList: any
 }
 // Validación Unica
-export const isUnique =
-  (store: Store, key: any, currentValue?: any) => (value: never) => {
-    if (!currentValue) {
-      return !store.uniqueKeysList[key].includes(value)
-    } else return !store.uniqueKeysList[key].includes(value) || currentValue[key] == value
-  }
+export const isUnique = (store: Store, key: any, currentValue?: any) => (value: never) => {
+  if (!currentValue) {
+    return !store.uniqueKeysList[key].includes(value)
+  } else return !store.uniqueKeysList[key].includes(value) || currentValue[key] == value
+}
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
   numeric: 'El valor de este campo tiene que ser numerico',

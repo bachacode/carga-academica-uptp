@@ -1,6 +1,7 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
 import type { MensajesDeAlerta } from './factory'
+import type { IProfesor } from './profesores'
 
 export type Saber = {
   nombre: string
@@ -8,7 +9,11 @@ export type Saber = {
   horas: number | string
 }
 
-export interface ISaber extends Saber, Record {}
+export interface ISaber extends Saber, Record {
+  expand: {
+    profesores: Array<IProfesor>
+  }
+}
 
 const successMessages: MensajesDeAlerta = {
   create: 'El saber se ha guardado correctamente',

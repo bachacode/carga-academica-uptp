@@ -190,7 +190,6 @@ const profesoresOptions = computed(() => {
   return profesores.fullData?.map((record) => {
     return {
       value: record.id,
-      //@ts-ignore
       name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - ${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas`
     }
   })

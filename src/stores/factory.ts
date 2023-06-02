@@ -60,10 +60,7 @@ export interface ICrudStoreOptions<IData> extends IViewStoreOptions<IData> {
  * Utilizadas para guardar los datos de los módulos de manera persistente entre cambios
  * de ruta del sistema.
  */
-export function createCrudStore<
-  Data extends {} | undefined,
-  IData extends Record & Data,
->({
+export function createCrudStore<Data extends {} | undefined, IData extends Record & Data>({
   storeId,
   route,
   collectionName,
@@ -356,16 +353,16 @@ export function createCrudStore<
      * de un módulo
      */
     const uniqueKeysList = computed(() => {
-      const things = {}
+      const uniqueRecords: { [key: string]: Array<IData> | undefined } = {}
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
-          //@ts-ignore
-          things[uniqueKeys[index]] = data.value?.items.map((record) => {
-            return record[uniqueKeys[index]]
+          const uniqueKey = uniqueKeys[index]
+          uniqueRecords[uniqueKey] = data.value?.items.map((record) => {
+            return record[uniqueKey]
           })
         }
       }
-      return things
+      return uniqueRecords
     })
 
     /*

@@ -14,7 +14,6 @@ export type Clase = {
 export interface IClase extends Clase, Record {}
 
 const appendWords = (record: IClase) => {
-  //@ts-ignore
   if (!record.horas.toString().endsWith('horas')) {
     record.horas = `${record.horas} horas`
   }

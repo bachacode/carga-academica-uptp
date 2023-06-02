@@ -1,5 +1,6 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
+import type { ISaber } from './saberes'
 
 export type Carga = {
   seccion_id: string
@@ -9,7 +10,11 @@ export type Carga = {
   dia: 'Lunes' | 'Martes' | 'Miercoles' | 'Jueves' | 'Viernes' | ''
 }
 
-export interface ICarga extends Carga, Record {}
+export interface ICarga extends Carga, Record {
+  expand: {
+    saber_id: ISaber
+  }
+}
 
 const successMessages = {
   create: 'Se ha asignado la carga al profesor correctamente',

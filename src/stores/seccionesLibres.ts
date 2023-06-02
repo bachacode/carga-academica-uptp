@@ -8,9 +8,9 @@ export type SeccionLibre = {
   saberes: Array<string>
 }
 
-export interface ISeccionesLibres extends SeccionLibre, Record {}
+export interface ISeccionLibre extends SeccionLibre, Record {}
 
-export const useSeccionesLibresStore = createViewStore<ISeccionesLibres>({
+export const useSeccionesLibresStore = createViewStore<ISeccionLibre>({
   storeId: 'seccionesLibres',
   collectionName: 'secciones_libres',
   autoFetch: false

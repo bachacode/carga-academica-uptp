@@ -65,27 +65,28 @@ watch(formData, async () => {
     .then((records) => {
       data.items = records
     })
-  if (formData.modulo == 'secciones') {
-    data.items.map(secciones.mapData)
-    data.columns = secciones.columns
-    data.pdfName = secciones.pdfName
-  } else if (formData.modulo == 'saberes') {
-    data.items.map(saberes.mapData)
-    data.columns = saberes.columns
-    data.pdfName = saberes.pdfName
-  } else if (formData.modulo == 'titulos') {
-    data.items.map(titulos.mapData)
-    data.columns = titulos.columns
-    data.pdfName = titulos.pdfName
-  } else if (formData.modulo == 'posgrados') {
-    data.items.map(posgrados.mapData)
-    data.columns = posgrados.columns
-    data.pdfName = posgrados.pdfName
-  } else if (formData.modulo == 'profesores') {
-    data.items.map(profesores.mapData)
-    data.columns = profesores.columns
-    data.pdfName = profesores.pdfName
-  }
+  if (data.items)
+    if (formData.modulo == 'secciones') {
+      data.items.map(secciones.mapData)
+      data.columns = secciones.columns
+      data.pdfName = secciones.pdfName
+    } else if (formData.modulo == 'saberes') {
+      data.items.map(saberes.mapData)
+      data.columns = saberes.columns
+      data.pdfName = saberes.pdfName
+    } else if (formData.modulo == 'titulos') {
+      data.items.map(titulos.mapData)
+      data.columns = titulos.columns
+      data.pdfName = titulos.pdfName
+    } else if (formData.modulo == 'posgrados') {
+      data.items.map(posgrados.mapData)
+      data.columns = posgrados.columns
+      data.pdfName = posgrados.pdfName
+    } else if (formData.modulo == 'profesores') {
+      data.items.map(profesores.mapData)
+      data.columns = profesores.columns
+      data.pdfName = profesores.pdfName
+    }
 })
 
 // Validación
@@ -150,7 +151,7 @@ async function generatePDF() {
       </tr>
     </thead>
     <tbody>
-      <template v-if="data.items.length > 0">
+      <template v-if="data.items && data.items.length > 0">
         <tr v-for="record in data.items" :key="record.id">
           <template v-for="column in data.columns" :key="column.name">
             <!-- Columnas relaciones uno a uno -->
