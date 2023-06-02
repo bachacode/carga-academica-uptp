@@ -15,6 +15,7 @@ import { secciones } from './SeccionesReporte'
 import { saberes } from './SaberesReporte'
 import { titulos } from './TitulosReporte'
 import { posgrados } from './PosgradosReporte'
+import { profesores } from './ProfesoresReporte'
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
 
@@ -30,7 +31,8 @@ const formData = reactive({
 const data = reactive<DatosReportes>({
   items: [],
   columns: [],
-  pdfName: ''
+  pdfName: '',
+  relations: []
 })
 
 // Reglas de validación
@@ -44,40 +46,50 @@ const formRules = computed(() => {
 
 // Opciones del Select "Modulos"
 const moduloOptions = [
-  { value: 'secciones', name: 'Secciones' },
-  { value: 'saberes', name: 'Saberes' },
-  { value: 'titulos', name: 'Titulos' },
-  { value: 'posgrados', name: 'Posgrados' }
+{ value: 'secciones', name: 'Secciones' },
+{ value: 'saberes', name: 'Saberes' },
+{ value: 'titulos', name: 'Titulos' },
+{ value: 'posgrados', name: 'Posgrados' },
+{ value: 'profesores', name: 'Profesores' }
 ]
 
 watch(formData, async () => {
+  
+  if(formData.modulo == 'profesores') data.relations = profesores.relations
+  
   await pb
-    .collection(formData.modulo)
-    .getFullList({
-      sort: '-created'
-    })
-    .then((records) => {
-      data.items = records
-    })
+  .collection(formData.modulo)
+  .getFullList({
+    sort: '-created',
+    expand: data.relations?.toString()
+  })
+  .then((records) => {
+    data.items = records
+  })
   if (formData.modulo == 'secciones') {
     data.items.map(secciones.mapData)
     data.columns = secciones.columns
     data.pdfName = secciones.pdfName
   }
-  if (formData.modulo == 'saberes') {
+  else if (formData.modulo == 'saberes') {
     data.items.map(saberes.mapData)
     data.columns = saberes.columns
     data.pdfName = saberes.pdfName
   }
-  if (formData.modulo == 'titulos') {
+  else if (formData.modulo == 'titulos') {
     data.items.map(titulos.mapData)
     data.columns = titulos.columns
     data.pdfName = titulos.pdfName
   }
-  if (formData.modulo == 'posgrados') {
+  else if (formData.modulo == 'posgrados') {
     data.items.map(posgrados.mapData)
     data.columns = posgrados.columns
     data.pdfName = posgrados.pdfName
+  }
+  else if (formData.modulo == 'profesores') {
+    data.items.map(profesores.mapData)
+    data.columns = profesores.columns
+    data.pdfName = profesores.pdfName
   }
 })
 
@@ -103,19 +115,19 @@ async function generatePDF() {
         <!-- Modulo -->
         <InputField label="Modulo a imprimir" name="modulo">
           <template #InputField
-            ><InputSelect
-              :options="moduloOptions"
-              placeholder="Seleccione un modulo"
-              name="modulo"
-              v-model="formData.modulo"
+          ><InputSelect
+          :options="moduloOptions"
+          placeholder="Seleccione un modulo"
+          name="modulo"
+          v-model="formData.modulo"
           /></template>
           <template #InputError
-            ><InputError v-if="v$.modulo.$error" :message="v$.modulo.$errors[0]?.$message"
+          ><InputError v-if="v$.modulo.$error" :message="v$.modulo.$errors[0]?.$message"
           /></template>
         </InputField>
-
+        
         <!-- Tipo (para despues) -->
-
+        
         <!-- <InputField label="Tipo de reporte" name="tipo">
           <template #InputField
           ><InputSelect
@@ -131,7 +143,7 @@ async function generatePDF() {
       </template>
     </FormComponent>
   </AuthLayout>
-
+  
   <table class="hidden" id="my-table">
     <thead>
       <tr>
@@ -148,34 +160,41 @@ async function generatePDF() {
           <template v-for="column in data.columns" :key="column.name">
             <!-- Columnas relaciones uno a uno -->
             <template v-if="column.isSingleRelation">
-              <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+              <td v-if="column.isSingleRelation && column.childName && record.expand[column.name]"
+              class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
                 {{
                   // @ts-ignore
                   record.expand[column.name][column.childName ?? '']
                 }}
               </td>
-            </template>
-
-            <!-- Columnas Normales -->
-            <template v-else-if="record[column.name.toLowerCase()]">
-              <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                {{ record[column.name.toLowerCase()] }}
-              </td>
-            </template>
-
-            <template v-else>
-              <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-                No se encontró
-              </td>
-            </template>
+              <td
+              v-else-if="column.isSingleRelation && !record.expand[column.name]"
+              class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+              >
+              {{ '¡No tiene!' }}
+            </td>
           </template>
-        </tr>
-      </template>
-      <template v-else>
-        <tr class="text-center text-gray-600">
-          <td :colspan="data.columns.length + 1">¡Esta tabla no tiene elementos registrados!</td>
-        </tr>
-      </template>
-    </tbody>
-  </table>
+          
+          <!-- Columnas Normales -->
+          <template v-else-if="record[column.name.toLowerCase()]">
+            <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+              {{ record[column.name.toLowerCase()] }}
+            </td>
+          </template>
+          
+          <template v-else>
+            <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+              No se encontró
+            </td>
+          </template>
+        </template>
+      </tr>
+    </template>
+    <template v-else>
+      <tr class="text-center text-gray-600">
+        <td :colspan="data.columns.length + 1">¡Esta tabla no tiene elementos registrados!</td>
+      </tr>
+    </template>
+  </tbody>
+</table>
 </template>
