@@ -1,7 +1,7 @@
 import type { Column } from './Column'
 import type { Record } from 'pocketbase'
-export type Reportes = {
+export type DatosReportes = {
+  items: Record[]
   columns: Column[]
   pdfName: string
-  mapData: (value: Record | any, index: number, array: Record[] | any[]) => Record
 }

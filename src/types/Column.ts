@@ -1,4 +1,4 @@
-export type columnType = {
+export type Column = {
   name: string
   childName?: string
   nameAlias?: string

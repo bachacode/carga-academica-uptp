@@ -3,7 +3,7 @@ import { useSaberStore } from '@/stores/saberes'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { onMounted, ref, watch } from 'vue'
 // Store del módulo
 const store = useSaberStore()
@@ -12,7 +12,7 @@ const store = useSaberStore()
 const { searchQuery } = storeToRefs(store)
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'Nombre',
     nameAlias: 'Saber',

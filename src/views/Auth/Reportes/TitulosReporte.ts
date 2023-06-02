@@ -9,7 +9,7 @@ export const titulos: Reportes = {
     {
       name: 'Nombre',
       isAsc: false
-    },
+    }
   ],
   pdfName: 'titulos.pdf',
   mapData: (record) => {

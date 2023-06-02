@@ -4,7 +4,7 @@ import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { reactive, ref, watch } from 'vue'
 // Store del módulo
 const store = useProfesorStore()
@@ -29,7 +29,7 @@ const singleData = reactive<profesorType>({
 })
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'Nombre',
     isAsc: false

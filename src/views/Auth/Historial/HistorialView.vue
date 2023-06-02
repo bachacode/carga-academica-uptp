@@ -3,7 +3,7 @@ import { useHistorialStore } from '@/stores/historial'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { ref, watch } from 'vue'
 // Store del módulo
 const store = useHistorialStore()
@@ -12,7 +12,7 @@ const store = useHistorialStore()
 const { searchQuery } = storeToRefs(store)
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'username',
     nameAlias: 'Nombre de Usuario',

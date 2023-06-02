@@ -3,7 +3,7 @@ import { useSeccionStore, type seccionType } from '@/stores/secciones'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 import { reactive, ref, watch } from 'vue'
 // Store del módulo
@@ -23,7 +23,7 @@ const singleData = reactive<seccionType>({
 })
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'Codigo',
     isAsc: false

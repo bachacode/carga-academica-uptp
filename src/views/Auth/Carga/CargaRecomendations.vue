@@ -8,7 +8,7 @@ import { ref, computed, onMounted, reactive } from 'vue'
 import AuthLayout from '../AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useProfesoresRecomendadosStore } from '@/stores/profesoresRecomendados'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { useCargaStore } from '@/stores/carga'
 const saberes = useSaberStore()
 const selectedSaber = ref()
@@ -109,7 +109,7 @@ const diasOptions = [
   { value: 'Viernes', name: 'Viernes' }
 ]
 
-const columnsLibres: columnType[] = [
+const columnsLibres: Column[] = [
   {
     name: 'Nombre',
     isAsc: false

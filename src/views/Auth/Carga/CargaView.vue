@@ -6,7 +6,7 @@ import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
 import { storeToRefs } from 'pinia'
 import { reactive, ref, watchEffect } from 'vue'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
 
 // Store del módulo
@@ -33,7 +33,7 @@ const singleData = reactive<claseType>({
 })
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'Nombre',
     isAsc: false

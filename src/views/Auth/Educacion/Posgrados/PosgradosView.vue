@@ -3,7 +3,7 @@ import { usePosgradoStore, type posgradoType } from '@/stores/posgrados'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { reactive, ref, watch } from 'vue'
 // Store del módulo
 const store = usePosgradoStore()
@@ -21,7 +21,7 @@ const singleData = reactive<posgradoType>({
 })
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'grado',
     isAsc: false

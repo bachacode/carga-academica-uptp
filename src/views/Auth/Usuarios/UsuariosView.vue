@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { useAlertStore } from '@/stores/alert'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { reactive, ref, watch } from 'vue'
 
 // Store del módulo
@@ -34,7 +34,7 @@ const singleData = reactive({
 })
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'username',
     nameAlias: 'Usuario',

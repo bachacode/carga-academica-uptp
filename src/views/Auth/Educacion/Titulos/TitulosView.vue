@@ -3,7 +3,7 @@ import { useTituloStore, type tituloType } from '@/stores/titulos'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
-import type { columnType } from '@/types/columnType'
+import type { Column } from '@/types/Column'
 import { reactive, ref, watch } from 'vue'
 // Store del módulo
 const store = useTituloStore()
@@ -21,7 +21,7 @@ const singleData = reactive<tituloType>({
 })
 
 // Columnas de la tabla
-const columns: columnType[] = [
+const columns: Column[] = [
   {
     name: 'grado',
     isAsc: false
