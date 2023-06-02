@@ -4,4 +4,5 @@ export type DatosReportes = {
   items: Record[]
   columns: Column[]
   pdfName: string
+  relations?: string[]
 }

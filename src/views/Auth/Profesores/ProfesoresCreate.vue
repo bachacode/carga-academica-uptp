@@ -2,7 +2,7 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useProfesorStore, type profesorType } from '@/stores/profesores'
+import { useProfesorStore, type Profesor } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
@@ -41,7 +41,7 @@ const posgrados = usePosgradoStore()
 const isLoading = ref(false)
 
 // Variables reactivas del formulario
-const formData = reactive<profesorType>({
+const formData = reactive<Profesor>({
   nombre: '',
   apellido: '',
   cedula: '',

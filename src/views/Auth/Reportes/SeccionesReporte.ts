@@ -1,3 +1,4 @@
+import type { ISeccion } from '@/stores/secciones'
 import type { Reportes } from '@/types/Reportes'
 
 export const secciones: Reportes = {
@@ -16,7 +17,7 @@ export const secciones: Reportes = {
     }
   ],
   pdfName: 'secciones.pdf',
-  mapData: (record) => {
+  mapData: (record: ISeccion) => {
     if (!record.trayecto.toString().startsWith('Trayecto'))
       record.trayecto = `Trayecto ${record.trayecto}`
     if (!record.estudiantes.toString().endsWith('estudiantes'))

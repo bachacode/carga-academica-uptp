@@ -1,3 +1,4 @@
+import type { ISaber } from '@/stores/saberes'
 import type { Reportes } from '@/types/Reportes'
 
 export const saberes: Reportes = {
@@ -17,7 +18,7 @@ export const saberes: Reportes = {
     }
   ],
   pdfName: 'saberes.pdf',
-  mapData: (record) => {
+  mapData: (record: ISaber) => {
     if (record.trayecto == 0) {
       record.trayecto = `Inicial (PIU)`
     } else if (!record.trayecto.toString().startsWith('Trayecto')) {

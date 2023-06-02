@@ -2,7 +2,7 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { ref, computed, onMounted, reactive } from 'vue'
-import { useProfesorStore, type profesorType } from '@/stores/profesores'
+import { useProfesorStore, type Profesor } from '@/stores/profesores'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 
@@ -34,7 +34,7 @@ const contratos = useContratoStore()
 const id = ref()
 
 // Datos del registro a editar
-const singleData = reactive<profesorType>({
+const singleData = reactive<Profesor>({
   nombre: '',
   apellido: '',
   cedula: '',
@@ -66,7 +66,7 @@ const relations = reactive<relationsType>({
 })
 
 // Variables reactivas del formulario
-const formData = reactive<profesorType>({
+const formData = reactive<Profesor>({
   nombre: '',
   apellido: '',
   cedula: '',

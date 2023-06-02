@@ -1,3 +1,4 @@
+import type { IPosgrado } from '@/stores/posgrados'
 import type { Reportes } from '@/types/Reportes'
 
 export const posgrados: Reportes = {
@@ -12,7 +13,7 @@ export const posgrados: Reportes = {
     }
   ],
   pdfName: 'posgrados.pdf',
-  mapData: (record) => {
+  mapData: (record: IPosgrado) => {
     return record
   }
 }

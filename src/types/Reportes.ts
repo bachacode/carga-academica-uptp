@@ -4,4 +4,5 @@ export type Reportes = {
   columns: Column[]
   pdfName: string
   mapData: (value: Record | any, index: number, array: Record[] | any[]) => Record
+  relations?: string[]
 }

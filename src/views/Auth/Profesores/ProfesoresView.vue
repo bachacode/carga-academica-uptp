@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useProfesorStore, type profesorType } from '@/stores/profesores'
+import { useProfesorStore, type Profesor } from '@/stores/profesores'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
@@ -16,7 +16,7 @@ const { searchQuery } = storeToRefs(store)
 const id = ref()
 
 // Datos del registro seleccionado
-const singleData = reactive<profesorType>({
+const singleData = reactive<Profesor>({
   nombre: '',
   apellido: '',
   cedula: '',

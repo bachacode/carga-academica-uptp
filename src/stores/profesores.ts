@@ -1,6 +1,10 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
-export type profesorType = {
+import type { IContratos } from './contratos'
+import type { ITitulo } from './titulos'
+import type { IPosgrado } from './posgrados'
+import type { ISaber } from './saberes'
+export type Profesor = {
   nombre: string
   apellido: string
   cedula: string
@@ -12,7 +16,14 @@ export type profesorType = {
   correo: string
 }
 
-export interface IProfesor extends profesorType, Record {}
+export interface IProfesor extends Profesor, Record {
+  expand: {
+    contrato_id: IContratos
+    titulo_id: ITitulo
+    posgrado_id: IPosgrado
+    saberes: Array<ISaber>
+  }
+}
 
 const successMessages = {
   create: 'El profesor se ha guardado correctamente',
@@ -27,39 +38,29 @@ const errorMessages = {
 }
 
 const appendWords = (record: IProfesor) => {
-  //@ts-ignore
   if (!record.expand.contrato_id.nombre.toString().endsWith('horas')) {
-    //@ts-ignore
     record.expand.contrato_id.nombre = `${record.expand.contrato_id.nombre} - ${record.expand.contrato_id.horas} horas`
   }
   if (
     record.expand.titulo_id &&
-    //@ts-ignore
     !record.expand.titulo_id.nombre.toString().startsWith('Ing') &&
-    //@ts-ignore
     !record.expand.titulo_id.nombre.toString().startsWith('Tec') &&
-    //@ts-ignore
     !record.expand.titulo_id.nombre.toString().startsWith('Lic')
   ) {
-    //@ts-ignore
     record.expand.titulo_id.nombre = `${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre}`
   }
   if (
     record.expand.posgrado_id &&
-    //@ts-ignore
     !record.expand.posgrado_id.nombre.toString().startsWith('Maes') &&
-    //@ts-ignore
     !record.expand.posgrado_id.nombre.toString().startsWith('Mag') &&
-    //@ts-ignore
     !record.expand.posgrado_id.nombre.toString().startsWith('Doc')
   ) {
-    //@ts-ignore
     record.expand.posgrado_id.nombre = `${record.expand.posgrado_id.grado} en ${record.expand.posgrado_id.nombre}`
   }
   return record
 }
 
-export const useProfesorStore = createCrudStore<profesorType, IProfesor>({
+export const useProfesorStore = createCrudStore<Profesor, IProfesor>({
   storeId: 'profesor',
   route: 'profesores',
   collectionName: 'profesores',
