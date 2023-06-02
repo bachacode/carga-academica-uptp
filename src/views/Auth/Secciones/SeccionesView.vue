@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useSeccionStore, type seccionType } from '@/stores/secciones'
+import { useSeccionStore, type Seccion } from '@/stores/secciones'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import { storeToRefs } from 'pinia'
 import TableComponent from '@/components/Containers/TableComponent.vue'
@@ -16,7 +16,7 @@ const { searchQuery } = storeToRefs(store)
 const id = ref()
 
 // Datos del registro seleccionado
-const singleData = reactive<seccionType>({
+const singleData = reactive<Seccion>({
   codigo: '',
   trayecto: '',
   estudiantes: ''

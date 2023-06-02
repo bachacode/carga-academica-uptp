@@ -12,7 +12,7 @@ import type { relationsType } from '@/components/MultiSelect.vue'
  * @var update, alerta para la función "update" de un CRUD
  * @var delete, alerta para la función "delete" de un CRUD
  */
-export type alertMessages = {
+export type MensajesDeAlerta = {
   create: string
   update: string
   delete: string
@@ -49,8 +49,8 @@ export interface IViewStoreOptions<IData> {
  */
 export interface ICrudStoreOptions<IData> extends IViewStoreOptions<IData> {
   route: string
-  success: alertMessages
-  error: alertMessages
+  success: MensajesDeAlerta
+  error: MensajesDeAlerta
   uniqueKeys?: Array<string>
   manyToMany?: Array<string>
 }
@@ -61,8 +61,8 @@ export interface ICrudStoreOptions<IData> extends IViewStoreOptions<IData> {
  * de ruta del sistema.
  */
 export function createCrudStore<
-  dataType extends {} | undefined,
-  IData extends Record & dataType,
+  Data extends {} | undefined,
+  IData extends Record & Data,
   uniqueKeysType = void
 >({
   storeId,
@@ -186,7 +186,7 @@ export function createCrudStore<
      * Si la petición no se cumple,
      * activa la alerta de "error"
      */
-    async function save(data: dataType) {
+    async function save(data: Data) {
       await pb
         .collection(collectionName)
         .create<IData>(data)
@@ -278,7 +278,7 @@ export function createCrudStore<
      * Si la petición no se cumple,
      * activa la alerta de "error"
      */
-    async function update(id: string, data: dataType | any) {
+    async function update(id: string, data: Data | any) {
       await pb
         .collection(collectionName)
         .update<IData>(id, data)

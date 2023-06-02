@@ -1,7 +1,7 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
 import { useAuthStore } from './auth'
-export type usuarioType = {
+export type Usuario = {
   username: string
   email: string
   emailVisibility: boolean
@@ -14,12 +14,12 @@ export type usuarioType = {
   estado: boolean
 }
 
-export type registerUserType = usuarioType & {
+export type RegistrarUsuario = Usuario & {
   password: string
   passwordConfirm: string
 }
 
-export type editUserType = {
+export type EditarUsuario = {
   username: string
   nombre: string
   apellido: string
@@ -28,9 +28,9 @@ export type editUserType = {
   cargo: string
 }
 
-export interface IUsuario extends usuarioType, Record {}
+export interface IUsuario extends Usuario, Record {}
 
-export type uniqueKeysType = {
+export type LlavesUnicas = {
   username: Array<string>
   email: Array<string>
   cedula: Array<string>
@@ -54,7 +54,7 @@ const fetchAllQuery = {
   filter: `rol = "Operador" && id != "${auth.pb.authStore.model?.id}"`
 }
 
-export const useUsuarioStore = createCrudStore<usuarioType, IUsuario, uniqueKeysType>({
+export const useUsuarioStore = createCrudStore<Usuario, IUsuario, LlavesUnicas>({
   storeId: 'usuario',
   route: 'usuarios',
   collectionName: 'usuarios',

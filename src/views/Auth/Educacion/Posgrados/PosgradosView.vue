@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { usePosgradoStore, type posgradoType } from '@/stores/posgrados'
+import { usePosgradoStore, type Posgrado } from '@/stores/posgrados'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
@@ -15,7 +15,7 @@ const { searchQuery } = storeToRefs(store)
 const id = ref()
 
 // Datos del registro seleccionado
-const singleData = reactive<posgradoType>({
+const singleData = reactive<Posgrado>({
   grado: '',
   nombre: ''
 })

@@ -1,14 +1,14 @@
 import type { Record } from 'pocketbase'
 import { createViewStore } from './factory'
 
-export type contratosType = {
+export type Contrato = {
   nombre: string
   horas: number | string
 }
 
-export interface IContratos extends contratosType, Record {}
+export interface IContrato extends Contrato, Record {}
 
-export const useContratoStore = createViewStore<IContratos>({
+export const useContratoStore = createViewStore<IContrato>({
   storeId: 'contratos',
   collectionName: 'contratos'
 })

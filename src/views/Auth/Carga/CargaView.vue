@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useCargaStore } from '@/stores/carga'
-import { useClaseStore, type claseType } from '@/stores/clases'
+import { useClaseStore, type Clase } from '@/stores/clases'
 import AuthLayout from '@/views/Auth/AuthLayout.vue'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import router from '@/router'
@@ -22,7 +22,7 @@ const { searchQuery } = storeToRefs(clases)
 const id = ref()
 
 // Datos del registro seleccionado
-const singleData = reactive<claseType>({
+const singleData = reactive<Clase>({
   nombre: '',
   apellido: '',
   cedula: '',

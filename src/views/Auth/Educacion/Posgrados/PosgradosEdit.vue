@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputField from '@/components/InputField.vue'
 import { ref, onMounted, reactive, computed } from 'vue'
-import { usePosgradoStore, type posgradoType } from '@/stores/posgrados'
+import { usePosgradoStore, type Posgrado } from '@/stores/posgrados'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
@@ -19,13 +19,13 @@ const isLoading = ref(false)
 const id = ref()
 
 // Datos del registro a editar
-const singleData = reactive<posgradoType>({
+const singleData = reactive<Posgrado>({
   grado: '',
   nombre: ''
 })
 
 // Variables reactivas del formulario
-const formData = reactive<posgradoType>({
+const formData = reactive<Posgrado>({
   grado: '',
   nombre: ''
 })

@@ -2,7 +2,7 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { computed, reactive, ref } from 'vue'
-import { useSaberStore, type saberType } from '@/stores/saberes'
+import { useSaberStore, type Saber } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
@@ -23,7 +23,7 @@ const store = useSaberStore()
 const isLoading = ref(false)
 
 // Variables reactivas del formulario
-const formData = reactive<saberType>({
+const formData = reactive<Saber>({
   nombre: '',
   trayecto: '',
   horas: ''

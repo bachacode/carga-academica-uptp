@@ -29,14 +29,14 @@ export const profesores: Reportes = {
       isSingleRelation: true,
       name: 'titulo_id',
       nameAlias: 'Titulo',
-      childName:'nombre',
+      childName: 'nombre',
       isAsc: false
     },
     {
       isSingleRelation: true,
       name: 'posgrado_id',
       nameAlias: 'Posgrado',
-      childName:'nombre',
+      childName: 'nombre',
       isAsc: false
     },
     {
@@ -45,7 +45,7 @@ export const profesores: Reportes = {
       childName: 'nombre',
       isSingleRelation: true,
       isAsc: false
-    },
+    }
   ],
   pdfName: 'profesores.pdf',
   mapData: (record: IProfesor) => {

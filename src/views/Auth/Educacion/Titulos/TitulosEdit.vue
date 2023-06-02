@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import InputField from '@/components/InputField.vue'
 import { ref, onMounted, reactive, computed } from 'vue'
-import { useTituloStore, type tituloType } from '@/stores/titulos'
+import { useTituloStore, type Titulo } from '@/stores/titulos'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
@@ -19,13 +19,13 @@ const isLoading = ref(false)
 const id = ref()
 
 // Datos del registro a editar
-const singleData = reactive<tituloType>({
+const singleData = reactive<Titulo>({
   grado: '',
   nombre: ''
 })
 
 // Variables reactivas del formulario
-const formData = reactive<tituloType>({
+const formData = reactive<Titulo>({
   grado: '',
   nombre: ''
 })

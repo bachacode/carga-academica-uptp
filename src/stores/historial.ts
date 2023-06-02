@@ -1,7 +1,7 @@
 import type { Record } from 'pocketbase'
 import { createViewStore } from './factory'
 
-export type historialType = {
+export type Historial = {
   username: string
   nombre: string
   apellido: string
@@ -9,7 +9,7 @@ export type historialType = {
   accion: string
 }
 
-export interface IHistorial extends historialType, Record {}
+export interface IHistorial extends Historial, Record {}
 
 const appendWords = (record: IHistorial) => {
   // Mapear acciones a una frase

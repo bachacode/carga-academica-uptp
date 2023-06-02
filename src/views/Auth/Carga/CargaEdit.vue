@@ -11,7 +11,7 @@ import FormComponent from '@/components/Containers/FormComponent.vue'
 import { useSaberStore } from '@/stores/saberes'
 import { useSeccionStore } from '@/stores/secciones'
 import InputSelect from '@/components/InputSelect.vue'
-import { useCargaStore, type cargaType } from '@/stores/carga'
+import { useCargaStore, type Carga } from '@/stores/carga'
 import { numericValidation, requiredValidation } from '@/helpers/validationHelpers'
 import { helpers } from '@vuelidate/validators'
 import type { Record } from 'pocketbase'
@@ -41,7 +41,7 @@ const isLoading = ref(false)
 const id = ref()
 
 // Datos del registro a editar
-const singleData = reactive<cargaType>({
+const singleData = reactive<Carga>({
   seccion_id: '',
   profesor_id: '',
   saber_id: '',
@@ -50,7 +50,7 @@ const singleData = reactive<cargaType>({
 })
 
 // Variables reactivas del formulario
-const formData = reactive<cargaType>({
+const formData = reactive<Carga>({
   seccion_id: '',
   profesor_id: '',
   saber_id: '',

@@ -7,7 +7,7 @@ import { computed, onMounted, reactive, ref } from 'vue'
 import useVuelidate from '@vuelidate/core'
 import { useAuthStore } from '@/stores/auth'
 import { useAlertStore } from '@/stores/alert'
-import { useUsuarioStore, type editUserType } from '@/stores/usuarios'
+import { useUsuarioStore, type EditarUsuario } from '@/stores/usuarios'
 import {
   isUnique,
   maxLengthValidation,
@@ -25,7 +25,7 @@ const alert = useAlertStore()
 const users = useUsuarioStore()
 
 // Variables reactivas del formulario
-const formData = reactive<editUserType>({
+const formData = reactive<EditarUsuario>({
   username: '',
   nombre: '',
   apellido: '',

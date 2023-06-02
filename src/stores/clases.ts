@@ -1,7 +1,7 @@
 import type { Record } from 'pocketbase'
 import { createViewStore } from './factory'
 
-export type claseType = {
+export type Clase = {
   nombre: string
   apellido: string
   cedula: string
@@ -11,7 +11,7 @@ export type claseType = {
   seccion: string
 }
 
-export interface IClase extends claseType, Record {}
+export interface IClase extends Clase, Record {}
 
 const appendWords = (record: IClase) => {
   //@ts-ignore

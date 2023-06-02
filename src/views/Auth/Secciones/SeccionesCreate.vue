@@ -2,7 +2,7 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { computed, reactive, ref } from 'vue'
-import { useSeccionStore, type seccionType } from '@/stores/secciones'
+import { useSeccionStore, type Seccion } from '@/stores/secciones'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
@@ -25,7 +25,7 @@ const store = useSeccionStore()
 const isLoading = ref(false)
 
 // Variables reactivas del formulario
-const formData = reactive<seccionType>({
+const formData = reactive<Seccion>({
   codigo: '',
   trayecto: '',
   estudiantes: ''

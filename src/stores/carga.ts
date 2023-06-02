@@ -1,7 +1,7 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
 
-export type cargaType = {
+export type Carga = {
   seccion_id: string
   profesor_id: string
   saber_id: string
@@ -9,7 +9,7 @@ export type cargaType = {
   dia: 'Lunes' | 'Martes' | 'Miercoles' | 'Jueves' | 'Viernes' | ''
 }
 
-export interface ICarga extends cargaType, Record {}
+export interface ICarga extends Carga, Record {}
 
 const successMessages = {
   create: 'Se ha asignado la carga al profesor correctamente',
@@ -23,7 +23,7 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar la carga del profesor'
 }
 
-export const useCargaStore = createCrudStore<cargaType, ICarga>({
+export const useCargaStore = createCrudStore<Carga, ICarga>({
   storeId: 'cargas',
   route: 'carga',
   collectionName: 'cargas',

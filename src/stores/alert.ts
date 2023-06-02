@@ -1,14 +1,14 @@
 import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
 
-export interface alertType {
+export interface Alerta {
   message: string
   type?: 'success' | 'error' | 'warning' | 'info'
   isActive?: boolean
 }
 
 export const useAlertStore = defineStore('alert', () => {
-  const data = reactive<alertType>({
+  const data = reactive<Alerta>({
     message: '',
     type: 'info',
     isActive: false
@@ -18,13 +18,13 @@ export const useAlertStore = defineStore('alert', () => {
 
   const timeoutId = ref<number | null>(null)
 
-  async function setSuccess({ message, type = 'success' }: alertType) {
+  async function setSuccess({ message, type = 'success' }: Alerta) {
     data.message = message
     data.type = type
     await setAlertTimer()
   }
 
-  async function setError({ message, type = 'error' }: alertType) {
+  async function setError({ message, type = 'error' }: Alerta) {
     data.message = message
     data.type = type
     await setAlertTimer()

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useTituloStore, type tituloType } from '@/stores/titulos'
+import { useTituloStore, type Titulo } from '@/stores/titulos'
 import TableComponent from '@/components/Containers/TableComponent.vue'
 import { storeToRefs } from 'pinia'
 import DeleteModal from '@/components/Containers/DeleteModal.vue'
@@ -15,7 +15,7 @@ const { searchQuery } = storeToRefs(store)
 const id = ref()
 
 // Datos del registro seleccionado
-const singleData = reactive<tituloType>({
+const singleData = reactive<Titulo>({
   grado: '',
   nombre: ''
 })

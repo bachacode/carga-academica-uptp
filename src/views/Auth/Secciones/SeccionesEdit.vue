@@ -2,7 +2,7 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { ref, onMounted, reactive, computed } from 'vue'
-import { useSeccionStore, type seccionType } from '@/stores/secciones'
+import { useSeccionStore, type Seccion } from '@/stores/secciones'
 import router from '@/router'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
@@ -29,14 +29,14 @@ const isLoading = ref(false)
 const id = ref()
 
 // Datos del registro a editar
-const singleData = reactive<seccionType>({
+const singleData = reactive<Seccion>({
   codigo: '',
   trayecto: '',
   estudiantes: ''
 })
 
 // Variables reactivas del formulario
-const formData = reactive<seccionType>({
+const formData = reactive<Seccion>({
   codigo: '',
   trayecto: '',
   estudiantes: ''

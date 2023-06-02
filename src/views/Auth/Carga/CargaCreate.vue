@@ -10,7 +10,7 @@ import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
 import InputSelect from '@/components/InputSelect.vue'
 import { useSeccionStore } from '@/stores/secciones'
-import { useCargaStore, type cargaType } from '@/stores/carga'
+import { useCargaStore, type Carga } from '@/stores/carga'
 import { numericValidation, requiredValidation } from '@/helpers/validationHelpers'
 import { helpers } from '@vuelidate/validators'
 import type { Record } from 'pocketbase'
@@ -37,7 +37,7 @@ const isLoading = ref(false)
 const profs_proyecto = ref<Record[]>()
 
 // Variables reactivas del formulario
-const formData = reactive<cargaType>({
+const formData = reactive<Carga>({
   seccion_id: '',
   profesor_id: '',
   saber_id: '',

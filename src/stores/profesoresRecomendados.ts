@@ -1,7 +1,7 @@
 import type { Record } from 'pocketbase'
 import { createViewStore } from './factory'
 
-export type profesoresRecomendadosType = {
+export type ProfesorRecomendado = {
   nombre: string
   apellido: string
   cedula: string
@@ -13,7 +13,7 @@ export type profesoresRecomendadosType = {
   dia: string
 }
 
-export interface ICarga extends profesoresRecomendadosType, Record {
+export interface ICarga extends ProfesorRecomendado, Record {
   id: string
   created: string
   updated: string

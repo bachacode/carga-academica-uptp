@@ -1,6 +1,6 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
-import type { IContratos } from './contratos'
+import type { IContrato } from './contratos'
 import type { ITitulo } from './titulos'
 import type { IPosgrado } from './posgrados'
 import type { ISaber } from './saberes'
@@ -18,7 +18,7 @@ export type Profesor = {
 
 export interface IProfesor extends Profesor, Record {
   expand: {
-    contrato_id: IContratos
+    contrato_id: IContrato
     titulo_id: ITitulo
     posgrado_id: IPosgrado
     saberes: Array<ISaber>

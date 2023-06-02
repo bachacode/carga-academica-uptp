@@ -1,13 +1,13 @@
 import type { Record } from 'pocketbase'
 import { createCrudStore } from './factory'
 
-export type seccionType = {
+export type Seccion = {
   codigo: string
   trayecto: string
   estudiantes: string
 }
 
-export interface ISeccion extends seccionType, Record {}
+export interface ISeccion extends Seccion, Record {}
 
 export type uniqueKeysType = {
   codigo: Array<string>
@@ -33,7 +33,7 @@ const appendShit = (record: any) => {
   return record
 }
 
-export const useSeccionStore = createCrudStore<seccionType, ISeccion, uniqueKeysType>({
+export const useSeccionStore = createCrudStore<Seccion, ISeccion, uniqueKeysType>({
   storeId: 'seccion',
   route: 'secciones',
   collectionName: 'secciones',

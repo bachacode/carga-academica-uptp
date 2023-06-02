@@ -2,7 +2,7 @@
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
 import { computed, reactive, ref } from 'vue'
-import { useUsuarioStore, type registerUserType } from '@/stores/usuarios'
+import { useUsuarioStore, type RegistrarUsuario } from '@/stores/usuarios'
 import { useVuelidate } from '@vuelidate/core'
 import InputError from '@/components/InputError.vue'
 import InputComponent from '@/components/InputComponent.vue'
@@ -25,7 +25,7 @@ const store = useUsuarioStore()
 const isLoading = ref(false)
 
 // Variables reactivas del formulario
-const formData = reactive<registerUserType>({
+const formData = reactive<RegistrarUsuario>({
   username: '',
   email: '',
   emailVisibility: true,
