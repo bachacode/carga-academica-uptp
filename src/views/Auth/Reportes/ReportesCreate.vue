@@ -16,6 +16,7 @@ import { saberes } from './SaberesReporte'
 import { titulos } from './TitulosReporte'
 import { posgrados } from './PosgradosReporte'
 import { profesores } from './ProfesoresReporte'
+import type { Reportes } from '@/types/Reportes'
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
 
@@ -65,28 +66,23 @@ watch(formData, async () => {
     .then((records) => {
       data.items = records
     })
-  if (data.items)
-    if (formData.modulo == 'secciones') {
-      data.items.map(secciones.mapData)
-      data.columns = secciones.columns
-      data.pdfName = secciones.pdfName
-    } else if (formData.modulo == 'saberes') {
-      data.items.map(saberes.mapData)
-      data.columns = saberes.columns
-      data.pdfName = saberes.pdfName
-    } else if (formData.modulo == 'titulos') {
-      data.items.map(titulos.mapData)
-      data.columns = titulos.columns
-      data.pdfName = titulos.pdfName
-    } else if (formData.modulo == 'posgrados') {
-      data.items.map(posgrados.mapData)
-      data.columns = posgrados.columns
-      data.pdfName = posgrados.pdfName
-    } else if (formData.modulo == 'profesores') {
-      data.items.map(profesores.mapData)
-      data.columns = profesores.columns
-      data.pdfName = profesores.pdfName
+  if (data.items) {
+    const modules: { [key: string]: Reportes } = {
+      secciones: secciones,
+      saberes: saberes,
+      titulos: titulos,
+      posgrados: posgrados,
+      profesores: profesores
     }
+
+    const module = formData.modulo
+    if (Object.prototype.hasOwnProperty.call(modules, module)) {
+      const moduleData = modules[module]
+      data.items.map(moduleData.mapData)
+      data.columns = moduleData.columns
+      data.pdfName = moduleData.pdfName
+    }
+  }
 })
 
 // Validación
@@ -139,7 +135,6 @@ async function generatePDF() {
       </template>
     </FormComponent>
   </AuthLayout>
-
   <table class="hidden" id="my-table">
     <thead>
       <tr>
