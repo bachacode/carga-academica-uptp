@@ -10,13 +10,12 @@ import {
   email,
   sameAs
 } from '@vuelidate/validators'
-
-type uniqueStoreType = {
+type Store = {
   uniqueKeysList: any
 }
 // Validación Unica
 export const isUnique =
-  (store: uniqueStoreType, key: any, currentValue?: any) => (value: never) => {
+  (store: Store, key: any, currentValue?: any) => (value: never) => {
     if (!currentValue) {
       return !store.uniqueKeysList[key].includes(value)
     } else return !store.uniqueKeysList[key].includes(value) || currentValue[key] == value

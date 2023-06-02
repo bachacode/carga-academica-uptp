@@ -9,10 +9,6 @@ export type Seccion = {
 
 export interface ISeccion extends Seccion, Record {}
 
-export type uniqueKeysType = {
-  codigo: Array<string>
-}
-
 const successMessages = {
   create: 'La sección se ha guardado correctamente',
   update: 'La sección se ha actualizado correctamente',
@@ -25,7 +21,7 @@ const errorMessages = {
   delete: 'Ha ocurrido un error al borrar la sección'
 }
 
-const appendShit = (record: any) => {
+const appendWords = (record: any) => {
   if (!record.trayecto.toString().startsWith('Trayecto'))
     record.trayecto = `Trayecto ${record.trayecto}`
   if (!record.estudiantes.toString().endsWith('estudiantes'))
@@ -33,12 +29,12 @@ const appendShit = (record: any) => {
   return record
 }
 
-export const useSeccionStore = createCrudStore<Seccion, ISeccion, uniqueKeysType>({
+export const useSeccionStore = createCrudStore<Seccion, ISeccion>({
   storeId: 'seccion',
   route: 'secciones',
   collectionName: 'secciones',
   success: successMessages,
   error: errorMessages,
   uniqueKeys: ['codigo'],
-  mapData: appendShit
+  mapData: appendWords
 })

@@ -30,12 +30,6 @@ export type EditarUsuario = {
 
 export interface IUsuario extends Usuario, Record {}
 
-export type LlavesUnicas = {
-  username: Array<string>
-  email: Array<string>
-  cedula: Array<string>
-}
-
 const successMessages = {
   create: 'El usuario se ha creado correctamente',
   update: 'El usuario se ha actualizado correctamente',
@@ -54,7 +48,7 @@ const fetchAllQuery = {
   filter: `rol = "Operador" && id != "${auth.pb.authStore.model?.id}"`
 }
 
-export const useUsuarioStore = createCrudStore<Usuario, IUsuario, LlavesUnicas>({
+export const useUsuarioStore = createCrudStore<Usuario, IUsuario>({
   storeId: 'usuario',
   route: 'usuarios',
   collectionName: 'usuarios',

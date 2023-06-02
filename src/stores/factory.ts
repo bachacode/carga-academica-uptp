@@ -63,7 +63,6 @@ export interface ICrudStoreOptions<IData> extends IViewStoreOptions<IData> {
 export function createCrudStore<
   Data extends {} | undefined,
   IData extends Record & Data,
-  uniqueKeysType = void
 >({
   storeId,
   route,
@@ -356,7 +355,7 @@ export function createCrudStore<
      * de un módulo, esto se utiliza para hacer la validación de campos unicos en los formularios
      * de un módulo
      */
-    const uniqueKeysList = computed<uniqueKeysType>(() => {
+    const uniqueKeysList = computed(() => {
       const things = {}
       if (Array.isArray(uniqueKeys) && uniqueKeys.length) {
         for (let index = 0; index < uniqueKeys.length; index++) {
@@ -366,7 +365,7 @@ export function createCrudStore<
           })
         }
       }
-      return things as any
+      return things
     })
 
     /*
