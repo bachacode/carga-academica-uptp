@@ -63,7 +63,7 @@ const columns: Column[] = [
 ]
 
 // Arreglo para el selector de dias
-const daySelector = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'all']
+const daySelector = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
 
 // Función para ordenar la tabla de forma ASC o DESC
 const sortTable = async (column: string) => {
@@ -107,9 +107,7 @@ const activeDay = ref('Lunes')
 
 // WatchEffect qeu vigila el "activeDay", en caso de cambios, realiza fetch a la BD con el nuevo dia
 watchEffect(async () => {
-  if (activeDay.value == 'all') {
-    clases.data = await clases.pb.collection('carga_total').getList(1, 50)
-  } else await clases.fetchAll('-horas', `dia = "${activeDay.value}"`)
+  await clases.fetchAll('-horas', `dia = "${activeDay.value}"`)
 })
 </script>
 
@@ -151,7 +149,6 @@ watchEffect(async () => {
             <ul class="flex justify-around py-6 px-10">
               <li v-for="day in daySelector" :key="day">
                 <button
-                  v-if="day != 'all'"
                   @click="activeDay = day"
                   :title="day"
                   :class="`btn-outline btn rounded-xl px-16 hover:bg-indigo-900 ${
@@ -159,16 +156,6 @@ watchEffect(async () => {
                   }`"
                 >
                   {{ day }}
-                </button>
-                <button
-                  v-if="day == 'all'"
-                  @click="activeDay = day"
-                  title="Total"
-                  :class="`btn-outline btn rounded-xl px-16 hover:bg-indigo-900 ${
-                    activeDay == day ? 'bg-indigo-700 text-white' : ''
-                  }`"
-                >
-                  Total
                 </button>
               </li>
             </ul>

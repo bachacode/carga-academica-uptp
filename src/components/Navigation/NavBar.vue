@@ -225,7 +225,7 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/reportes" text="Imprimir Reportes">
+            <NavLink to="/reportes" text="Reportes">
               <font-awesome-icon icon="clipboard-list" />
             </NavLink>
           </li>
