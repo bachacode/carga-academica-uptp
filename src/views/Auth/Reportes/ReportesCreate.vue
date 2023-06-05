@@ -58,15 +58,20 @@ const moduloOptions = [
 
 watch(formData, async () => {
   if (formData.modulo == 'profesores') data.relations = profesores.relations
-
+  isLoading.value = true
   await pb
     .collection(formData.modulo)
     .getFullList({
       sort: '-created',
-      expand: data.relations?.toString()
+      expand: data.relations?.toString(),
+      $autoCancel: false
     })
     .then((records) => {
       data.items = records
+      isLoading.value = false
+    })
+    .catch(() => {
+      isLoading.value = false
     })
   if (data.items) {
     const modules: { [key: string]: Reportes } = {
