@@ -16,6 +16,7 @@ import { saberes } from './SaberesReporte'
 import { titulos } from './TitulosReporte'
 import { posgrados } from './PosgradosReporte'
 import { profesores } from './ProfesoresReporte'
+import { cargas } from './CargasReporte'
 import type { Reportes } from '@/types/Reportes'
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
@@ -51,7 +52,8 @@ const moduloOptions = [
   { value: 'saberes', name: 'Saberes' },
   { value: 'titulos', name: 'Titulos' },
   { value: 'posgrados', name: 'Posgrados' },
-  { value: 'profesores', name: 'Profesores' }
+  { value: 'profesores', name: 'Profesores' },
+  { value: 'carga_total', name: 'Cargas' }
 ]
 
 watch(formData, async () => {
@@ -72,7 +74,8 @@ watch(formData, async () => {
       saberes: saberes,
       titulos: titulos,
       posgrados: posgrados,
-      profesores: profesores
+      profesores: profesores,
+      carga_total: cargas
     }
 
     const module = formData.modulo

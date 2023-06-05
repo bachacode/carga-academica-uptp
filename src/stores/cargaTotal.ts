@@ -7,6 +7,7 @@ export type CargaTotal = {
   cedula: string
   contrato_horas: number
   horas: number
+  horas_dadas: string
 }
 
 export interface ICargaTotal extends CargaTotal, Record {}
