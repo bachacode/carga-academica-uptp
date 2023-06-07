@@ -35,7 +35,7 @@ const data = reactive<DatosReportes>({
   items: [],
   columns: [],
   pdfName: '',
-  filters: [{ value: '', name: 'Seleccione un modulo'}],
+  filters: [{ value: '', name: 'Seleccione un modulo' }],
   relations: []
 })
 
@@ -53,12 +53,12 @@ const formRules = computed(() => {
 
 // Opciones del Select "Modulos"
 const moduloOptions = [
-{ value: 'secciones', name: 'Secciones' },
-{ value: 'saberes', name: 'Saberes' },
-{ value: 'titulos', name: 'Titulos' },
-{ value: 'posgrados', name: 'Posgrados' },
-{ value: 'profesores', name: 'Profesores' },
-{ value: 'carga_total', name: 'Cargas' }
+  { value: 'secciones', name: 'Secciones' },
+  { value: 'saberes', name: 'Saberes' },
+  { value: 'titulos', name: 'Titulos' },
+  { value: 'posgrados', name: 'Posgrados' },
+  { value: 'profesores', name: 'Profesores' },
+  { value: 'carga_total', name: 'Cargas' }
 ]
 
 // Reportes de modulos
@@ -71,9 +71,8 @@ const modules: { [key: string]: Reportes } = {
   carga_total: cargas
 }
 
-
 watch(formData, async () => {
-  if(formData.modulo) {
+  if (formData.modulo) {
     if (formData.modulo == 'profesores') data.relations = profesores.relations
     const module = formData.modulo
     if (Object.prototype.hasOwnProperty.call(modules, module)) {
@@ -81,24 +80,23 @@ watch(formData, async () => {
       //@ts-ignore
       data.filters = moduleData.filters
     }
-    if(formData.filtro) {
-      
+    if (formData.filtro) {
       isLoading.value = true
       await pb
-      .collection(formData.modulo)
-      .getFullList({
-        sort: '-created',
-        expand: data.relations?.toString(),
-        $autoCancel: false,
-        filter: formData.filtro
-      })
-      .then((records) => {
-        data.items = records
-        isLoading.value = false
-      })
-      .catch(() => {
-        isLoading.value = false
-      })
+        .collection(formData.modulo)
+        .getFullList({
+          sort: '-created',
+          expand: data.relations?.toString(),
+          $autoCancel: false,
+          filter: formData.filtro
+        })
+        .then((records) => {
+          data.items = records
+          isLoading.value = false
+        })
+        .catch(() => {
+          isLoading.value = false
+        })
       if (data.items) {
         if (Object.prototype.hasOwnProperty.call(modules, module)) {
           const moduleData = modules[module]
@@ -133,29 +131,29 @@ async function generatePDF() {
         <!-- Modulo -->
         <InputField label="Modulo a imprimir" name="modulo">
           <template #InputField
-          ><InputSelect
-          :options="moduloOptions"
-          placeholder="Seleccione un modulo"
-          name="modulo"
-          v-model="formData.modulo"
+            ><InputSelect
+              :options="moduloOptions"
+              placeholder="Seleccione un modulo"
+              name="modulo"
+              v-model="formData.modulo"
           /></template>
           <template #InputError
-          ><InputError v-if="v$.modulo.$error" :message="v$.modulo.$errors[0]?.$message"
+            ><InputError v-if="v$.modulo.$error" :message="v$.modulo.$errors[0]?.$message"
           /></template>
         </InputField>
-        
+
         <!-- Tipo (para despues) -->
-        
+
         <InputField label="Filtros del reporte" name="filtro">
           <template #InputField
-          ><InputSelect
-          :options="data.filters"
-          placeholder="Seleccione un filtro"
-          name="filtro"
-          v-model="formData.filtro"
+            ><InputSelect
+              :options="data.filters"
+              placeholder="Seleccione un filtro"
+              name="filtro"
+              v-model="formData.filtro"
           /></template>
           <template #InputError
-          ><InputError v-if="v$.filtro.$error" :message="v$.filtro.$errors[0]?.$message"
+            ><InputError v-if="v$.filtro.$error" :message="v$.filtro.$errors[0]?.$message"
           /></template>
         </InputField>
       </template>
@@ -178,42 +176,42 @@ async function generatePDF() {
             <!-- Columnas relaciones uno a uno -->
             <template v-if="column.isSingleRelation">
               <td
-              v-if="column.isSingleRelation && column.childName && record.expand[column.name]"
-              class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+                v-if="column.isSingleRelation && column.childName && record.expand[column.name]"
+                class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
               >
-              {{
-                // @ts-ignore
-                record.expand[column.name][column.childName ?? '']
-              }}
-            </td>
-            <td
-            v-else-if="column.isSingleRelation && !record.expand[column.name]"
-            class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
-            >
-            {{ '¡No tiene!' }}
-          </td>
-        </template>
-        
-        <!-- Columnas Normales -->
-        <template v-else-if="record[column.name.toLowerCase()]">
-          <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-            {{ record[column.name.toLowerCase()] }}
-          </td>
-        </template>
-        
-        <template v-else>
-          <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
-            No se encontró
-          </td>
-        </template>
+                {{
+                  // @ts-ignore
+                  record.expand[column.name][column.childName ?? '']
+                }}
+              </td>
+              <td
+                v-else-if="column.isSingleRelation && !record.expand[column.name]"
+                class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+              >
+                {{ '¡No tiene!' }}
+              </td>
+            </template>
+
+            <!-- Columnas Normales -->
+            <template v-else-if="record[column.name.toLowerCase()]">
+              <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                {{ record[column.name.toLowerCase()] }}
+              </td>
+            </template>
+
+            <template v-else>
+              <td class="min-w-[140px] max-w-[220px] whitespace-normal break-words">
+                No se encontró
+              </td>
+            </template>
+          </template>
+        </tr>
       </template>
-    </tr>
-  </template>
-  <template v-else>
-    <tr class="text-center text-gray-600">
-      <td :colspan="data.columns.length + 1">¡Esta tabla no tiene elementos registrados!</td>
-    </tr>
-  </template>
-</tbody>
-</table>
+      <template v-else>
+        <tr class="text-center text-gray-600">
+          <td :colspan="data.columns.length + 1">¡Esta tabla no tiene elementos registrados!</td>
+        </tr>
+      </template>
+    </tbody>
+  </table>
 </template>
