@@ -11,7 +11,7 @@ import {
   requiredValidation,
   minLengthValidation,
   sameAsValidation,
-passwordValidation
+  passwordValidation
 } from '@/helpers/validationHelpers'
 import GuessLayout from '../GuessLayout.vue'
 const auth = useAuthStore()

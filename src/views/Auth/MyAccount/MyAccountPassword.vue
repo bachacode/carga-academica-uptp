@@ -11,7 +11,7 @@ import {
   minLengthValidation,
   sameAsValidation,
   requiredValidation,
-passwordValidation
+  passwordValidation
 } from '@/helpers/validationHelpers'
 
 const auth = useAuthStore()

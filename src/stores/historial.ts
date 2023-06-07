@@ -22,7 +22,7 @@ const appendWords = (record: IHistorial) => {
     record.accion = `Se eliminó un elemento`
   }
   // Formato de fecha
-  let date = new Date(Date.parse(record.created))
+  const date = new Date(Date.parse(record.created))
   record.created = formatDate(date, 'hh:mm A DD-MM-YYYY')
   return record
 }

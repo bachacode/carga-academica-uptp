@@ -19,7 +19,7 @@ import {
   sameAsValidation,
   requiredValidation,
   uniqueValidation,
-passwordValidation
+  passwordValidation
 } from '@/helpers/validationHelpers'
 
 // Store del módulo
