@@ -16,9 +16,10 @@ import {
   isUnique,
   maxLengthValidation,
   minLengthValidation,
-  passwordValidation,
+  sameAsValidation,
   requiredValidation,
-  uniqueValidation
+  uniqueValidation,
+passwordValidation
 } from '@/helpers/validationHelpers'
 
 // Store del módulo
@@ -76,11 +77,12 @@ const formRules = computed(() => {
       unique: uniqueValidation('usuario', 'usuarios', isUsernameTaken, formData.username)
     },
     password: {
-      minLength: minLengthValidation(8)
+      minLength: minLengthValidation(8),
+      password: passwordValidation()
     },
     passwordConfirm: {
       minLength: minLengthValidation(8),
-      password: passwordValidation(formData.password)
+      password: sameAsValidation(formData.password)
     },
     email: {
       required: requiredValidation(),

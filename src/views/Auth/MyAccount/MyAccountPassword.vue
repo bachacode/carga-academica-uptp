@@ -9,8 +9,9 @@ import { useAlertStore } from '@/stores/alert'
 import { computed, reactive, ref } from 'vue'
 import {
   minLengthValidation,
-  passwordValidation,
-  requiredValidation
+  sameAsValidation,
+  requiredValidation,
+passwordValidation
 } from '@/helpers/validationHelpers'
 
 const auth = useAuthStore()
@@ -29,12 +30,13 @@ const editPasswordRules = computed(() => {
     },
     password: {
       required: requiredValidation(),
-      minLength: minLengthValidation(8)
+      minLength: minLengthValidation(8),
+      password: passwordValidation()
     },
     passwordConfirm: {
       required: requiredValidation(),
       minLength: minLengthValidation(8),
-      password: passwordValidation(editPasswordForm.password)
+      password: sameAsValidation(editPasswordForm.password)
     }
   }
 })

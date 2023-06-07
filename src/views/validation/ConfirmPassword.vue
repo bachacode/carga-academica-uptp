@@ -10,7 +10,8 @@ import { computed } from 'vue'
 import {
   requiredValidation,
   minLengthValidation,
-  passwordValidation
+  sameAsValidation,
+passwordValidation
 } from '@/helpers/validationHelpers'
 import GuessLayout from '../GuessLayout.vue'
 const auth = useAuthStore()
@@ -27,12 +28,13 @@ const formRules = computed(() => {
     },
     password: {
       required: requiredValidation(),
-      minLength: minLengthValidation(8)
+      minLength: minLengthValidation(8),
+      password: passwordValidation()
     },
     confirmPassword: {
       required: requiredValidation(),
       minLength: minLengthValidation(8),
-      password: passwordValidation(formData.password)
+      password: sameAsValidation(formData.password)
     }
   }
 })

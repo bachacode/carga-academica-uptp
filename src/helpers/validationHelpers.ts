@@ -19,6 +19,9 @@ export const isUnique = (store: Store, key: any, currentValue?: any) => (value: 
     return !store.uniqueKeysList[key].includes(value)
   } else return !store.uniqueKeysList[key].includes(value) || currentValue[key] == value
 }
+
+const password = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/)
+
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
   numeric: 'El valor de este campo tiene que ser numerico',
@@ -28,7 +31,8 @@ const errorMessages = ref({
   minLength: (min: number) => `Este campo tiene un minimo de ${min} caracteres`,
   maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`,
   unique: (value: string, table: string) => `Este ${value} ya existe en el módulo ${table}`,
-  password: () => `Las contraseña no coinciden`
+  sameAs: () => `Las contraseña no coinciden`,
+  password: () => `La contraseña debe tener al menos una letra y un numero`
 })
 
 export const requiredValidation = () => {
@@ -66,6 +70,10 @@ export const uniqueValidation = (value: string, table: string, unique: any, form
   )
 }
 
-export const passwordValidation = (value: string) => {
-  return helpers.withMessage(errorMessages.value.password, sameAs(value))
+export const sameAsValidation = (value: string) => {
+  return helpers.withMessage(errorMessages.value.sameAs, sameAs(value))
+}
+
+export const passwordValidation = () => {
+  return helpers.withMessage(errorMessages.value.password, password)
 }
