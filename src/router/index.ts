@@ -196,7 +196,7 @@ const router = createRouter({
       ]
     },
 
-    // Rutas Autenticadas - Carga Academica
+    // Rutas Autenticadas - Carga Académica
     {
       path: '/carga',
       children: [

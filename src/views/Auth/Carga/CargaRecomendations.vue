@@ -48,7 +48,7 @@ const filteredData = computed(() => {
         // Puntos Iniciales
         record.puntos = puntos.iniciales
 
-      // Comprueba si el profesor tiene un registro en Carga Academica con el dia seleccionado
+      // Comprueba si el profesor tiene un registro en Carga Académica con el dia seleccionado
       let diaOcupado = cargas.fullData
         ?.filter((profesor) => {
           return record.id == profesor.profesor_id

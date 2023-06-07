@@ -114,14 +114,14 @@ watchEffect(async () => {
 <template>
   <!-- Delete Modal -->
   <DeleteModal
-    :modal-text="`la carga academica del profesor ${singleData?.nombre} ${singleData?.apellido}`"
+    :modal-text="`la carga académica del profesor ${singleData?.nombre} ${singleData?.apellido}`"
     @destroy-item="destroyItem(id)"
   />
   <!-- /Delete Modal -->
   <AuthLayout>
     <div class="w-full space-x-3 px-16 pb-8">
       <button @click="create()" class="btn mb-3 rounded-lg bg-indigo-700 text-white">
-        <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Horas Academicas
+        <font-awesome-icon icon="circle-plus" class="mr-2" />Registrar Horas Académicas
       </button>
       <button
         @click="router.push({ name: 'carga.recommend' })"
@@ -131,7 +131,7 @@ watchEffect(async () => {
       </button>
       <!--Table Card-->
       <TableComponent
-        title="Carga Academica"
+        title="Carga Académica"
         v-model="searchQuery"
         :columns="columns"
         :filtered-data="clases.filteredData"

@@ -42,7 +42,7 @@ async function verifyEmail() {
           class="cursor-pointer text-base font-bold text-gray-900 no-underline hover:no-underline xl:text-xl"
           @click="dashboard()"
         >
-          <span>Carga Academica UPTP</span>
+          <span>Carga Académica UPTP</span>
         </button>
       </div>
       <div class="w-1/2 pr-0">
@@ -206,7 +206,7 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/titulos" text="Títulos Acádemicos">
+            <NavLink to="/titulos" text="Títulos Académicos">
               <font-awesome-icon icon="university" />
             </NavLink>
           </li>
@@ -216,7 +216,7 @@ async function verifyEmail() {
             </NavLink>
           </li>
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/carga" text="Carga Academica">
+            <NavLink to="/carga" text="Carga Académica">
               <font-awesome-icon icon="clock" />
             </NavLink>
           </li>
