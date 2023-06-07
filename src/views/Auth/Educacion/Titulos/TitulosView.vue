@@ -89,7 +89,7 @@ const changePage = async (page: number) => {
     </button>
     <!--Table Card-->
     <TableComponent
-      title="módulo Titulos"
+      title="Módulo Títulos de pregrado"
       v-model="searchQuery"
       :columns="columns"
       :filtered-data="store.filteredData"

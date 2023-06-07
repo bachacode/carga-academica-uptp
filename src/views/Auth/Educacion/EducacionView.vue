@@ -20,7 +20,7 @@ import { RouterLink } from 'vue-router'
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
                 active-class="text-indigo-600 hover:text-indigo-700"
               >
-                <span class="ml-3">Titulos Universitarios</span>
+                <span class="ml-3">Títulos de Pregrado</span>
               </router-link>
             </li>
 
@@ -31,7 +31,7 @@ import { RouterLink } from 'vue-router'
                 :to="{ name: 'posgrados' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
               >
-                <span class="ml-3">Titulos de Posgrados</span>
+                <span class="ml-3">Títulos de Posgrados</span>
               </router-link>
             </li>
           </ul>
