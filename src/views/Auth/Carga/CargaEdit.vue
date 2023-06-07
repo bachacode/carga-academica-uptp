@@ -145,7 +145,40 @@ const excedeContrato = (value: string) => {
     profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
   return horasRestantes >= 0
 }
-
+// Condicional para las horas limites del saber para el profesor
+const excedeHorasSaber = (value: string) => {
+  // Si no estan definidas las tres columnas retorna true
+  if (!(formData.profesor_id && formData.saber_id && formData.horas)) {
+    return true
+  }
+  // Si las listas necesarias no estan definidas, retorna true
+  if (!(saberes.fullData && store.fullData)) {
+    return true
+  }
+  // Consigue los datos del saber
+  let saber = saberes.fullData.find((record) => {
+    return record.id == formData.saber_id
+  })
+  // Consigue la informacion del profesor
+  let profesorCargas = store.fullData.filter((record) => {
+    return record.profesor_id == formData.profesor_id && record.saber_id == formData.saber_id
+  })
+  //
+  if (profesorCargas.length == 0 && saber) {
+    return saber.horas >= value
+  }
+  let horasProfesor = profesorCargas.reduce((acc, record) => {
+    //@ts-ignore
+    return acc.horas + record.horas
+  })
+  //@ts-ignore
+  let horasTotales = horasProfesor + parseInt(value)
+  console.log(horasProfesor)
+  console.log(saber?.horas)
+  console.log(horasTotales)
+  //@ts-ignore
+  return saber.horas >= horasTotales
+}
 // Condicional asincrono de "sonDelMismoTrayecto"
 const mismoTrayecto = helpers.withAsync(sonDelMismoTrayecto, () => formData.saber_id)
 
@@ -154,6 +187,9 @@ const dosProyectos = helpers.withAsync(tieneDosProyectos, () => formData.saber_i
 
 // Condcional asincrono de "excedeContrato"
 const excedeContratoAsync = helpers.withAsync(excedeContrato, () => formData.horas)
+
+// Condcional asincrono de "excedeHorasSaber"
+const excedeHorasSaberAsync = helpers.withAsync(excedeHorasSaber, () => formData.horas)
 
 // Reglas de validación
 const formRules = computed(() => {
@@ -184,6 +220,10 @@ const formRules = computed(() => {
       excedeContrato: helpers.withMessage(
         'Las horas asignadas exceden la carga total semanal del profesor seleccionado',
         excedeContratoAsync
+      ),
+      excedeHorasSaber: helpers.withMessage(
+        'Las horas asignadas las horas semanales del saber seleccionado',
+        excedeHorasSaberAsync
       )
     }
   }
