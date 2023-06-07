@@ -5,5 +5,9 @@ export type DatosReportes = {
   items: Record[] | undefined
   columns: Column[]
   pdfName: string
+  filters: {
+    value: string
+    name: string
+  }[]
   relations?: string[]
 }
