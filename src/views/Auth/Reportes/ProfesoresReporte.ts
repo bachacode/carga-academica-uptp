@@ -48,6 +48,15 @@ export const profesores: Reportes = {
     }
   ],
   pdfName: 'profesores.pdf',
+  filters: [
+    { value: 'titulo_id.grado ~ "t%"', name: 'Profesores con Técnicos'},
+    { value: 'titulo_id.grado ~ "i%"', name: 'Profesores con Ingenierías'},
+    { value: 'titulo_id.grado ~ "l%"', name: 'Profesores con Licenciaturas'},
+    { value: 'posgrado_id.grado ~ "maes%"', name: 'Profesores con Maestrías'},
+    { value: 'posgrado_id.grado ~ "mag%"', name: 'Profesores con Magísters'},
+    { value: 'posgrado_id.grado ~ "doc%"', name: 'Profesores con Doctorados'},
+    { value: 'nombre ~ ""', name: 'Todos los profesores'},
+  ],
   mapData: (record: IProfesor) => {
     if (
       record.expand.titulo_id &&
