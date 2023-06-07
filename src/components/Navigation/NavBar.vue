@@ -175,6 +175,11 @@ async function verifyEmail() {
               <font-awesome-icon icon="list" class="text-2xl" />
             </NavLink>
           </li>
+          <li class="m-2 flex-grow">
+            <NavLink to="/">
+              <font-awesome-icon icon="question-circle" class="text-2xl" />
+            </NavLink>
+          </li>
         </ul>
       </div>
 
@@ -183,9 +188,10 @@ async function verifyEmail() {
         class="z-50 mt-2 hidden w-full flex-grow bg-white lg:mt-0 lg:flex lg:w-auto lg:items-center"
         id="nav-content"
       >
-        <ul class="flex-1 items-center px-4 md:px-0 lg:flex">
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/dashboard" text="Inicio">
+        <ul class="flex-1 items-center px-4 md:px-0 lg:flex justify-between">
+          <div class="flex">
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/dashboard" text="Inicio">
               <font-awesome-icon icon="home" />
             </NavLink>
           </li>
@@ -227,6 +233,12 @@ async function verifyEmail() {
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/reportes" text="Reportes">
               <font-awesome-icon icon="clipboard-list" />
+            </NavLink>
+          </li>
+        </div>
+          <li class="my-2 mr-6 md:my-0">
+            <NavLink to="/" text="Ayuda">
+              <font-awesome-icon icon="question-circle" />
             </NavLink>
           </li>
         </ul>
