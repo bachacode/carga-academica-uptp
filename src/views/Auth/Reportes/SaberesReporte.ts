@@ -18,6 +18,13 @@ export const saberes: Reportes = {
     }
   ],
   pdfName: 'saberes.pdf',
+  filters: [
+    { value: 'trayecto = "1"', name: 'Trayecto 1' },
+    { value: 'trayecto = "2"', name: 'Trayecto 2' },
+    { value: 'trayecto = "3"', name: 'Trayecto 3' },
+    { value: 'trayecto = "4"', name: 'Trayecto 4' },
+    { value: 'trayecto < 5', name: 'Todos los saberes'}
+  ],
   mapData: (record: ISaber) => {
     if (record.trayecto == 0) {
       record.trayecto = `Inicial (PIU)`

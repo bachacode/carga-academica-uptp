@@ -21,7 +21,8 @@ export const secciones: Reportes = {
     { value: 'trayecto = "1"', name: 'Trayecto 1' },
     { value: 'trayecto = "2"', name: 'Trayecto 2' },
     { value: 'trayecto = "3"', name: 'Trayecto 3' },
-    { value: 'trayecto = "4"', name: 'Trayecto 4' }
+    { value: 'trayecto = "4"', name: 'Trayecto 4' },
+    { value: 'trayecto < 5', name: 'Todas las secciones'}
   ],
   mapData: (record: ISeccion) => {
     if (!record.trayecto.toString().startsWith('Trayecto'))
