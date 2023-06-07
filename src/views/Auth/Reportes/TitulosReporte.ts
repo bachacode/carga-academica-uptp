@@ -14,10 +14,10 @@ export const titulos: Reportes = {
   ],
   pdfName: 'titulos.pdf',
   filters: [
-    { value: 'grado ~ "t%"', name: 'Titulos Técnicos'},
-    { value: 'grado ~ "i%"', name: 'Titulos de Ingeniería'},
-    { value: 'grado ~ "l%"', name: 'Titulos de Licenciatura'},
-    { value: 'grado !~ "1"', name: 'Todos los titulos'},
+    { value: 'grado ~ "t%"', name: 'Titulos Técnicos' },
+    { value: 'grado ~ "i%"', name: 'Titulos de Ingeniería' },
+    { value: 'grado ~ "l%"', name: 'Titulos de Licenciatura' },
+    { value: 'grado !~ "1"', name: 'Todos los titulos' }
   ],
   mapData: (record: ITitulo) => {
     return record

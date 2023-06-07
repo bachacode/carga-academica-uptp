@@ -23,7 +23,7 @@ export const saberes: Reportes = {
     { value: 'trayecto = "2"', name: 'Trayecto 2' },
     { value: 'trayecto = "3"', name: 'Trayecto 3' },
     { value: 'trayecto = "4"', name: 'Trayecto 4' },
-    { value: 'trayecto < 5', name: 'Todos los saberes'}
+    { value: 'trayecto < 5', name: 'Todos los saberes' }
   ],
   mapData: (record: ISaber) => {
     if (record.trayecto == 0) {

@@ -188,54 +188,54 @@ async function verifyEmail() {
         class="z-50 mt-2 hidden w-full flex-grow bg-white lg:mt-0 lg:flex lg:w-auto lg:items-center"
         id="nav-content"
       >
-        <ul class="flex-1 items-center px-4 md:px-0 lg:flex justify-between">
+        <ul class="flex-1 items-center justify-between px-4 md:px-0 lg:flex">
           <div class="flex">
             <li class="my-2 mr-6 md:my-0">
               <NavLink to="/dashboard" text="Inicio">
-              <font-awesome-icon icon="home" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/secciones" text="Secciones">
-              <font-awesome-icon icon="user-group" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/saberes" text="Saberes">
-              <font-awesome-icon icon="chalkboard" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/titulos" text="Títulos Académicos">
-              <font-awesome-icon icon="university" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/profesores" text="Profesores">
-              <font-awesome-icon icon="chalkboard-teacher" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/carga" text="Carga Académica">
-              <font-awesome-icon icon="clock" />
-            </NavLink>
-          </li>
-          <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
-            <NavLink class="text-cyan-600" to="/usuarios" text="Operadores">
-              <font-awesome-icon icon="user" />
-            </NavLink>
-          </li>
-          <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
-            <NavLink class="text-cyan-600" to="/historial" text="Historial">
-              <font-awesome-icon icon="list" />
-            </NavLink>
-          </li>
-          <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/reportes" text="Reportes">
-              <font-awesome-icon icon="clipboard-list" />
-            </NavLink>
-          </li>
-        </div>
+                <font-awesome-icon icon="home" />
+              </NavLink>
+            </li>
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/secciones" text="Secciones">
+                <font-awesome-icon icon="user-group" />
+              </NavLink>
+            </li>
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/saberes" text="Saberes">
+                <font-awesome-icon icon="chalkboard" />
+              </NavLink>
+            </li>
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/titulos" text="Títulos Académicos">
+                <font-awesome-icon icon="university" />
+              </NavLink>
+            </li>
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/profesores" text="Profesores">
+                <font-awesome-icon icon="chalkboard-teacher" />
+              </NavLink>
+            </li>
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/carga" text="Carga Académica">
+                <font-awesome-icon icon="clock" />
+              </NavLink>
+            </li>
+            <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
+              <NavLink class="text-cyan-600" to="/usuarios" text="Operadores">
+                <font-awesome-icon icon="user" />
+              </NavLink>
+            </li>
+            <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
+              <NavLink class="text-cyan-600" to="/historial" text="Historial">
+                <font-awesome-icon icon="list" />
+              </NavLink>
+            </li>
+            <li class="my-2 mr-6 md:my-0">
+              <NavLink to="/reportes" text="Reportes">
+                <font-awesome-icon icon="clipboard-list" />
+              </NavLink>
+            </li>
+          </div>
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/" text="Ayuda">
               <font-awesome-icon icon="question-circle" />

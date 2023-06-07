@@ -29,8 +29,8 @@ export const cargas: Reportes = {
   ],
   pdfName: 'carga_de_profesores.pdf',
   filters: [
-    { value: 'nombre = null', name: 'Todos los profesores sin carga académica'},
-    { value: 'horas != null', name: 'Todos los profesores con carga académica'},
+    { value: 'nombre = null', name: 'Todos los profesores sin carga académica' },
+    { value: 'horas != null', name: 'Todos los profesores con carga académica' }
   ],
   mapData: (record: ICargaTotal) => {
     if (record.horas == null) record.horas = 0
