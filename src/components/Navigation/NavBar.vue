@@ -128,7 +128,7 @@ async function verifyEmail() {
       </div>
 
       <!-- Navbar Moviles -->
-      <div class="z-50 mt-2 flex w-full bg-white lg:hidden">
+      <div class="z-20 mt-2 flex w-full bg-white lg:hidden">
         <ul class="flex w-full flex-row items-center px-4 md:px-0 lg:flex">
           <li class="m-2 flex-grow">
             <NavLink to="/dashboard">
@@ -185,7 +185,7 @@ async function verifyEmail() {
 
       <!-- Navbar -->
       <div
-        class="z-50 mt-2 hidden w-full flex-grow bg-white lg:mt-0 lg:flex lg:w-auto lg:items-center"
+        class="z-20 mt-2 hidden w-full flex-grow bg-white lg:mt-0 lg:flex lg:w-auto lg:items-center"
         id="nav-content"
       >
         <ul class="flex-1 items-center justify-between px-4 md:px-0 lg:flex">
