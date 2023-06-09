@@ -23,7 +23,7 @@ const errorMessages: MensajesDeAlerta = {
 
 export const useTituloStore = createCrudStore<Titulo, ITitulo>({
   storeId: 'titulos',
-  route: 'titulos',
+  route: 'pregrados',
   collectionName: 'titulos',
   success: successMessages,
   error: errorMessages

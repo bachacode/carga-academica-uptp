@@ -16,7 +16,7 @@ import { RouterLink } from 'vue-router'
             <!-- Titulos Universitarios -->
             <li>
               <router-link
-                :to="{ name: 'titulos' }"
+                :to="{ name: 'pregrados' }"
                 class="block border-b-2 border-white py-1 pl-1 align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3"
                 active-class="text-indigo-600 hover:text-indigo-700"
               >

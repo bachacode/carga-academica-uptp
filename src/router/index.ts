@@ -99,47 +99,50 @@ const router = createRouter({
     // Rutas Autenticadas - Educación de los profesores
     {
       path: '/titulos',
-      component: () => import('@/views/Auth/Educacion/EducacionView.vue'),
+      name: 'titulos',
+      component: () => import('@/views/Auth/Titulos/TitulosView.vue'),
       children: [
         // Rutas de Educación - Titulos
         {
           path: '',
+          name: 'titulos.pregrados',
           children: [
             {
               path: '',
-              name: 'titulos',
-              component: () => import('@/views/Auth/Educacion/Titulos/TitulosView.vue')
+              name: 'pregrados',
+              component: () => import('@/views/Auth/Titulos/Pregrados/PregradosView.vue')
             },
             {
               path: 'create',
-              name: 'titulos.create',
-              component: () => import('@/views/Auth/Educacion/Titulos/TitulosCreate.vue')
+              name: 'pregrados.create',
+              component: () => import('@/views/Auth/Titulos/Pregrados/PregradosCreate.vue')
             },
             {
               path: 'edit/:id',
-              name: 'titulos.edit',
-              component: () => import('@/views/Auth/Educacion/Titulos/TitulosEdit.vue')
+              name: 'pregrados.edit',
+              component: () => import('@/views/Auth/Titulos/Pregrados/PregradosEdit.vue')
             }
           ]
         },
         // Rutas de Educación - Posgrados
         {
           path: 'posgrados',
+          name: 'titulos.posgrados',
           children: [
             {
               path: '',
               name: 'posgrados',
-              component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosView.vue')
+              component: () => import('@/views/Auth/Titulos/Posgrados/PosgradosView.vue')
             },
             {
               path: 'create',
               name: 'posgrados.create',
-              component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosCreate.vue')
+              component: () => import('@/views/Auth/Titulos/Posgrados/PosgradosCreate.vue')
             },
             {
               path: 'edit/:id',
               name: 'posgrados.edit',
-              component: () => import('@/views/Auth/Educacion/Posgrados/PosgradosEdit.vue')
+              component: () => import('@/views/Auth/Titulos/Posgrados/PosgradosEdit.vue')
             }
           ]
         }
