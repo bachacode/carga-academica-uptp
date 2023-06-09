@@ -208,9 +208,13 @@ async function verifyEmail() {
 
           <!-- Boton de ayuda -->
           <li class="m-2 flex-grow">
-            <NavLink to="/">
+            <a
+              href="manual.pdf"
+              target="_blank"
+              class="flex flex-col border-b-2 border-white px-2 py-1 text-center align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3 lg:text-left lg:hover:border-indigo-500"
+            >
               <font-awesome-icon icon="question-circle" class="text-2xl" />
-            </NavLink>
+            </a>
           </li>
         </ul>
       </div>
@@ -237,9 +241,15 @@ async function verifyEmail() {
 
           <!-- Botón de ayuda -->
           <li class="my-2 mr-6 md:my-0">
-            <NavLink to="/" text="Ayuda">
-              <font-awesome-icon icon="question-circle" />
-            </NavLink>
+            <a
+              href="manual.pdf"
+              target="_blank"
+              class="flex flex-col border-b-2 border-white px-2 py-1 text-center align-middle text-gray-500 no-underline hover:text-gray-900 md:py-3 lg:text-left lg:hover:border-indigo-500"
+            >
+              <font-awesome-icon icon="question-circle" /><span class="py-1 text-sm md:pb-0"
+                >Ayuda</span
+              >
+            </a>
           </li>
         </ul>
       </div>
