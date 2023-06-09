@@ -11,6 +11,70 @@ defineProps<{
   classes?: string
 }>()
 
+type navLink = {
+  route: string
+  iconName: string
+  label: string
+  adminOnly: boolean
+}
+
+const navLinks = ref<navLink[]>([
+  {
+    route: '/dashboard',
+    iconName: 'home',
+    label: 'Inicio',
+    adminOnly: false
+  },
+  {
+    route: '/secciones',
+    iconName: 'user-group',
+    label: 'Secciones',
+    adminOnly: false
+  },
+  {
+    route: '/saberes',
+    iconName: 'chalkboard',
+    label: 'Saberes',
+    adminOnly: false
+  },
+  {
+    route: '/titulos',
+    iconName: 'university',
+    label: 'Títulos Académicos',
+    adminOnly: false
+  },
+  {
+    route: '/profesores',
+    iconName: 'chalkboard-teacher',
+    label: 'Profesores',
+    adminOnly: false
+  },
+  {
+    route: '/carga',
+    iconName: 'clock',
+    label: 'Carga Académica',
+    adminOnly: false
+  },
+  {
+    route: '/reportes',
+    iconName: 'clipboard-list',
+    label: 'Reportes',
+    adminOnly: false
+  },
+  {
+    route: '/usuarios',
+    iconName: 'user',
+    label: 'Operadores',
+    adminOnly: true
+  },
+  {
+    route: '/historial',
+    iconName: 'list',
+    label: 'Historial',
+    adminOnly: true
+  }
+])
+
 const dropdown = ref(false)
 
 const dropdownHandler: OnClickOutsideHandler = () => {
@@ -130,51 +194,19 @@ async function verifyEmail() {
       <!-- Navbar Moviles -->
       <div class="z-20 mt-2 flex w-full bg-white lg:hidden">
         <ul class="flex w-full flex-row items-center px-4 md:px-0 lg:flex">
-          <li class="m-2 flex-grow">
-            <NavLink to="/dashboard">
-              <font-awesome-icon icon="home" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/secciones">
-              <font-awesome-icon icon="user-group" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/saberes">
-              <font-awesome-icon icon="chalkboard" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/titulos">
-              <font-awesome-icon icon="university" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/profesores">
-              <font-awesome-icon icon="chalkboard-teacher" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/carga">
-              <font-awesome-icon icon="clock" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li class="m-2 flex-grow">
-            <NavLink to="/reportes">
-              <font-awesome-icon icon="clipboard-list" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li v-if="auth.user?.rol == 'Administrador'" class="m-2 flex-grow">
-            <NavLink class="text-cyan-600" to="/usuarios">
-              <font-awesome-icon icon="user" class="text-2xl" />
-            </NavLink>
-          </li>
-          <li v-if="auth.user?.rol == 'Administrador'" class="m-2 flex-grow">
-            <NavLink class="text-cyan-600" to="/historial">
-              <font-awesome-icon icon="list" class="text-2xl" />
-            </NavLink>
-          </li>
+          <!-- Links -->
+          <template v-for="navLink in navLinks" :key="navLink.route">
+            <li
+              v-if="!navLink.adminOnly || auth.user?.rol == 'Administrador'"
+              class="m-2 flex-grow"
+            >
+              <NavLink :to="navLink.route" :aria-label="navLink.label">
+                <font-awesome-icon :icon="navLink.iconName" class="text-2xl" />
+              </NavLink>
+            </li>
+          </template>
+
+          <!-- Boton de ayuda -->
           <li class="m-2 flex-grow">
             <NavLink to="/">
               <font-awesome-icon icon="question-circle" class="text-2xl" />
@@ -189,53 +221,21 @@ async function verifyEmail() {
         id="nav-content"
       >
         <ul class="flex-1 items-center justify-between px-4 md:px-0 lg:flex">
+          <!-- Links -->
           <div class="flex">
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/dashboard" text="Inicio">
-                <font-awesome-icon icon="home" />
-              </NavLink>
-            </li>
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/secciones" text="Secciones">
-                <font-awesome-icon icon="user-group" />
-              </NavLink>
-            </li>
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/saberes" text="Saberes">
-                <font-awesome-icon icon="chalkboard" />
-              </NavLink>
-            </li>
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/titulos" text="Títulos Académicos">
-                <font-awesome-icon icon="university" />
-              </NavLink>
-            </li>
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/profesores" text="Profesores">
-                <font-awesome-icon icon="chalkboard-teacher" />
-              </NavLink>
-            </li>
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/carga" text="Carga Académica">
-                <font-awesome-icon icon="clock" />
-              </NavLink>
-            </li>
-            <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
-              <NavLink class="text-cyan-600" to="/usuarios" text="Operadores">
-                <font-awesome-icon icon="user" />
-              </NavLink>
-            </li>
-            <li v-if="auth.user?.rol == 'Administrador'" class="my-2 mr-6 md:my-0">
-              <NavLink class="text-cyan-600" to="/historial" text="Historial">
-                <font-awesome-icon icon="list" />
-              </NavLink>
-            </li>
-            <li class="my-2 mr-6 md:my-0">
-              <NavLink to="/reportes" text="Reportes">
-                <font-awesome-icon icon="clipboard-list" />
-              </NavLink>
-            </li>
+            <template v-for="navLink in navLinks" :key="navLink.route">
+              <li
+                v-if="!navLink.adminOnly || auth.user?.rol == 'Administrador'"
+                class="my-2 mr-6 md:my-0"
+              >
+                <NavLink :to="navLink.route" :text="navLink.label">
+                  <font-awesome-icon :icon="navLink.iconName" />
+                </NavLink>
+              </li>
+            </template>
           </div>
+
+          <!-- Botón de ayuda -->
           <li class="my-2 mr-6 md:my-0">
             <NavLink to="/" text="Ayuda">
               <font-awesome-icon icon="question-circle" />
