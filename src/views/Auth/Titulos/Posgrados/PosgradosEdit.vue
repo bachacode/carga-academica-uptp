@@ -105,7 +105,12 @@ onMounted(async () => {
         <!-- Titulo -->
         <InputField label="Nombre del posgrado" name="nombre">
           <template #InputField
-            ><InputComponent name="nombre" v-model="formData.nombre"
+            ><InputComponent
+              v-maska
+              data-maska="@"
+              data-maska-tokens="@:[a-zA-Z]:repeated"
+              name="nombre"
+              v-model="formData.nombre"
           /></template>
           <template #InputError
             ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"

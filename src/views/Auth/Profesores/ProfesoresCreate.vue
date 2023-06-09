@@ -178,7 +178,12 @@ onMounted(async () => {
           <!-- Nombre -->
           <InputField label="Nombre" name="nombre">
             <template #InputField
-              ><InputComponent name="nombre" v-model.trim="formData.nombre"
+              ><InputComponent
+                v-maska
+                data-maska="@"
+                data-maska-tokens="@:[a-zA-Z]:repeated"
+                name="nombre"
+                v-model.trim="formData.nombre"
             /></template>
             <template #InputError
               ><InputError v-if="v$.nombre.$error" :message="v$.nombre.$errors[0]?.$message"
@@ -188,7 +193,12 @@ onMounted(async () => {
           <!-- Apellido -->
           <InputField label="Apellido" name="apellido">
             <template #InputField
-              ><InputComponent name="apellido" v-model="formData.apellido"
+              ><InputComponent
+                v-maska
+                data-maska="@"
+                data-maska-tokens="@:[a-zA-Z]:repeated"
+                name="apellido"
+                v-model="formData.apellido"
             /></template>
             <template #InputError
               ><InputError v-if="v$.apellido.$error" :message="v$.apellido.$errors[0]?.$message"
