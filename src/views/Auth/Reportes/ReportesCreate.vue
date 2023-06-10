@@ -171,10 +171,10 @@ async function generatePDF() {
 }
 
 onMounted(() => {
-  // document.body.classList.add('overflow-hidden')
+  document.body.classList.add('overflow-hidden')
   const canvas = document.getElementById('bar-chart')
   if (canvas) {
-    // canvas.style.display = 'none'
+    canvas.style.display = 'none'
   }
 })
 
