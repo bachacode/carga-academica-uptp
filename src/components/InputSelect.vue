@@ -7,7 +7,8 @@ export interface Props {
   inputClasses?: string
   options: {
     value: any
-    name: any
+    name: string
+    isLabel?: boolean
   }[]
   disablePlaceholder?: boolean
 }
@@ -35,7 +36,14 @@ const updateValue = (e: Event) => {
       {{ placeholder }}
     </option>
     <template v-for="option in options" :key="option.value">
-      <option :value="option.value">{{ option.name }}</option>
+      <option
+        class="bg-indigo-100 font-semibold disabled:text-indigo-800"
+        v-if="option.isLabel"
+        :disabled="option.isLabel"
+      >
+        {{ option.name }}
+      </option>
+      <option v-else :value="option.value">{{ option.name }}</option>
     </template>
   </select>
 </template>
