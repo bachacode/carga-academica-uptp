@@ -4,7 +4,6 @@ import InputSelect from '@/components/InputSelect.vue'
 import InputError from '@/components/InputError.vue'
 import AuthLayout from '../AuthLayout.vue'
 import { jsPDF } from 'jspdf'
-import html2canvas from 'html2canvas'
 import autoTable from 'jspdf-autotable'
 import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { requiredValidation } from '@/helpers/validationHelpers'
@@ -22,6 +21,7 @@ import type { Reportes } from '@/types/Reportes'
 import { Chart, registerables } from 'chart.js'
 import { BarChart } from 'vue-chart-3'
 import * as htmlToImage from 'html-to-image'
+import type { ChartData, ChartOptions } from 'chart.js'
 Chart.register(...registerables)
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
@@ -35,17 +35,13 @@ const formData = reactive({
   filtro: ''
 })
 
-// Data de la chart
-const dataChart = computed(() => ({
-  labels: ['Asignados', 'No Asignados'],
-  datasets: [
-    {
-      label: 'Profesores',
-      data: [1, 2],
-      backgroundColor: ['#4ade80', '#f87171']
-    }
-  ]
-}))
+// Data de la grafica
+const dataChart = reactive<ChartData | any>({})
+
+// Config de la grafica
+const chartOptions: ChartOptions = {
+  animation: false
+}
 
 // Variable que guarda la lista completa del modulo
 const data = reactive<DatosReportes>({
@@ -96,11 +92,20 @@ watch(formData, async () => {
       const moduleData = modules[module]
       //@ts-ignore
       data.filters = moduleData.filters
+      data.setChart = moduleData.setChart
     }
     if (formData.filtro) {
       let filtro = ''
       if (formData.filtro.endsWith('@chart')) {
         filtro = formData.filtro.replace('@chart', '')
+        await pb
+          .collection(formData.modulo)
+          .getFullList({
+            sort: '-created'
+          })
+          .then((records) => {
+            data.totalItems = records.length
+          })
       } else {
         filtro = formData.filtro
       }
@@ -115,6 +120,9 @@ watch(formData, async () => {
         })
         .then((records) => {
           data.items = records
+          if (data.setChart && data.totalItems) {
+            Object.assign(dataChart, data.setChart(records, data.totalItems))
+          }
           isLoading.value = false
         })
         .catch(() => {
@@ -163,10 +171,10 @@ async function generatePDF() {
 }
 
 onMounted(() => {
-  document.body.classList.add('overflow-hidden')
+  // document.body.classList.add('overflow-hidden')
   const canvas = document.getElementById('bar-chart')
   if (canvas) {
-    canvas.style.display = 'none'
+    // canvas.style.display = 'none'
   }
 })
 
@@ -211,7 +219,17 @@ onUnmounted(() => {
     </FormComponent>
   </AuthLayout>
   <!-- Estadistica -->
-  <BarChart id="my-chart" :chart-data="dataChart"></BarChart>
+
+  <div class="w-full p-3 md:w-2/3">
+    <div class="rounded border bg-white shadow">
+      <div class="border-b p-3">
+        <h5 class="font-bold uppercase text-gray-600">Secciones Asignadas</h5>
+      </div>
+      <div class="p-5">
+        <BarChart id="my-chart" :chart-data="dataChart" :options="chartOptions"></BarChart>
+      </div>
+    </div>
+  </div>
   <!-- Tabla del PDF -->
   <table class="hidden" id="my-table">
     <thead>

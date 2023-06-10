@@ -36,5 +36,24 @@ export const secciones: Reportes = {
     if (!record.estudiantes.toString().endsWith('estudiantes'))
       record.estudiantes = `${record.estudiantes} estudiantes`
     return record
+  },
+  setChart: (values: ISeccion[], allValues: number) => {
+    const totalFiltered = values.length
+    const number = values[0].trayecto
+    return {
+      labels: ['Secciones en el sistema Carga Académica'],
+      datasets: [
+        {
+          label: `Secciones de trayecto ${number}`,
+          data: [totalFiltered],
+          backgroundColor: ['#5b21b6']
+        },
+        {
+          label: 'Secciones Totales',
+          data: [allValues],
+          backgroundColor: ['#155e75']
+        }
+      ]
+    }
   }
 }
