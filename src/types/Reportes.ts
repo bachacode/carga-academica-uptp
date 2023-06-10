@@ -7,6 +7,7 @@ export type Reportes = {
   filters?: {
     value: string
     name: string
+    isLabel?: boolean
   }[]
   relations?: string[]
 }

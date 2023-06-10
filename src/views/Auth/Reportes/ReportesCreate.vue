@@ -5,7 +5,7 @@ import InputError from '@/components/InputError.vue'
 import AuthLayout from '../AuthLayout.vue'
 import { jsPDF } from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import { computed, reactive, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { requiredValidation } from '@/helpers/validationHelpers'
 import FormComponent from '@/components/Containers/FormComponent.vue'
 import useVuelidate from '@vuelidate/core'
@@ -18,6 +18,10 @@ import { posgrados } from './PosgradosReporte'
 import { profesores } from './ProfesoresReporte'
 import { cargas } from './CargasReporte'
 import type { Reportes } from '@/types/Reportes'
+import { Chart, registerables } from 'chart.js'
+import { BarChart } from 'vue-chart-3'
+import * as htmlToImage from 'html-to-image'
+Chart.register(...registerables)
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
 
@@ -29,6 +33,18 @@ const formData = reactive({
   modulo: '',
   filtro: ''
 })
+
+// Data de la chart
+const dataChart = computed(() => ({
+  labels: ['Asignados', 'No Asignados'],
+  datasets: [
+    {
+      label: 'Profesores',
+      data: [1, 2],
+      backgroundColor: ['#4ade80', '#f87171']
+    }
+  ]
+}))
 
 // Variable que guarda la lista completa del modulo
 const data = reactive<DatosReportes>({
@@ -81,6 +97,12 @@ watch(formData, async () => {
       data.filters = moduleData.filters
     }
     if (formData.filtro) {
+      let filtro = ''
+      if (formData.filtro.endsWith('@chart')) {
+        filtro = formData.filtro.replace('@chart', '')
+      } else {
+        filtro = formData.filtro
+      }
       isLoading.value = true
       await pb
         .collection(formData.modulo)
@@ -88,7 +110,7 @@ watch(formData, async () => {
           sort: '-created',
           expand: data.relations?.toString(),
           $autoCancel: false,
-          filter: formData.filtro
+          filter: filtro
         })
         .then((records) => {
           data.items = records
@@ -113,15 +135,43 @@ watch(formData, async () => {
 const v$ = useVuelidate(formRules, formData)
 
 async function generatePDF() {
-  const doc = new jsPDF()
   await v$.value.$validate()
-  if (!v$.value.$error) {
-    isLoading.value = true
+  if (v$.value.$error) {
+    return
+  }
+  isLoading.value = true
+  let isChart = formData.filtro.endsWith('@chart')
+  if (isChart) {
+    const canvas = document.getElementById('bar-chart')
+    if (!canvas) return
+    canvas.style.display = 'block'
+    htmlToImage.toPng(canvas).then((dataUrl) => {
+      let canvasImage = new Image()
+      canvasImage.src = dataUrl
+      const doc = new jsPDF('l')
+      doc.addImage(canvasImage, 'PNG', 15, 15, 260, 160)
+      doc.save(data.pdfName)
+      canvas.style.display = 'none'
+    })
+  } else {
+    const doc = new jsPDF('p')
     autoTable(doc, { html: '#my-table' })
     doc.save(data.pdfName)
-    isLoading.value = false
   }
+  isLoading.value = false
 }
+
+onMounted(() => {
+  document.body.classList.add('overflow-hidden')
+  const canvas = document.getElementById('bar-chart')
+  if (canvas) {
+    canvas.style.display = 'none'
+  }
+})
+
+onUnmounted(() => {
+  document.body.classList.remove('overflow-hidden')
+})
 </script>
 
 <template>
@@ -159,6 +209,9 @@ async function generatePDF() {
       </template>
     </FormComponent>
   </AuthLayout>
+  <!-- Estadistica -->
+  <BarChart id="my-chart" :chart-data="dataChart"></BarChart>
+  <!-- Tabla del PDF -->
   <table class="hidden" id="my-table">
     <thead>
       <tr>

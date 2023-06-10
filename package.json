@@ -25,6 +25,7 @@
     "@vueuse/core": "^9.13.0",
     "chart.js": "^3.9.1",
     "daisyui": "^2.51.3",
+    "html-to-image": "^1.11.11",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.29",
     "maska": "^2.1.7",
