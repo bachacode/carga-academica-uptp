@@ -22,7 +22,7 @@ import { Chart, registerables } from 'chart.js'
 import { BarChart } from 'vue-chart-3'
 import * as htmlToImage from 'html-to-image'
 import type { ChartData, ChartOptions } from 'chart.js'
-import ChartDataLabels from 'chartjs-plugin-datalabels';
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 Chart.register(...registerables)
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
@@ -64,7 +64,7 @@ const chartOptions: ChartOptions = {
       labels: {
         font: {
           size: 18
-        },
+        }
       }
     },
     datalabels: {
@@ -204,10 +204,10 @@ async function generatePDF() {
 }
 
 onMounted(() => {
-  // document.body.classList.add('overflow-hidden')
+  document.body.classList.add('overflow-hidden')
   const canvas = document.getElementById('bar-chart')
   if (canvas) {
-    // canvas.style.display = 'none'
+    canvas.style.display = 'none'
   }
 })
 
@@ -252,7 +252,15 @@ onUnmounted(() => {
     </FormComponent>
   </AuthLayout>
   <!-- Estadistica -->
-  <BarChart class="w-2/4 h-full" :width="900" :height="675" id="my-chart" :plugins="[ChartDataLabels]" :chart-data="dataChart" :options="chartOptions"></BarChart>
+  <BarChart
+    class="h-full w-2/4"
+    :width="900"
+    :height="675"
+    id="my-chart"
+    :plugins="[ChartDataLabels]"
+    :chart-data="dataChart"
+    :options="chartOptions"
+  ></BarChart>
   <!-- Tabla del PDF -->
   <table class="hidden" id="my-table">
     <thead>
