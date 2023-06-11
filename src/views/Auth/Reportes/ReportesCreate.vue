@@ -22,6 +22,7 @@ import { Chart, registerables } from 'chart.js'
 import { BarChart } from 'vue-chart-3'
 import * as htmlToImage from 'html-to-image'
 import type { ChartData, ChartOptions } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 Chart.register(...registerables)
 // Objeto de pocketbase para hacer las querys
 const { pb } = useAuthStore()
@@ -40,7 +41,39 @@ const dataChart = reactive<ChartData | any>({})
 
 // Config de la grafica
 const chartOptions: ChartOptions = {
-  animation: false
+  animation: false,
+  responsive: false,
+  scales: {
+    x: {
+      ticks: {
+        font: {
+          size: 18
+        }
+      }
+    },
+    y: {
+      ticks: {
+        font: {
+          size: 18
+        }
+      }
+    }
+  },
+  plugins: {
+    legend: {
+      labels: {
+        font: {
+          size: 18
+        },
+      }
+    },
+    datalabels: {
+      color: '#312e81',
+      font: {
+        size: 18
+      }
+    }
+  }
 }
 
 // Variable que guarda la lista completa del modulo
@@ -158,7 +191,7 @@ async function generatePDF() {
       let canvasImage = new Image()
       canvasImage.src = dataUrl
       const doc = new jsPDF('l')
-      doc.addImage(canvasImage, 'PNG', 15, 15, 260, 160)
+      doc.addImage(canvasImage, 'PNG', 15, 15, 240, 180)
       doc.save(data.pdfName)
       canvas.style.display = 'none'
     })
@@ -171,10 +204,10 @@ async function generatePDF() {
 }
 
 onMounted(() => {
-  document.body.classList.add('overflow-hidden')
+  // document.body.classList.add('overflow-hidden')
   const canvas = document.getElementById('bar-chart')
   if (canvas) {
-    canvas.style.display = 'none'
+    // canvas.style.display = 'none'
   }
 })
 
@@ -219,23 +252,13 @@ onUnmounted(() => {
     </FormComponent>
   </AuthLayout>
   <!-- Estadistica -->
-
-  <div class="w-full p-3 md:w-2/3">
-    <div class="rounded border bg-white shadow">
-      <div class="border-b p-3">
-        <h5 class="font-bold uppercase text-gray-600">Secciones Asignadas</h5>
-      </div>
-      <div class="p-5">
-        <BarChart id="my-chart" :chart-data="dataChart" :options="chartOptions"></BarChart>
-      </div>
-    </div>
-  </div>
+  <BarChart class="w-2/4 h-full" :width="900" :height="675" id="my-chart" :plugins="[ChartDataLabels]" :chart-data="dataChart" :options="chartOptions"></BarChart>
   <!-- Tabla del PDF -->
   <table class="hidden" id="my-table">
     <thead>
       <tr>
         <th v-for="column in data.columns" class="text-indigo-900" :key="column.name">
-          <span>
+          <span class="hidden">
             {{ column.nameAlias ?? column.name }}
           </span>
         </th>

@@ -46,12 +46,16 @@ export const secciones: Reportes = {
         {
           label: `Secciones de trayecto ${number}`,
           data: [totalFiltered],
-          backgroundColor: ['#5b21b6']
+          backgroundColor: ['rgba(255, 99, 132, 0.2)'],
+          borderColor: ['rgba(255,99,132,1)'],
+          borderWidth: 1
         },
         {
           label: 'Secciones Totales',
           data: [allValues],
-          backgroundColor: ['#155e75']
+          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
+          borderColor: ['rgba(54, 162, 235, 1)'],
+          borderWidth: 1
         }
       ]
     }

@@ -24,6 +24,7 @@
     "@vueuse/components": "^9.13.0",
     "@vueuse/core": "^9.13.0",
     "chart.js": "^3.9.1",
+    "chartjs-plugin-datalabels": "^2.2.0",
     "daisyui": "^2.51.3",
     "html-to-image": "^1.11.11",
     "jspdf": "^2.5.1",
