@@ -128,6 +128,7 @@ watch(formData, async () => {
       data.setChart = moduleData.setChart
     }
     if (formData.filtro) {
+      isLoading.value = true
       let filtro = ''
       if (formData.filtro.endsWith('@chart')) {
         filtro = formData.filtro.replace('@chart', '')
@@ -142,7 +143,6 @@ watch(formData, async () => {
       } else {
         filtro = formData.filtro
       }
-      isLoading.value = true
       await pb
         .collection(formData.modulo)
         .getFullList({
