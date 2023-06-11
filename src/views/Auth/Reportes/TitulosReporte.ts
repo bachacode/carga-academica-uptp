@@ -22,7 +22,7 @@ export const titulos: Reportes = {
     { value: '', name: 'Graficas', isLabel: true },
     { value: 'grado ~ "t%"@chart', name: 'Titulos Técnicos' },
     { value: 'grado ~ "i%"@chart', name: 'Titulos de Ingeniería' },
-    { value: 'grado ~ "l%"@chart', name: 'Titulos de Licenciatura' },
+    { value: 'grado ~ "l%"@chart', name: 'Titulos de Licenciatura' }
   ],
   mapData: (record: ITitulo) => {
     return record

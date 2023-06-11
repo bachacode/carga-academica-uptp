@@ -22,7 +22,7 @@ export const posgrados: Reportes = {
     { value: '', name: 'Graficas', isLabel: true },
     { value: 'grado ~ "maes%@chart"', name: 'Posgrados de Maestría' },
     { value: 'grado ~ "mag%"@chart', name: 'Posgrados de Magíster' },
-    { value: 'grado ~ "doc%"@chart', name: 'Posgrados de Doctorado' },
+    { value: 'grado ~ "doc%"@chart', name: 'Posgrados de Doctorado' }
   ],
   mapData: (record: IPosgrado) => {
     return record

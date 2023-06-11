@@ -33,7 +33,7 @@ export const cargas: Reportes = {
     { value: 'nombre = null', name: 'Todos los profesores sin carga académica' },
     { value: 'horas != null', name: 'Todos los profesores con carga académica' },
     { value: '', name: 'Graficas', isLabel: true },
-    { value: 'nombre = null@chart', name: 'Todos los profesores con carga académica' },
+    { value: 'nombre = null@chart', name: 'Todos los profesores con carga académica' }
   ],
   mapData: (record: ICargaTotal) => {
     if (record.horas == null) record.horas = 0
@@ -62,5 +62,5 @@ export const cargas: Reportes = {
         }
       ]
     }
-  },
+  }
 }
