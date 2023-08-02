@@ -43,6 +43,12 @@ const dataChart = reactive<ChartData | any>({})
 const chartOptions: ChartOptions = {
   animation: false,
   responsive: false,
+  padding: {
+    left: 20,
+    right: 20,
+    top: 10,
+    bottom: 10
+  },
   scales: {
     x: {
       ticks: {
@@ -69,8 +75,10 @@ const chartOptions: ChartOptions = {
     },
     datalabels: {
       color: '#312e81',
+      anchor: 'start',
+      align: 'start',
       font: {
-        size: 18
+        size: 24
       }
     }
   }
@@ -119,29 +127,29 @@ const modules: { [key: string]: Reportes } = {
 
 watch(formData, async () => {
   if (formData.modulo) {
-    if (formData.modulo == 'profesores') data.relations = profesores.relations
-    const module = formData.modulo
+    if (formData.modulo == 'profesores') data.relations = profesores.relations // Asigna las relaciones específicas para el módulo de profesores
+    const module = formData.modulo // Almacena el valor de la propiedad modulo en una variable
     if (Object.prototype.hasOwnProperty.call(modules, module)) {
-      const moduleData = modules[module]
+      const moduleData = modules[module] // Obtiene los datos específicos del módulo del objeto modules
       //@ts-ignore
-      data.filters = moduleData.filters
-      data.setChart = moduleData.setChart
+      data.filters = moduleData.filters // Asigna los filtros específicos del módulo a data.filters
+      data.setChart = moduleData.setChart // Asigna la función setChart específica del módulo a data.setChart
     }
     if (formData.filtro) {
-      isLoading.value = true
+      isLoading.value = true // Establece isLoading como true para mostrar un indicador de carga
       let filtro = ''
       if (formData.filtro.endsWith('@chart')) {
-        filtro = formData.filtro.replace('@chart', '')
+        filtro = formData.filtro.replace('@chart', '') // Elimina '@chart' del valor de filtro si está presente
         await pb
           .collection(formData.modulo)
           .getFullList({
             sort: '-created'
           })
           .then((records) => {
-            data.totalItems = records.length
+            data.totalItems = records.length // Obtiene la longitud de la lista completa de registros y la asigna a data.totalItems
           })
       } else {
-        filtro = formData.filtro
+        filtro = formData.filtro // Asigna el valor de filtro a la variable filtro
       }
       await pb
         .collection(formData.modulo)
@@ -149,24 +157,24 @@ watch(formData, async () => {
           sort: '-created',
           expand: data.relations?.toString(),
           $autoCancel: false,
-          filter: filtro
+          filter: filtro // Aplica el filtro a la lista de registros obtenida de la base de datos
         })
         .then((records) => {
-          data.items = records
+          data.items = records // Asigna la lista filtrada de registros a data.items
           if (data.setChart && data.totalItems) {
-            Object.assign(dataChart, data.setChart(records, data.totalItems))
+            Object.assign(dataChart, data.setChart(records, data.totalItems)) // Asigna los datos del gráfico generado por setChart a dataChart
           }
-          isLoading.value = false
+          isLoading.value = false // Establece isLoading como false para indicar que la carga ha finalizado
         })
         .catch(() => {
-          isLoading.value = false
+          isLoading.value = false // Establece isLoading como false en caso de error
         })
       if (data.items) {
         if (Object.prototype.hasOwnProperty.call(modules, module)) {
-          const moduleData = modules[module]
-          data.items.map(moduleData.mapData)
-          data.columns = moduleData.columns
-          data.pdfName = moduleData.pdfName
+          const moduleData = modules[module] // Obtiene los datos específicos del módulo del objeto modules
+          data.items.map(moduleData.mapData) // Aplica una transformación a cada elemento de data.items utilizando la función mapData específica del módulo
+          data.columns = moduleData.columns // Asigna las columnas específicas del módulo a data.columns
+          data.pdfName = moduleData.pdfName // Asigna el nombre del archivo PDF específico del módulo a data.pdfName
         }
       }
     }
@@ -191,7 +199,11 @@ async function generatePDF() {
       let canvasImage = new Image()
       canvasImage.src = dataUrl
       const doc = new jsPDF('l')
-      doc.addImage(canvasImage, 'PNG', 15, 15, 240, 180)
+      doc.addImage(canvasImage, 'PNG', 30, 15, 240, 135)
+      doc.line(10, 165, 100, 165);
+      doc.text(`Resultados de la grafica: ${dataChart.labels[0]}`, 10, 175);
+      doc.text(`Hay ${dataChart.datasets[0].data[0]} ${dataChart.datasets[0].label.toLowerCase()}`, 10, 185);
+      doc.text(`Hay ${dataChart.datasets[1].data[0]} ${dataChart.datasets[1].label.toLowerCase()}`, 10, 195);
       doc.save(data.pdfName)
       canvas.style.display = 'none'
     })
@@ -254,8 +266,8 @@ onUnmounted(() => {
   <!-- Estadistica -->
   <BarChart
     class="h-full w-2/4"
-    :width="900"
-    :height="675"
+    :width="1280"
+    :height="720"
     id="my-chart"
     :plugins="[ChartDataLabels]"
     :chart-data="dataChart"

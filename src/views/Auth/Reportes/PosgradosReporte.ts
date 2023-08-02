@@ -1,5 +1,6 @@
 import type { IPosgrado } from '@/stores/posgrados'
 import type { Reportes } from '@/types/Reportes'
+import { chartColors } from './chartColors'
 
 export const posgrados: Reportes = {
   columns: [
@@ -20,7 +21,7 @@ export const posgrados: Reportes = {
     { value: 'grado ~ "doc%"', name: 'Posgrados de Doctorado' },
     { value: 'grado !~ "1"', name: 'Todos los titulos de posgrado' },
     { value: '', name: 'Graficas', isLabel: true },
-    { value: 'grado ~ "maes%@chart"', name: 'Posgrados de Maestría' },
+    { value: 'grado ~ "maes"%@chart', name: 'Posgrados de Maestría' },
     { value: 'grado ~ "mag%"@chart', name: 'Posgrados de Magíster' },
     { value: 'grado ~ "doc%"@chart', name: 'Posgrados de Doctorado' }
   ],
@@ -36,15 +37,15 @@ export const posgrados: Reportes = {
         {
           label: `Posgrados de ${grado}`,
           data: [totalFiltered],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-          borderColor: ['rgba(255,99,132,1)'],
+          backgroundColor: chartColors.good.backgroundColor,
+          borderColor: chartColors.good.borderColor,
           borderWidth: 1
         },
         {
           label: 'Posgrados Totales',
           data: [allValues],
-          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-          borderColor: ['rgba(54, 162, 235, 1)'],
+          backgroundColor: chartColors.totals.backgroundColor,
+          borderColor: chartColors.totals.borderColor,
           borderWidth: 1
         }
       ]

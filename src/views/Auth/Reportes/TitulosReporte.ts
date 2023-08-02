@@ -1,5 +1,6 @@
 import type { ITitulo } from '@/stores/titulos'
 import type { Reportes } from '@/types/Reportes'
+import { chartColors } from './chartColors'
 
 export const titulos: Reportes = {
   columns: [
@@ -36,15 +37,15 @@ export const titulos: Reportes = {
         {
           label: `Titulos de ${grado}`,
           data: [totalFiltered],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-          borderColor: ['rgba(255,99,132,1)'],
+          backgroundColor: chartColors.good.backgroundColor,
+          borderColor: chartColors.good.borderColor,
           borderWidth: 1
         },
         {
           label: 'Titulos Totales',
           data: [allValues],
-          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-          borderColor: ['rgba(54, 162, 235, 1)'],
+          backgroundColor: chartColors.totals.backgroundColor,
+          borderColor: chartColors.totals.borderColor,
           borderWidth: 1
         }
       ]

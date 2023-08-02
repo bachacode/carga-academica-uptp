@@ -1,5 +1,6 @@
 import type { IProfesor } from '@/stores/profesores'
 import type { Reportes } from '@/types/Reportes'
+import { chartColors } from './chartColors'
 
 export const profesores: Reportes = {
   columns: [
@@ -92,15 +93,15 @@ export const profesores: Reportes = {
         {
           label: `Profesores titulados`,
           data: [totalFiltered],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-          borderColor: ['rgba(255,99,132,1)'],
+          backgroundColor: chartColors.good.backgroundColor,
+          borderColor: chartColors.good.borderColor,
           borderWidth: 1
         },
         {
           label: 'Profesores Totales',
           data: [allValues],
-          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-          borderColor: ['rgba(54, 162, 235, 1)'],
+          backgroundColor: chartColors.totals.backgroundColor,
+          borderColor: chartColors.totals.borderColor,
           borderWidth: 1
         }
       ]

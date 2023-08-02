@@ -106,7 +106,7 @@ const profsAsignadosChart = computed(() => ({
   datasets: [
     {
       data: dataSetProfesores.value,
-      backgroundColor: ['#4ade80', '#f87171']
+      backgroundColor: ['#4f46e5', '#d1d5db']
     }
   ]
 }))
@@ -121,7 +121,7 @@ const seccionesAsignadasChart = computed(() => ({
   datasets: [
     {
       data: dataSetSecciones.value,
-      backgroundColor: ['#4ade80', '#f87171']
+      backgroundColor: ['#4f46e5', '#d1d5db']
     }
   ]
 }))
@@ -136,7 +136,7 @@ const operadoresActivosChart = computed(() => ({
   datasets: [
     {
       data: dataSetOperadores.value,
-      backgroundColor: ['#4ade80', '#f87171']
+      backgroundColor: ['#4f46e5', '#d1d5db']
     }
   ]
 }))

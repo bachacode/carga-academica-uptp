@@ -1,5 +1,6 @@
 import type { ICargaTotal } from '@/stores/cargaTotal'
 import type { Reportes } from '@/types/Reportes'
+import { chartColors } from './chartColors'
 
 export const cargas: Reportes = {
   columns: [
@@ -49,15 +50,15 @@ export const cargas: Reportes = {
         {
           label: `Profesores con carga asignada`,
           data: [totalFiltered],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-          borderColor: ['rgba(255,99,132,1)'],
+          backgroundColor: chartColors.good.backgroundColor,
+          borderColor: chartColors.good.borderColor,
           borderWidth: 1
         },
         {
           label: 'Profesores sin carga asignada',
           data: [sinCarga],
-          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-          borderColor: ['rgba(54, 162, 235, 1)'],
+          backgroundColor: chartColors.bad.backgroundColor,
+          borderColor: chartColors.bad.borderColor,
           borderWidth: 1
         }
       ]

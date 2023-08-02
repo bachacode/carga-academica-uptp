@@ -1,5 +1,6 @@
 import type { ISaber } from '@/stores/saberes'
 import type { Reportes } from '@/types/Reportes'
+import { chartColors } from './chartColors'
 
 export const saberes: Reportes = {
   columns: [
@@ -53,15 +54,15 @@ export const saberes: Reportes = {
         {
           label: `Saberes de trayecto ${number}`,
           data: [totalFiltered],
-          backgroundColor: ['rgba(255, 99, 132, 0.2)'],
-          borderColor: ['rgba(255,99,132,1)'],
+          backgroundColor: chartColors.good.backgroundColor,
+          borderColor: chartColors.good.borderColor,
           borderWidth: 1
         },
         {
           label: 'Saberes Totales',
           data: [allValues],
-          backgroundColor: ['rgba(54, 162, 235, 0.2)'],
-          borderColor: ['rgba(54, 162, 235, 1)'],
+          backgroundColor: chartColors.totals.backgroundColor,
+          borderColor: chartColors.totals.borderColor,
           borderWidth: 1
         }
       ]
