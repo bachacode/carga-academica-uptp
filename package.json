@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "pocketbase": ".\\pocketbase.exe serve --http localhost:8000",
+    "pocketbase": ".\\server\\pocketbase.exe serve --http localhost:8000",
     "dev": "vite",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
