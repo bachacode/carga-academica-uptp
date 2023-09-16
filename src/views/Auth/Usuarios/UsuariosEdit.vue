@@ -191,7 +191,7 @@ onMounted(async () => {
 
     <!-- Formulario de datos personales -->
     <template v-else-if="formType == 'personal'">
-      <FormComponent submit-text="Editar Usuario" @form-submit="submitData" :is-loading="isLoading">
+      <FormComponent form-title="Módulo usuarios" submit-text="Editar Usuario" @form-submit="submitData" :is-loading="isLoading">
         <template #inputs>
           <!-- Nombre de usuario -->
           <InputField label="Nombre de usuario" name="username">
@@ -294,6 +294,7 @@ onMounted(async () => {
     <!-- Formulario para cambiar contraseña -->
     <template v-else-if="formType == 'password'">
       <FormComponent
+      form-title="Módulo usuarios"
         submit-text="Editar Contraseña"
         @form-submit="submitData"
         :is-loading="isLoading"

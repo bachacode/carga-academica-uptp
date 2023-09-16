@@ -43,6 +43,7 @@ const dataChart = reactive<ChartData | any>({})
 const chartOptions: ChartOptions = {
   animation: false,
   responsive: false,
+  //@ts-ignore
   padding: {
     left: 20,
     right: 20,
@@ -230,7 +231,7 @@ onUnmounted(() => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Generar Reporte" @form-submit="generatePDF" :is-loading="isLoading">
+    <FormComponent form-title="Módulo reportes" submit-text="Generar Reporte" @form-submit="generatePDF" :is-loading="isLoading">
       <template #inputs>
         <!-- Modulo -->
         <InputField label="Modulo a imprimir" name="modulo">

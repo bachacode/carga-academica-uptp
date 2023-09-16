@@ -76,7 +76,7 @@ const submitData = async () => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
+    <FormComponent form-title="Módulo saberes" submit-text="Crear Saber" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- Saber -->
         <InputField label="Nombre del saber" name="saber">

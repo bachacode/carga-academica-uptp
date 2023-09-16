@@ -57,6 +57,7 @@ const submitData = async () => {
 
 <template>
   <FormComponent
+  form-title="Módulo posgrados"
     class="mt-14 flex-grow"
     form-width="w-3/4"
     submit-text="Registrar posgrado"

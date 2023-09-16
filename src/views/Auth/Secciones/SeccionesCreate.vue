@@ -83,7 +83,7 @@ const submitData = async () => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Crear Sección" @form-submit="submitData" :is-loading="isLoading">
+    <FormComponent form-title="Módulo secciones" submit-text="Crear Sección" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- Codigo -->
         <InputField label="Codigo" name="codigo">

@@ -285,7 +285,7 @@ onMounted(async () => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Asignar Carga" @form-submit="submitData" :is-loading="isLoading">
+    <FormComponent form-title="Módulo carga" submit-text="Asignar Carga" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- seccion -->
         <InputField label="Sección" name="seccion">

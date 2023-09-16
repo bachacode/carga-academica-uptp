@@ -120,6 +120,7 @@ const cargoOptions = reactive([
 <template>
   <AuthLayout>
     <FormComponent
+      form-title="Módulo usuarios"
       submit-text="Registrar Usuario"
       @form-submit="submitData"
       :is-loading="isLoading"

@@ -21,6 +21,7 @@ defineEmits(['formSubmit'])
 
 <template>
   <CardContainer :card-width="formWidth">
+    <h1 v-if="formTitle" class="pl-4 pt-2 text-xl font-bold text-zinc-600 uppercase">{{ formTitle }}</h1>
     <button
       v-if="backButton"
       class="btn-ghost px-2 pt-2 hover:bg-white hover:text-indigo-700"
@@ -28,7 +29,6 @@ defineEmits(['formSubmit'])
     >
       <font-awesome-icon icon="arrow-left" class="mr-2" />{{ backText }}
     </button>
-    <h1 v-if="formTitle" class="pl-4 pt-2 text-xl font-semibold">{{ formTitle }}</h1>
     <form class="mt-4 px-6 pb-6" @submit.prevent="$emit('formSubmit')">
       <slot name="inputs"></slot>
 

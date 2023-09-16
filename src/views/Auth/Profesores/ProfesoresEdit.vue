@@ -207,7 +207,7 @@ onMounted(async () => {
 
 <template>
   <AuthLayout>
-    <FormComponent submit-text="Editar Profesor" @form-submit="submitData" :is-loading="isLoading">
+    <FormComponent form-title="Módulo profesores" submit-text="Editar Profesor" @form-submit="submitData" :is-loading="isLoading">
       <template #inputs>
         <!-- Nombre + Apellido -->
         <div class="flex w-full space-x-2">

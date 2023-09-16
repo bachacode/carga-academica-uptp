@@ -78,6 +78,7 @@ onMounted(async () => {
 
 <template>
   <FormComponent
+  form-title="Módulo pregrados"
     class="mt-14 flex-grow"
     form-width="w-3/4"
     submit-text="Editar titulo"
