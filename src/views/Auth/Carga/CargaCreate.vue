@@ -136,7 +136,7 @@ const excedeContrato = (value: string) => {
 // Condicional para las horas limites del saber para el profesor
 const excedeHorasSaber = (value: string) => {
   // Si no estan definidas las tres columnas retorna true
-  if (!(formData.profesor_id && formData.saber_id && formData.horas)) {
+  if (!(formData.profesor_id && formData.saber_id && formData.horas && formData.seccion_id)) {
     return true
   }
   // Si las listas necesarias no estan definidas, retorna true
@@ -149,7 +149,9 @@ const excedeHorasSaber = (value: string) => {
   })
   // Consigue la informacion del profesor
   let profesorCargas = store.fullData.filter((record) => {
-    return record.profesor_id == formData.profesor_id && record.saber_id == formData.saber_id
+    return record.profesor_id == formData.profesor_id && 
+    record.saber_id == formData.saber_id &&
+    record.seccion_id == formData.seccion_id
   })
   //
   if (profesorCargas.length == 0 && saber) {
@@ -210,7 +212,7 @@ const formRules = computed(() => {
         excedeContratoAsync
       ),
       excedeHorasSaber: helpers.withMessage(
-        'Las horas asignadas las horas semanales del saber seleccionado',
+        'Las horas asignadas exceden las horas semanales del saber seleccionado para una misma sección',
         excedeHorasSaberAsync
       )
     }
