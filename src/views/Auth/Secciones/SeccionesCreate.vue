@@ -16,7 +16,9 @@ import {
   numericValidation,
   requiredValidation,
   uniqueValidation,
-  isUnique
+  isUnique,
+  seccionIdValidation,
+  idMatches
 } from '@/helpers/validationHelpers'
 // Store del módulo
 const store = useSeccionStore()
@@ -34,6 +36,16 @@ const formData = reactive<Seccion>({
 // Validación Unica
 const isCodigoTaken = isUnique(store, 'codigo')
 
+const codigoMatches = (value: string) => {
+  // Si no estan definidas las dos columnas retorna true
+  if (!(formData.trayecto && formData.codigo)) {
+    return true
+  }
+
+  const regex = new RegExp('^i' + formData.trayecto + '[0-9]')
+  return regex.test(value);
+}
+
 // Reglas de validación
 const formRules = computed(() => {
   return {
@@ -42,7 +54,8 @@ const formRules = computed(() => {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(4),
-      unique: uniqueValidation('codigo', 'secciones', isCodigoTaken, formData.codigo)
+      unique: uniqueValidation('codigo', 'secciones', isCodigoTaken, formData.codigo),
+      idMatches: seccionIdValidation(formData.trayecto, codigoMatches, formData.codigo)
     },
     trayecto: {
       required: requiredValidation(),
@@ -88,7 +101,12 @@ const submitData = async () => {
         <!-- Codigo -->
         <InputField label="Codigo" name="codigo">
           <template #InputField
-            ><InputComponent v-maska name="codigo" v-model="formData.codigo" placeholder="ej. i11"
+            ><InputComponent
+            v-maska
+            data-maska="i##"
+            name="codigo"
+            v-model="formData.codigo"
+            placeholder="ej. i11"
           /></template>
           <template #InputError
             ><InputError v-if="v$.codigo.$error" :message="v$.codigo.$errors[0]?.$message"

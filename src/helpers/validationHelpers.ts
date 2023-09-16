@@ -22,6 +22,13 @@ export const isUnique = (store: Store, key: any, currentValue?: any) => (value: 
 
 const password = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/)
 
+export const idMatches = (trayecto: string) => (value: string) => {
+  const regex = new RegExp(`/^i${trayecto}/`)
+  console.log(regex);
+  console.log(!regex.test(value))
+  return false;
+}
+
 const errorMessages = ref({
   required: 'Este campo es obligatorio',
   numeric: 'El valor de este campo tiene que ser numerico',
@@ -32,7 +39,8 @@ const errorMessages = ref({
   maxLength: (max: number) => `Este campo tiene un limite de maximo ${max} caracteres`,
   unique: (value: string, table: string) => `Este ${value} ya existe en el módulo ${table}`,
   sameAs: () => `Las contraseña no coinciden`,
-  password: () => `La contraseña debe tener al menos una letra y un numero`
+  password: () => `La contraseña debe tener al menos una letra y un numero`,
+  seccionId: () => `El ID de la sección no coincide con el trayecto`
 })
 
 export const requiredValidation = () => {
@@ -76,4 +84,11 @@ export const sameAsValidation = (value: string) => {
 
 export const passwordValidation = () => {
   return helpers.withMessage(errorMessages.value.password, password)
+}
+
+export const seccionIdValidation = (trayecto: string, validator: any, formInput: string) => {
+  return helpers.withMessage(
+    errorMessages.value.seccionId,
+    helpers.withAsync(validator, () => formInput)
+  )
 }

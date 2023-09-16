@@ -17,6 +17,7 @@ import {
   minValueValidation,
   numericValidation,
   requiredValidation,
+  seccionIdValidation,
   uniqueValidation
 } from '@/helpers/validationHelpers'
 // Store del módulo
@@ -45,6 +46,16 @@ const formData = reactive<Seccion>({
 // Validación Unica
 const isCodigoTaken = isUnique(store, 'codigo', singleData)
 
+const codigoMatches = (value: string) => {
+  // Si no estan definidas las dos columnas retorna true
+  if (!(formData.trayecto && formData.codigo)) {
+    return true
+  }
+
+  const regex = new RegExp('^i' + formData.trayecto + '[0-9]')
+  return regex.test(value);
+}
+
 // Reglas de validación
 const formRules = computed(() => {
   return {
@@ -53,7 +64,8 @@ const formRules = computed(() => {
       required: requiredValidation(),
       minLength: minLengthValidation(),
       maxLength: maxLengthValidation(4),
-      unique: uniqueValidation('codigo', 'secciones', isCodigoTaken, formData.codigo)
+      unique: uniqueValidation('codigo', 'secciones', isCodigoTaken, formData.codigo),
+      idMatches: seccionIdValidation(formData.trayecto, codigoMatches, formData.codigo)
     },
     trayecto: {
       required: requiredValidation(),
