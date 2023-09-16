@@ -1,14 +1,14 @@
 export const chartColors = {
     good: {
-        backgroundColor: ['#4f46e5'],
-        borderColor: ['#312e81'],
+        backgroundColor: ['#d1d5db'],
+        borderColor: ['#111827'],
     },
     bad: {
         backgroundColor: ['#9ca3af'],
         borderColor: ['#111827'],
     },
     totals: {
-        backgroundColor: ['#db2777'],
-        borderColor: ['#831843'],
+        backgroundColor: ['#4f46e5'],
+        borderColor: ['#312e81'],
     }
 }
