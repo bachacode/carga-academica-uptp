@@ -378,7 +378,6 @@ export function createCrudStore<Data extends {} | undefined, IData extends Recor
 
     pb.collection(collectionName).subscribe('*', async function (e) {
       await fetchAll(defaultFetchQuery.sortBy, defaultFetchQuery.filter, false)
-      console.log(e)
     })
 
     /*

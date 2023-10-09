@@ -156,7 +156,6 @@ const v$ = useVuelidate(formRules, formData)
 // Función para enviar el formulario
 const submitData = async () => {
   await v$.value.$validate()
-  console.log(v$.value.cedula)
   if (!v$.value.$error) {
     isLoading.value = true
     await store.save(formData)

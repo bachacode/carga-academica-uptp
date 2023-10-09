@@ -173,9 +173,6 @@ const excedeHorasSaber = (value: string) => {
   })
   //@ts-ignore
   let horasTotales = horasProfesor + parseInt(value)
-  console.log(horasProfesor)
-  console.log(saber?.horas)
-  console.log(horasTotales)
   //@ts-ignore
   return saber.horas >= horasTotales
 }

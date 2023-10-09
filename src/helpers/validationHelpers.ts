@@ -24,8 +24,6 @@ const password = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/)
 
 export const idMatches = (trayecto: string) => (value: string) => {
   const regex = new RegExp(`/^i${trayecto}/`)
-  console.log(regex);
-  console.log(!regex.test(value))
   return false;
 }
 
