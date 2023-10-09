@@ -21,10 +21,10 @@ defineEmits(['formSubmit'])
 
 <template>
   <CardContainer :card-width="formWidth">
-    <h1 v-if="formTitle" class="pl-4 pt-2 text-xl font-bold text-zinc-600 uppercase">{{ formTitle }}</h1>
+    <h1 v-if="formTitle" class="pl-2 pt-2 text-xl font-bold text-zinc-600 uppercase">{{ formTitle }}</h1>
     <button
       v-if="backButton"
-      class="btn-ghost px-2 pt-2 hover:bg-white hover:text-indigo-700"
+      class="btn bg-indigo-600 ml-2 mt-2 hover:bg-indigo-800 rounded-lg"
       @click="router.back()"
     >
       <font-awesome-icon icon="arrow-left" class="mr-2" />{{ backText }}
