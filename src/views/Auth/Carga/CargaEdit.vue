@@ -40,6 +40,10 @@ const isLoading = ref(false)
 // Id del item a editar
 const id = ref()
 
+let horasActuales = 0;
+
+let saberActual = '';
+
 // Datos del registro a editar
 const singleData = reactive<Carga>({
   seccion_id: '',
@@ -139,10 +143,9 @@ const excedeContrato = (value: string) => {
   if (!profesor) {
     return false
   }
-
   // Comprueba si las horas restantes son positivas o negativas
   let horasRestantes =
-    profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value))
+    profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value)) + horasActuales
   return horasRestantes >= 0
 }
 // Condicional para las horas limites del saber para el profesor
@@ -167,12 +170,17 @@ const excedeHorasSaber = (value: string) => {
   if (profesorCargas.length == 0 && saber) {
     return saber.horas >= value
   }
-  let horasProfesor = profesorCargas.reduce((acc, record) => {
+  let profesor = profesorCargas.reduce((acc, record) => {
     //@ts-ignore
     return acc.horas + record.horas
   })
+  
   //@ts-ignore
-  let horasTotales = horasProfesor + parseInt(value)
+  let horasTotales = profesor.horas + parseInt(value)
+  if(saberActual == formData.saber_id) {
+    horasTotales -= horasActuales;
+  }
+  
   //@ts-ignore
   return saber.horas >= horasTotales
 }
@@ -219,7 +227,7 @@ const formRules = computed(() => {
         excedeContratoAsync
       ),
       excedeHorasSaber: helpers.withMessage(
-        'Las horas asignadas las horas semanales del saber seleccionado',
+        'Las horas asignadas exceden las horas semanales del saber seleccionado',
         excedeHorasSaberAsync
       )
     }
@@ -239,9 +247,30 @@ const seccionesOptions = computed(() => {
 // Opciones del Select "Profesores"
 const profesoresOptions = computed(() => {
   return profesores.fullData?.map((record) => {
+    // Consigue la informacion del profesor
+    const profesor = cargaTotal.fullData?.find((profesor) => {
+      return record.id == profesor.id
+    })
+    const horas = profesor?.horas ?? 0;
+
+    let horasRestantes;
+    if(typeof record.expand.contrato_id.horas == 'string') {
+      horasRestantes = parseInt(record.expand.contrato_id.horas);
+    } else {
+      horasRestantes = record.expand.contrato_id.horas;
+    }
+    horasRestantes -= horas;
+    let text = '';
+    if(horasRestantes > 0) {
+      text = `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - (${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas) - ${horasRestantes} horas restantes`
+    } else {
+      text = `${record.nombre} ${record.apellido} - Sin horas disponibles`
+    }
+
     return {
       value: record.id,
-      name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - ${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas`
+      name: text,
+      isLabel: (horasRestantes <= 0),
     }
   })
 })
@@ -251,7 +280,7 @@ const saberesOptions = computed(() => {
   return saberes.fullData?.map((record) => {
     return {
       value: record.id,
-      name: `${record.nombre} - Trayecto ${record.trayecto}`
+      name: `${record.nombre} - Trayecto ${record.trayecto} - ${record.horas} horas maximo`
     }
   })
 })
@@ -294,6 +323,12 @@ onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await store.fetchOne(id.value).then((data) => {
+      if(typeof data.horas == 'string'){
+        horasActuales = parseInt(data.horas)
+      } else {
+        horasActuales = data.horas
+      }
+      saberActual = data.saber_id
       Object.assign(singleData, data)
       Object.assign(formData, data)
     })

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AuthLayout from '../AuthLayout.vue'
 import InputField from '@/components/InputField.vue'
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, onMounted, reactive, ref, watch } from 'vue'
 import { useProfesorStore } from '@/stores/profesores'
 import { useSaberStore } from '@/stores/saberes'
 import FormComponent from '@/components/Containers/FormComponent.vue'
@@ -149,9 +149,9 @@ const excedeHorasSaber = (value: string) => {
   })
   // Consigue la informacion del profesor
   let profesorCargas = store.fullData.filter((record) => {
-    return record.profesor_id == formData.profesor_id && 
-    record.saber_id == formData.saber_id &&
-    record.seccion_id == formData.seccion_id
+    return record.profesor_id == formData.profesor_id &&
+      record.saber_id == formData.saber_id &&
+      record.seccion_id == formData.seccion_id
   })
   //
   if (profesorCargas.length == 0 && saber) {
@@ -229,9 +229,30 @@ const seccionesOptions = computed(() => {
 // Opciones del Select "Profesores"
 const profesoresOptions = computed(() => {
   return profesores.fullData?.map((record) => {
+    // Consigue la informacion del profesor
+    const profesor = cargaTotal.fullData?.find((profesor) => {
+      return record.id == profesor.id
+    })
+    const horas = profesor?.horas ?? 0;
+
+    let horasRestantes;
+    if(typeof record.expand.contrato_id.horas == 'string') {
+      horasRestantes = parseInt(record.expand.contrato_id.horas);
+    } else {
+      horasRestantes = record.expand.contrato_id.horas;
+    }
+    horasRestantes -= horas;
+    let text = '';
+    if(horasRestantes > 0) {
+      text = `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - (${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas) - ${horasRestantes} horas restantes`
+    } else {
+      text = `${record.nombre} ${record.apellido} - Sin horas disponibles`
+    }
+
     return {
       value: record.id,
-      name: `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - ${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas`
+      name: text,
+      isLabel: (horasRestantes <= 0),
     }
   })
 })
@@ -268,11 +289,11 @@ const submitData = async () => {
   }
 }
 onMounted(async () => {
+  await cargaTotal.fetchFullList()
+  await profesores.fetchFullList()
   await store.fetchFullList()
   await saberes.fetchFullList()
-  await profesores.fetchFullList()
   await secciones.fetchFullList()
-  await cargaTotal.fetchFullList()
   store.pb
     .collection('profs_proyecto')
     .getFullList()
@@ -284,76 +305,60 @@ onMounted(async () => {
 
 <template>
   <AuthLayout>
-    <FormComponent form-title="Módulo carga" submit-text="Asignar Carga" @form-submit="submitData" :is-loading="isLoading">
+    <FormComponent form-title="Módulo carga" submit-text="Asignar Carga" @form-submit="submitData"
+      :is-loading="isLoading">
       <template #inputs>
         <!-- seccion -->
         <InputField label="Sección" name="seccion">
           <template #InputField>
-            <InputSelect
-              :options="seccionesOptions ?? [{ value: '', name: 'No se han encontrado secciones' }]"
-              placeholder="Seleccione una sección"
-              name="seccion"
-              v-model="formData.seccion_id"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.seccion_id.$error" :message="v$.seccion_id.$errors[0]?.$message"
-          /></template>
+            <InputSelect :options="seccionesOptions ?? [{ value: '', name: 'No se han encontrado secciones' }]"
+              placeholder="Seleccione una sección" name="seccion" v-model="formData.seccion_id" />
+          </template>
+          <template #InputError>
+            <InputError v-if="v$.seccion_id.$error" :message="v$.seccion_id.$errors[0]?.$message" />
+          </template>
         </InputField>
 
         <!-- profesor -->
         <InputField label="Profesor" name="profesor">
           <template #InputField>
-            <InputSelect
-              :options="
-                profesoresOptions ?? [{ value: '', name: 'No se han encontrado profesores' }]
-              "
-              placeholder="Seleccione un profesor"
-              name="profesor"
-              v-model="formData.profesor_id"
-          /></template>
-          <template #InputError
-            ><InputError
-              v-if="v$.profesor_id.$error"
-              :message="v$.profesor_id.$errors[0]?.$message"
-          /></template>
+            <InputSelect :options="profesoresOptions ?? [{ value: '', name: 'No se han encontrado profesores' }]
+              " placeholder="Seleccione un profesor" name="profesor" v-model="formData.profesor_id" />
+          </template>
+          <template #InputError>
+            <InputError v-if="v$.profesor_id.$error" :message="v$.profesor_id.$errors[0]?.$message" />
+          </template>
         </InputField>
 
         <!-- saber -->
         <InputField label="Saber" name="saber">
           <template #InputField>
-            <InputSelect
-              :options="saberesOptions ?? [{ value: '', name: 'No se han encontrado saberes' }]"
-              placeholder="Seleccione un saber"
-              name="saber"
-              v-model="formData.saber_id"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.saber_id.$error" :message="v$.saber_id.$errors[0]?.$message"
-          /></template>
+            <InputSelect :options="saberesOptions ?? [{ value: '', name: 'No se han encontrado saberes' }]"
+              placeholder="Seleccione un saber" name="saber" v-model="formData.saber_id" />
+          </template>
+          <template #InputError>
+            <InputError v-if="v$.saber_id.$error" :message="v$.saber_id.$errors[0]?.$message" />
+          </template>
         </InputField>
 
         <!-- Dia -->
         <InputField label="Dia" name="dia">
           <template #InputField>
-            <InputSelect
-              :options="diasOptions"
-              placeholder="Seleccione un día"
-              name="dia"
-              v-model="formData.dia"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.dia.$error" :message="v$.dia.$errors[0]?.$message"
-          /></template>
+            <InputSelect :options="diasOptions" placeholder="Seleccione un día" name="dia" v-model="formData.dia" />
+          </template>
+          <template #InputError>
+            <InputError v-if="v$.dia.$error" :message="v$.dia.$errors[0]?.$message" />
+          </template>
         </InputField>
 
         <!-- Horas -->
         <InputField label="Horas Dadas" name="horas">
-          <template #InputField
-            ><InputComponent type="number" name="horas" v-model="formData.horas"
-          /></template>
-          <template #InputError
-            ><InputError v-if="v$.horas.$error" :message="v$.horas.$errors[0]?.$message"
-          /></template>
+          <template #InputField>
+            <InputComponent type="number" name="horas" v-model="formData.horas" />
+          </template>
+          <template #InputError>
+            <InputError v-if="v$.horas.$error" :message="v$.horas.$errors[0]?.$message" />
+          </template>
         </InputField>
       </template>
     </FormComponent>
