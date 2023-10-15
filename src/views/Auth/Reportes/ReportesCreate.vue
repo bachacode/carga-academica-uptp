@@ -209,7 +209,7 @@ async function generatePDF() {
       canvas.style.display = 'none'
     })
   } else {
-    const doc = new jsPDF('p')
+    const doc = new jsPDF('l')
     autoTable(doc, { html: '#my-table' })
     doc.save(data.pdfName)
   }
@@ -231,7 +231,7 @@ onUnmounted(() => {
 
 <template>
   <AuthLayout>
-    <FormComponent form-title="Módulo reportes" submit-text="Generar Reporte" @form-submit="generatePDF" :is-loading="isLoading">
+    <FormComponent form-title="Módulo reportes" :back-button="false" submit-text="Generar Reporte" @form-submit="generatePDF" :is-loading="isLoading">
       <template #inputs>
         <!-- Modulo -->
         <InputField label="Modulo a imprimir" name="modulo">
@@ -275,7 +275,7 @@ onUnmounted(() => {
     :options="chartOptions"
   ></BarChart>
   <!-- Tabla del PDF -->
-  <table class="hidden" id="my-table">
+  <table id="my-table">
     <thead>
       <tr>
         <th v-for="column in data.columns" class="text-indigo-900" :key="column.name">
@@ -299,6 +299,27 @@ onUnmounted(() => {
                   // @ts-ignore
                   record.expand[column.name][column.childName ?? '']
                 }}
+              </td>
+              <td
+                v-else-if="column.isSingleRelation && !record.expand[column.name]"
+                class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+              >
+                {{ '¡No tiene!' }}
+              </td>
+            </template>
+
+            <!-- Columnas relaciones uno a muchos en forma de lista -->
+            <template v-else-if="column.isList">
+              <td
+                v-if="column.isList && column.childName && record.expand[column.name]"
+                class="min-w-[140px] max-w-[220px] whitespace-normal break-words"
+              >
+              <ul v-for="(saber, index) in record.expand[column.name]" :key="index">
+                <li>{{ 
+                  // @ts-ignore
+                  saber[column.childName] 
+                  }}, </li>
+              </ul>
               </td>
               <td
                 v-else-if="column.isSingleRelation && !record.expand[column.name]"

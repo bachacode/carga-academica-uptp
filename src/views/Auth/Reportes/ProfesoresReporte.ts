@@ -46,6 +46,13 @@ export const profesores: Reportes = {
       childName: 'nombre',
       isSingleRelation: true,
       isAsc: false
+    },
+    {
+      name: 'saberes',
+      nameAlias: 'Saberes',
+      childName: 'nombre',
+      isList: true,
+      isAsc: false,
     }
   ],
   pdfName: 'profesores.pdf',
@@ -107,5 +114,5 @@ export const profesores: Reportes = {
       ]
     }
   },
-  relations: ['titulo_id', 'contrato_id', 'posgrado_id']
+  relations: ['titulo_id', 'contrato_id', 'posgrado_id', 'saberes']
 }

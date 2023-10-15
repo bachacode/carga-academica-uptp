@@ -15,4 +15,5 @@ export type Column = {
   }>
   isSingleRelation?: boolean
   hasAction?: boolean
+  isList?: boolean
 }
