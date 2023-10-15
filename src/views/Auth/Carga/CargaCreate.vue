@@ -36,6 +36,9 @@ const isLoading = ref(false)
 // Lista de profesores con proyecto asignado para la validacion
 const profs_proyecto = ref<Record[]>()
 
+// Checkbox del modal
+const checkbox = ref<HTMLInputElement>();
+
 // Variables reactivas del formulario
 const formData = reactive<Carga>({
   seccion_id: '',
@@ -267,6 +270,14 @@ const saberesOptions = computed(() => {
   })
 })
 
+const isSpecialized = computed(() => {
+  const profesor = profesores.fullData?.find((profesor) => {
+    return profesor.id == formData.profesor_id;
+  });
+
+  return profesor?.saberes.includes(formData.saber_id)
+})
+
 // Opciones del Select "Dia"
 const diasOptions = [
   { value: 'Lunes', name: 'Lunes' },
@@ -281,13 +292,25 @@ const v$ = useVuelidate(formRules, formData)
 
 // Función para enviar el formulario
 const submitData = async () => {
-  await v$.value.$validate()
-  if (!v$.value.$error) {
     isLoading.value = true
     await store.save(formData)
     isLoading.value = false
+}
+
+const checkBeforeSubmiting = async () => {
+  await v$.value.$validate()
+  if (!v$.value.$error) {
+    if(isSpecialized.value == true){
+        await submitData();
+      }
+     else {
+      if(checkbox.value){
+        checkbox.value.checked = true;
+      }
   }
 }
+}
+
 onMounted(async () => {
   await cargaTotal.fetchFullList()
   await profesores.fetchFullList()
@@ -304,8 +327,33 @@ onMounted(async () => {
 </script>
 
 <template>
+
+
+    <!-- Modal -->
+    <input type="checkbox" id="my-modal" class="modal-toggle" ref="checkbox"/>
+    <div class="modal">
+      <div class="modal-box">
+        <h3 class="text-lg font-bold">¡Cuidado!</h3>
+        <p class="py-4">
+          El profesor no se especializa en el saber que se le ha asignado, ¿Desea continuar de todas formas?
+        </p>
+        <div class="modal-action items-center">
+          <label
+            for="my-modal"
+            class="btn-outline mr-2 cursor-pointer rounded-xl p-2 hover:bg-white hover:text-indigo-700"
+            >¡No!</label
+          >
+          <label for="my-modal" class="btn rounded-xl bg-indigo-700" @click="submitData">
+            Asignar
+          </label>
+        </div>
+      </div>
+    </div>
+    <!-- /Modal -->
+
+
   <AuthLayout>
-    <FormComponent form-title="Módulo carga" submit-text="Asignar Carga" @form-submit="submitData"
+    <FormComponent form-title="Módulo carga" submit-text="Asignar Carga" @form-submit="checkBeforeSubmiting"
       :is-loading="isLoading">
       <template #inputs>
         <!-- seccion -->

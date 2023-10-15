@@ -40,10 +40,6 @@ const isLoading = ref(false)
 // Id del item a editar
 const id = ref()
 
-let horasActuales = 0;
-
-let saberActual = '';
-
 // Datos del registro a editar
 const singleData = reactive<Carga>({
   seccion_id: '',
@@ -144,6 +140,7 @@ const excedeContrato = (value: string) => {
     return false
   }
   // Comprueba si las horas restantes son positivas o negativas
+  const horasActuales = (typeof singleData.horas == 'string') ? parseInt(singleData.horas) : singleData.horas;
   let horasRestantes =
     profesor.contrato_horas - (profesor.horas + parseInt(value) ?? 0 + parseInt(value)) + horasActuales
   return horasRestantes >= 0
@@ -163,26 +160,29 @@ const excedeHorasSaber = (value: string) => {
     return record.id == formData.saber_id
   })
   // Consigue la informacion del profesor
-  let profesorCargas = store.fullData.filter((record) => {
+  const profesorCargas = store.fullData.filter((record) => {
     return record.profesor_id == formData.profesor_id && record.saber_id == formData.saber_id
   })
   //
   if (profesorCargas.length == 0 && saber) {
     return saber.horas >= value
   }
-  let profesor = profesorCargas.reduce((acc, record) => {
-    //@ts-ignore
-    return acc.horas + record.horas
+  const profesor = profesorCargas.reduce((acc, record) => {
+    const acumulador = (typeof acc.horas == 'string') ? parseInt(acc.horas) : acc.horas;
+    const horas = (typeof record.horas == 'string') ? parseInt(record.horas) : record.horas;
+    acc.horas = acumulador + horas;
+    return acc;
   })
-  
+
   //@ts-ignore
-  let horasTotales = profesor.horas + parseInt(value)
-  if(saberActual == formData.saber_id) {
-    horasTotales -= horasActuales;
+  let horasTotales = (typeof profesor.horas == 'string') ? parseInt(profesor.horas) : profesor.horas;
+  const horasActuales = (typeof singleData.horas == 'string') ? parseInt(singleData.horas) : singleData.horas;
+  if(singleData.saber_id == formData.saber_id) {
+    horasTotales = horasTotales - horasActuales
   }
   
   //@ts-ignore
-  return saber.horas >= horasTotales
+  return horasTotales > saber.horas
 }
 // Condicional asincrono de "sonDelMismoTrayecto"
 const mismoTrayecto = helpers.withAsync(sonDelMismoTrayecto, () => formData.saber_id)
@@ -261,7 +261,7 @@ const profesoresOptions = computed(() => {
     }
     horasRestantes -= horas;
     let text = '';
-    if(horasRestantes > 0) {
+    if(horasRestantes > 0 || record.id == singleData.profesor_id) {
       text = `${record.nombre} ${record.apellido} - ${record.expand.titulo_id.grado} en ${record.expand.titulo_id.nombre} - (${record.expand.contrato_id.nombre} | ${record.expand.contrato_id.horas} horas) - ${horasRestantes} horas restantes`
     } else {
       text = `${record.nombre} ${record.apellido} - Sin horas disponibles`
@@ -270,7 +270,7 @@ const profesoresOptions = computed(() => {
     return {
       value: record.id,
       name: text,
-      isLabel: (horasRestantes <= 0),
+      isLabel: (horasRestantes <= 0 && record.id != singleData.profesor_id),
     }
   })
 })
@@ -323,12 +323,6 @@ onMounted(async () => {
   if (!(router.currentRoute.value.params.id instanceof Array)) {
     id.value = router.currentRoute.value.params.id
     await store.fetchOne(id.value).then((data) => {
-      if(typeof data.horas == 'string'){
-        horasActuales = parseInt(data.horas)
-      } else {
-        horasActuales = data.horas
-      }
-      saberActual = data.saber_id
       Object.assign(singleData, data)
       Object.assign(formData, data)
     })
