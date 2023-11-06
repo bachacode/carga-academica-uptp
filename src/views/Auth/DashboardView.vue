@@ -161,7 +161,7 @@ onMounted(async () => {
         <!--Console Content-->
         <div class="flex flex-wrap">
           <!-- Secciones Totales -->
-          <div class="w-full p-3 md:w-1/2 xl:w-1/3">
+          <div class="w-full p-3 md:w-1/2 xl:w-1/4">
             <MetricCard
               title="Secciones con horas asignadas"
               :amount="`${seccionesConCarga} / ${totalSecciones}`"
@@ -175,7 +175,7 @@ onMounted(async () => {
           </div>
 
           <!-- Profesores con materias -->
-          <div class="w-full p-3 md:w-1/2 xl:w-1/3">
+          <div class="w-full p-3 md:w-1/2 xl:w-1/4">
             <!--Metric Card-->
             <MetricCard
               title="Profesores con materias"
@@ -191,7 +191,7 @@ onMounted(async () => {
           </div>
 
           <!-- Profesores con horas asignadas -->
-          <div class="w-full p-3 md:w-1/2 xl:w-1/3">
+          <div class="w-full p-3 md:w-1/2 xl:w-1/4">
             <!--Metric Card-->
             <MetricCard
               title="Profesores con horas asignadas"
@@ -207,10 +207,10 @@ onMounted(async () => {
           </div>
 
           <!-- Usuarios operadores activos -->
-          <div v-if="auth.user?.rol == 'Administrador'" class="w-full p-3 md:w-1/2 xl:w-1/3">
+          <div v-if="auth.user?.rol == 'Administrador'" class="w-full p-3 md:w-1/2 xl:w-1/4">
             <!--Metric Card-->
             <MetricCard
-              title="Operadores Activos"
+              title="Operadores Activos en el sistema"
               :amount="`${totalActiveUsers} / ${totalUsers}`"
               main-icon-color="green"
               secondary-icon-color="green"

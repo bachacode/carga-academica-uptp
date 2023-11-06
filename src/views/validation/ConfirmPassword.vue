@@ -56,7 +56,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <GuessLayout title="Recuperación de contraseña">
+  <GuessLayout title="Recuperación de contraseña" :backButton="true">
     <template v-if="!formSent">
       <form class="flex flex-col pt-3 md:pt-8" @submit.prevent="submit()">
         <InputError

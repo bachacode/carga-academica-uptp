@@ -30,7 +30,7 @@ withDefaults(defineProps<Props>(), {
           <template v-if="backButton">
             <button
               class="btn-ghost pr-2 pt-2 text-center hover:bg-indigo-100 hover:text-indigo-700"
-              @click="router.push('login')"
+              @click="router.push({ name: 'login' })"
             >
               <i class="fas fa-arrow-left pr-1"></i><span>Volver al inicio</span>
             </button>

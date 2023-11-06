@@ -59,7 +59,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <GuessLayout title="Cambio de correo">
+  <GuessLayout title="Cambio de correo" :backButton="true">
     <template v-if="formSent">
       <form class="flex flex-col pt-3 md:pt-8" @submit.prevent="submit()">
         <!-- Contraseña -->

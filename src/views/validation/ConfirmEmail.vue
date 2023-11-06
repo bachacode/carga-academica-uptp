@@ -23,7 +23,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <GuessLayout title="Recuperación de contraseña">
+  <GuessLayout title="Recuperación de contraseña" :backButton="true">
     <!-- Recover Password Section -->
     <p class="text-center text-3xl">Validación de correo</p>
     <LoadingCircle :is-loaded="!verified" />
