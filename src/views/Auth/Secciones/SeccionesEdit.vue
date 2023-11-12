@@ -51,9 +51,33 @@ const codigoMatches = (value: string) => {
   if (!(formData.trayecto && formData.codigo)) {
     return true
   }
+  const regexTrayectoUno = /^(i0[0-9]|i1[0-9])$/;
+  const regexTrayectoDos = /^(i2[0-9])$/;
+  const regexTrayectoTres = /^(i3[0-9])$/;
+  const regexTrayectoCuatro = /^(i[4-9][0-9])$/;
+  
+  let trayecto = parseInt(formData.trayecto);
+  let success = false;
+  
+  switch (trayecto) {
+    case 1:
+      success = regexTrayectoUno.test(value);
+      break;
+    case 2:
+      success = regexTrayectoDos.test(value);
+    break;
+    case 3:
+      success = regexTrayectoTres.test(value);
+    break;
+    case 4:
+      success = regexTrayectoCuatro.test(value);
+    break;
+    default:
+      success = false;
+      break;
+  }
 
-  const regex = new RegExp('^i' + formData.trayecto + '[0-9]')
-  return regex.test(value);
+  return success;
 }
 
 // Reglas de validación
