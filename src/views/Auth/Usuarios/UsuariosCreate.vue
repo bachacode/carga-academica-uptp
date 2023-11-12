@@ -169,7 +169,7 @@ const cargoOptions = reactive([
               ><InputComponent
                 v-maska
                 data-maska="@"
-                data-maska-tokens="@:[a-zA-Z]:repeated"
+                data-maska-tokens="@:[a-zA-Z\s]:repeated"
                 name="name"
                 v-model.trim="formData.nombre"
             /></template>
@@ -184,7 +184,7 @@ const cargoOptions = reactive([
               ><InputComponent
                 v-maska
                 data-maska="@"
-                data-maska-tokens="@:[a-zA-Z]:repeated"
+                data-maska-tokens="@:[a-zA-Z\s]:repeated"
                 name="apellido"
                 v-model="formData.apellido"
             /></template>

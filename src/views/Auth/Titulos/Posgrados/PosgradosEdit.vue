@@ -109,7 +109,7 @@ onMounted(async () => {
             ><InputComponent
               v-maska
               data-maska="@"
-              data-maska-tokens="@:[a-zA-Z]:repeated"
+              data-maska-tokens="@:[a-zA-Z\s]:repeated"
               name="nombre"
               v-model="formData.nombre"
           /></template>
